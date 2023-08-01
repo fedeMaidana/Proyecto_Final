@@ -2,10 +2,10 @@ import { useRef } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { Center, Environment, AccumulativeShadows, RandomizedLight } from "@react-three/drei"
 import { easing } from "maath"
-import { Shirt } from "../../clothes/Shirt"
-import { Pant } from "../../clothes/Pant"
-import { Dress } from "../../clothes/Dress"
-import { Jacket } from "../../clothes/Jacket"
+import { Shirt } from "../clothes/Shirt"
+import { Pant } from "../clothes/Pant"
+import { Dress } from "../clothes/Dress"
+import { Jacket } from "../clothes/Jacket"
 
 export function Customize( { position = [ 0, 0, 15 ], fov = 25 } ) {
     return(
@@ -21,7 +21,7 @@ export function Customize( { position = [ 0, 0, 15 ], fov = 25 } ) {
                 <Environment preset="city" />
                 <CameraRig>
                     <Center>
-                        <Dress />
+                        <Jacket />
                         <Backdrop />
                     </Center>
                 </CameraRig>

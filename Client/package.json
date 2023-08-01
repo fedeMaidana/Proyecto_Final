@@ -17,7 +17,12 @@
     "react-router-dom": "^6.11.1",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@react-three/drei": "^9.80.0",
+    "@react-three/fiber": "^8.13.6",
+    "@types/three": "^0.155.0",
+    "maath": "^0.7.0",
+    "three": "^0.155.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

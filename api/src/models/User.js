@@ -24,5 +24,6 @@ module.exports = (sequilize) => {
             type: Sequelize.STRING,
             allowNull: false,
           },
-    })
+    },
+    { timestamps: false })
 }

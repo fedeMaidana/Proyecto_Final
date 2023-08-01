@@ -28,9 +28,10 @@ const {Product, Shopping_cart, User } = sequelize.models;
 
 // Aca vendrian las relaciones
 
-
+Product.belongsToMany(Shopping_cart, { through: "Product_Shopping_cart",timestamps: false });
+Shopping_cart.belongsToMany(Product, { through: "Product_Shopping_cart",timestamps: false });
 
 module.exports = {
-    // ...sequelize.models, // para poder importar los modelos
+    ...sequelize.models, // para poder importar los modelos
     conn: sequelize,
 }

@@ -1,5 +1,6 @@
 const { Sequelize } = require('sequelize');
 // importar los models
+
 const ProductModel = require('./models/Product')
 const ShoppingCartModel = require ('./models/ShoppingCart')
 const UserModel = require('./models/User')
@@ -20,8 +21,10 @@ ProductModel(sequelize)
 ShoppingCartModel(sequelize)
 UserModel(sequelize)
 
+
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
+
 
 
 const {Product, Shopping_cart, User } = sequelize.models;

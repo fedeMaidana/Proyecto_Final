@@ -1,8 +1,11 @@
 
 const getPrueba = async (req, res) => {
-    res.status(200).send("OK")
-};
 
+    
+    const results = "prueba";
+
+    return [results]
+};
 
 module.exports = {
     getPrueba

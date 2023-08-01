@@ -28,5 +28,6 @@ module.exports = (sequilize) =>{
             type: DataTypes.STRING,
           },
           
-    })
+    },
+    { timestamps: false })
 }

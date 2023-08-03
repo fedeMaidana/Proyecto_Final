@@ -1,33 +1,33 @@
-/* import { useState } from 'react' */
-import { Route, Routes, useLocation} from 'react-router-dom'
-import Intro from '../views/Intro'
-import Home from '../views/Home'
-import Customize from '../views/Customize'
-import Login from '../views/Login'
-/* import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg' */
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Nav from './Nav';
+import Home from '../views/Home';
+import Intro from '../views/Intro';
+import Community from '../views/Community';
+import Customize from '../views/Customize';
 
 function App() {
-  const location = useLocation()
-
   return (
-    <>
-      <div>
-        <div> 
-        { location.pathname !== '/' && location.pathname !== '/home' ? <Nav/>: null } {/* Si la ruta actual no es '/' ni '/home', se muestra el componente Nav. */}
-        <Routes>
-          <Route path='/' element={<Intro/>}/>
-          <Route path='/home' element={<Home/>}/>
-          <Route path='/detail/:id' element={<Customize/>}/>
-          <Route path='/form' element={<Login/>}/>
-        </Routes>
+    <div className="App">
+      <Nav />
+      <Routes>
+        {/* La ruta principal ahora renderizará el componente Intro */}
+        <Route path="/" element={<Intro />} />
 
-        </div>
+        {/* La ruta /home también renderiza el componente Home */}
+        <Route path="/home" element={<Home />} />
 
-      </div>
-    </>
-  )
+        {/* La ruta /intro renderiza el componente Intro */}
+        <Route path="/intro" element={<Intro />} />
+
+        {/* La ruta /community renderiza el componente Community */}
+        <Route path="/community" element={<Community />} />
+
+        {/* La ruta /customize renderiza el componente Customize */}
+        <Route path="/customize" element={<Customize />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;

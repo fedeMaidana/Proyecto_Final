@@ -4,9 +4,7 @@ const { userRoutes } = require('./userRoutes');
 const productRouter= require('./productRouter.js');
 
 
-
 const mainRouter = Router();
-
 
 
 mainRouter.use('/', userRoutes);

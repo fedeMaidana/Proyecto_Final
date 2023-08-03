@@ -34,7 +34,7 @@ const {Product, Shopping_cart, User } = sequelize.models;
 Product.belongsToMany(Shopping_cart, { through: "Product_Shopping_cart",timestamps: false });
 Shopping_cart.belongsToMany(Product, { through: "Product_Shopping_cart",timestamps: false });
 
-User.hasOne(Shopping_cart, { foreignKey: 'userId' });
+User.hasMany(Shopping_cart, { foreignKey: 'userId' });
 Shopping_cart.belongsTo(User, { foreignKey: 'userId' });
 
 //Category.hasMany(Product,{ through: "Category_Product",timestamps: false } )

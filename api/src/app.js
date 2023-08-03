@@ -31,7 +31,7 @@ server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 
 server.use(express.json());
 
-server.use(mainRouter)
+server.use('/', mainRouter);
 
 
 

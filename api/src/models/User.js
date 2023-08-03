@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const { Sequelize,DataTypes } = require("sequelize");
+=======
+const { sequelize, DataTypes } = require("sequelize");
+>>>>>>> b988bff30f863a47a6f3cdd2de374cbedb72ed74
 
 
 module.exports = (sequilize) => {
@@ -14,8 +18,13 @@ module.exports = (sequilize) => {
           },
           email: {
             type: DataTypes.STRING,
+<<<<<<< HEAD
             allowNull: false,
+=======
+            required: true,
+>>>>>>> b988bff30f863a47a6f3cdd2de374cbedb72ed74
             unique: true,
+            allowNull: false,
             validate: {
               isEmail: true,
             },
@@ -23,6 +32,11 @@ module.exports = (sequilize) => {
           password: {
             type: DataTypes.STRING,
             allowNull: false,
+          },
+          estado: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 1, 
           },
     },
     { timestamps: false })

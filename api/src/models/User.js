@@ -1,4 +1,7 @@
+const { Sequelize,DataTypes } = require("sequelize");
+
 const { sequelize, DataTypes } = require("sequelize");
+
 
 
 module.exports = (sequilize) => {
@@ -14,7 +17,11 @@ module.exports = (sequilize) => {
           },
           email: {
             type: DataTypes.STRING,
+
+            allowNull: false,
+
             required: true,
+
             unique: true,
             allowNull: false,
             validate: {

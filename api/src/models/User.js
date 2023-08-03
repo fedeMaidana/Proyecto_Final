@@ -2,7 +2,6 @@ const { Sequelize,DataTypes } = require("sequelize");
 
 
 
-
 module.exports = (sequilize) => {
     sequilize.define('User',{
         id: {
@@ -20,6 +19,7 @@ module.exports = (sequilize) => {
             allowNull: false,
 
             required: true,
+
             unique: true,
             allowNull: false,
             validate: {

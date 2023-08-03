@@ -9,19 +9,19 @@ import Customize from '../views/Customize';
 function App() {
   return (
     <div className="App">
-      <Nav />
       <Routes>
         {/* La ruta principal ahora renderizará el componente Intro */}
         <Route path="/" element={<Intro />} />
 
-        {/* La ruta /home también renderiza el componente Home */}
-        <Route path="/home" element={<Home />} />
+        {/* La ruta /home también renderiza el componente Nav */}
+        <Route path="/home" element={<Nav />}>
+          <Route index element={<Home />} />
+        </Route>
 
-        {/* La ruta /intro renderiza el componente Intro */}
-        <Route path="/intro" element={<Intro />} />
-
-        {/* La ruta /community renderiza el componente Community */}
-        <Route path="/community" element={<Community />} />
+        {/* La ruta /community también renderiza el componente Nav */}
+        <Route path="/community" element={<Nav />}>
+          <Route index element={<Community />} />
+        </Route>
 
         {/* La ruta /customize renderiza el componente Customize */}
         <Route path="/customize" element={<Customize />} />
@@ -31,3 +31,7 @@ function App() {
 }
 
 export default App;
+
+
+      
+ 

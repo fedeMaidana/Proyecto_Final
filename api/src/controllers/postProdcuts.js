@@ -1,21 +1,39 @@
 const {Product} = require('../db');
 
-const createProduct = async (productInfo) => {
-    const {
-        name,
-        price,
-        description,
-        stock,
-    } = productInfo
+const createProduct = async (name,
+    price,
+    description,
+    stock,images, category) => {
 
-    const product = await Product.create({
-        name,
-        price,
-        description,
-        stock,
-    });
+        try {
+            if(!name|| !price || !description || !stock || !images || !category){
+                return res.status(400).send("Faltan datos");
+            }
+    
+            const formattedName = name
+            .toLowerCase()
+            .split(" ")
+            .map(
+              (word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
+            )
+            .join(" ");
+    
+        const product = await Product.create({
+            name: formattedName,
+            price,
+            description,
+            stock,
+            images,
+            categoryId: category
+        });
+    
+    
+        return product;
+        } catch (error) {
+            throw new Error('Error al crear el producto');
+        }
+   
 
-    return product;
 };
 
 module.exports = createProduct;

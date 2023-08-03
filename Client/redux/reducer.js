@@ -6,7 +6,6 @@ const initialState = {
     productDetail: {},
 
 }
-
 const reducer = (state = initialState, {type,payload}) => {
     switch(type){
 

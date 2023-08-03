@@ -1,4 +1,3 @@
-
 const getPrueba = async (req, res) => {
 
     

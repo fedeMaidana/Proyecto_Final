@@ -29,13 +29,12 @@ server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
     res.status(status).send(message);
   });
 
-<<<<<<< HEAD
-=======
+
 server.use(express.json());
 
 server.use('/', mainRouter);
 
->>>>>>> b988bff30f863a47a6f3cdd2de374cbedb72ed74
+
 
 
 

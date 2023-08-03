@@ -1,12 +1,6 @@
-const { getPrueba } = require('../controllers/getPrueba');
 const {getProducts, getProductsById} = require('../controllers/getProducts');
 const createProduct = require('../controllers/postProdcuts');
 
-const getPruebaHandler = async (req, res) => {
-
-    const result = await getPrueba();
-    res.status(200).send(result)
-};
 const getProductsHandler = async (req, res) => {
     const {name} = req.query;
     try {
@@ -28,20 +22,25 @@ const getProductsHandlerById = async (req, res) =>{
 };
 
 const postProductHandler = async (req, res) => {
-    const {body} = req;
-    console.log(body);
+    
     try {
-        const response = createProduct(body);
-        res.status(201).json(response)
+        const {name,
+            price,
+            description,
+            stock,images, category} = req.body;
+        const response = createProduct(name,
+            price,
+            description,
+            stock,images,category);
+        res.status(201).json({response, message: 'Se creo correctamente el producto'})
     } catch (error) {
-        res.status(500).json()
+        res.status(500).json({error: error.message})
     }
 
 }
 
 
 module.exports = {
-    getPruebaHandler,
     getProductsHandler,
     getProductsHandlerById,
     postProductHandler

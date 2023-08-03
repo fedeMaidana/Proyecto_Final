@@ -51,7 +51,7 @@ const categoryController ={
           
             return newCategory;
 
-            console.log(newCategory);
+           
         } else{
             return res.status(404).json({ error: `La categoria ya existe`});
         }

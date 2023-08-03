@@ -1,14 +1,10 @@
 const {Router} = require("express");
-
-const {getPruebaHandler} = require('../handlers/index.js');
-
-
-
 const mainRouter = Router();
+const cartRouter = require('./CartRutes.js')
 
 
-mainRouter.get("/", getPruebaHandler);
 
+mainRouter.use("/shopping_cart", cartRouter);
 
 
 

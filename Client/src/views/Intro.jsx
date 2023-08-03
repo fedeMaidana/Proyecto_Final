@@ -4,14 +4,13 @@ const Intro = () => {
     return(
         <>
             <h1>Custom Craft</h1>
-            
+
             <NavLink to="/home">
-                  <button>
+                <button>
                     Explore
-                  </button>
+                </button>
             </NavLink>
-        
         </>
     )
 }
-export default Intro;
+export default Intro

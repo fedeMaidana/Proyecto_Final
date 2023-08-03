@@ -4,21 +4,18 @@ import { useGLTF } from '@react-three/drei'
 export function Dress( props ){
     const { nodes } = useGLTF( 'src/assets/models/dress.glb' )
 
+    const { clothingColor } = props
+
+    const material = new MeshStandardMaterial( { color: clothingColor, side: DoubleSide } )
+
     return (
-        <group { ...props } dispose={ null } scale={ [ 4, 4, 4 ] } position={ [ 0, -2, 0 ] } >
+        <group { ...props } dispose={ null } position={ [ 0, -1, 0 ] } >
             <mesh
                 castShadow
                 receiveShadow
-                geometry={ nodes.Cube.geometry }
-                material={
-                    new MeshStandardMaterial({
-                        ...nodes.Cube.material,
-                        side: DoubleSide
-                    })
-                }
-                position={ [ 0, 0.868, 0.275 ] }
-                rotation={ [ -Math.PI, 0, -Math.PI ] }
-                scale={ [ -0.145, -0.214, -0.052 ] }
+                geometry={nodes["01_FABRIC_1_FRONT_1309_0"].geometry}
+                material={material}
+                scale={.05}
             />
         </group>
     )

@@ -1,6 +1,7 @@
 const { getUsers } = require('../controllers/getUsers');
 const { register } = require('../controllers/register');
 const { login } = require('../controllers/login');
+const { deleteUser } = require('../controllers/deleteUser');
 
 
 
@@ -26,7 +27,7 @@ const getUserIDHandler = async (req, res) => {
         const recipesID = totalUsers.filter(el => el.id == id)
         recipesID.length ?
         res.status(200).json(recipesID):
-        res.status(400).json("there is no user with that ID");
+        res.status(400).json("No hay ningún usuario con ese ID");
     }
 };
 
@@ -40,16 +41,16 @@ const registerHandler = async (req, res) => {
     try {
         const result = await register(name, email, password);
 
-        res.json(result);
+        res.status(200).json(result);
 
     } catch (error) {
-        console.error(error);
+        console.error('Error al intentar registrarse: ', error);
 
-        res.json({ error: 'Error trying to register' });
+        res.status(500).json({ error: 'server error' });
     }
 };
 
-
+ 
 
 
 const loginHandler = async (req, res) => {
@@ -60,16 +61,34 @@ const loginHandler = async (req, res) => {
     try {
         const result = await login(email, password);
 
-        res.json(result);
+        res.status(200).json(result);
 
     } catch (error) {
-        console.error(error);
+        console.error('Error al intentar iniciar sesión: ', error);
 
-        res.json({ error: 'Error trying to log in' });
+        res.status(500).json({ error: 'server error' });
     }
 
 };
-    
+
+
+
+
+const deleteHandler = async (req, res) => {
+
+    const { id } = req.params;
+
+    try {
+        const result = await deleteUser(id);
+
+        res.status(200).json(result)
+
+    } catch (error) {
+        console.error('Error al borrar el usuario: ', error);
+
+        res.status(500).json({ error: 'server error' });
+    }
+};
     
     
     
@@ -79,5 +98,6 @@ module.exports = {
     getUsersHandler, 
     registerHandler,
     getUserIDHandler,
-    loginHandler
+    loginHandler,
+    deleteHandler
 }

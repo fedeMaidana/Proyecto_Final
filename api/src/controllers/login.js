@@ -4,10 +4,10 @@ const bcrypt = require('bcrypt');
 
 const login = async (email, password) => {
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email, estado: 1 }});
 
     if (!user) {
-        return { message: 'User not found' };
+        return { message: 'Usuario no encontrado' };
 
     }
 
@@ -17,7 +17,7 @@ const login = async (email, password) => {
         const { id, name } = user;
             
         return { 
-            message: "User logged in successfully",
+            message: "El usuario inició sesión con éxito",
             user: {
                 id,
                 name

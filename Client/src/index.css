@@ -1,3 +1,7 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 *{
     box-sizing: border-box;
 }
@@ -10,7 +14,7 @@ html, body, #root, #main{
     user-select: none;
 }
 body{
-    background-color: rgb(36, 38, 53);
+    background-color: rgb(86, 89, 144);
 }
 canvas{
     touch-action: none;

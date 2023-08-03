@@ -1,98 +1,98 @@
-import { MeshStandardMaterial } from 'three';
+import { MeshStandardMaterial, DoubleSide } from 'three'
 import { useGLTF } from '@react-three/drei'
 
 export function Jacket( props ){
-    const { nodes, materials } = useGLTF( 'src/assets/models/jacket.glb' )
-
-    const whiteMaterial = new MeshStandardMaterial({ color: '#FFFFFF' });
+    const { nodes } = useGLTF( 'src/assets/models/jacket.glb' )
+    const { clothingColor } = props
+    const material = new MeshStandardMaterial( { color: clothingColor, side: DoubleSide } )
 
     return (
-        <group {...props} dispose={null}>
-            <group rotation={[-Math.PI / 2, 0, 0]} scale={0.05} position={ [ 0, -1.5, .5 ] }>
-                <group rotation={[Math.PI / 2, 0, 0]}>
+        <group { ...props } dispose={ null } >
+            <group rotation={ [ -Math.PI / 2, 0, 0 ] } scale={ .04 } position={ [ 0, -.3, .5 ] }>
+                <group rotation={ [ Math.PI / 2, 0, 0 ] } >
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial006.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial006.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial007.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial007.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial008.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial008.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial005.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial005.geometry }
+                        material={ new MeshStandardMaterial( { color: 'rgb(87, 87, 87)', side: DoubleSide } ) }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial011.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial011.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial012.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial012.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial010.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial010.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial009.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial009.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial013.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial013.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial004.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial004.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial003.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial003.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial001.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial001.geometry }
+                        material={ material }
                     />
                     <mesh
                         castShadow
                         receiveShadow
-                        geometry={nodes.defaultMaterial002.geometry}
-                        material={whiteMaterial}
+                        geometry={ nodes.defaultMaterial002.geometry }
+                        material={ material }
                     />
                 </group>
             </group>

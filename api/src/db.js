@@ -4,6 +4,7 @@ const { Sequelize } = require('sequelize');
 const ProductModel = require('./models/Product')
 const ShoppingCartModel = require ('./models/ShoppingCart')
 const UserModel = require('./models/User')
+const CategoryModel = require('./models/Category')
 
 
 require('dotenv').config();
@@ -20,6 +21,7 @@ const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}
 ProductModel(sequelize)
 ShoppingCartModel(sequelize)
 UserModel(sequelize)
+CategoryModel(sequelize)
 
 
 // En sequelize.models están todos los modelos importados como propiedades
@@ -27,7 +29,7 @@ UserModel(sequelize)
 
 
 
-const {Product, Shopping_cart, User } = sequelize.models;
+const {Product, Shopping_cart, User, Category } = sequelize.models;
 
 // Aca vendrian las relaciones
 
@@ -37,8 +39,8 @@ Shopping_cart.belongsToMany(Product, { through: "Product_Shopping_cart",timestam
 User.hasMany(Shopping_cart, { foreignKey: 'userId' });
 Shopping_cart.belongsTo(User, { foreignKey: 'userId' });
 
-//Category.hasMany(Product,{ through: "Category_Product",timestamps: false } )
-//Product.belongsTo(Category, { through: "Category_Product",timestamps: false } )
+Product.belongsTo(Category, { foreignKey: "categoryId" } )
+Category.hasMany(Product,{ foreignKey: "categoryId" } )
 
 module.exports = {
     ...sequelize.models, // para poder importar los modelos

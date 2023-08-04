@@ -13,9 +13,9 @@ html, body, #root, #main{
     overflow: hidden;
     user-select: none;
 }
-body{
+/* body{
     background-color: rgb(86, 89, 144);
 }
 canvas{
     touch-action: none;
-}
+} */

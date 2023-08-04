@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom"
 import shirt from '../assets/camisa02.jpg'
 
-const Intro = () => {
+export const Intro = () => {
     return(
         <>
             <section>
@@ -11,12 +11,12 @@ const Intro = () => {
                             <h1 className="text-3xl md:text-5xl p-2 text-principal-white tracking-loose font-medium tracking-wide">Custom Craft</h1>
                             <h2 className="text-1xl md:text-3xl leading-relaxed md:leading-snug mb-2">Make your ideas come true, design your own style</h2>
                             
-                            <NavLink to="/home">
-                                <a href="#"
-                                    className="bg-transparent hover:bg-yellow-300 text-yellow-300 hover:text-black rounded shadow hover:shadow-lg py-2 px-4 border border-yellow-300 hover:border-transparent">
-                                    Explore Now
-                                </a>
-
+                            <NavLink 
+                            to="/home"
+                            href="#"
+                            className="bg-transparent hover:bg-yellow-300 text-yellow-300 hover:text-black rounded shadow hover:shadow-lg py-2 px-4 border border-yellow-300 hover:border-transparent"
+                            >                               
+                                Explore Now
                             </NavLink>
                         </div>
                         <div className="p-8 mt-12 mb-6 md:mb-0 md:mt-0 ml-0 md:ml-12 lg:w-2/3  justify-center">
@@ -38,4 +38,3 @@ const Intro = () => {
         </>
     )
 }
-export default Intro

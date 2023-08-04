@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom"
 import shirt from '../assets/camisa02.jpg'
 
-const Intro = () => {
+export const Intro = () => {
     return(
         <>
             <section>
@@ -38,4 +38,3 @@ const Intro = () => {
         </>
     )
 }
-export default Intro

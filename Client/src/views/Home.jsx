@@ -1,21 +1,18 @@
 import { NavLink } from "react-router-dom";
-const Home = () => {
+export const Home = () => {
+    
     return(
         <>
-            <h1>Home</h1>
-            <NavLink to= "/CustomCraft">
-                <button>CustomCraft</button>
-            </NavLink>
-            <NavLink to="/Buy">
-                <button>Buy</button>
-            </NavLink>
-            <NavLink to="/Login">
-                <button>Login</button>
-            </NavLink>
-            <NavLink to="/Search">
-                <button>Search</button>
-            </NavLink>
+        <div className="h-[100%] w-[100%] flex items-center justify-center gap-[10px]">
+            <NavLink to="/Customize" className="flex items-center justify-center h-[200px] w-[200px] bg-[#174ebb] text-[4rem]">shirt</NavLink>
+            <NavLink to="/Customize" className="flex items-center justify-center h-[200px] w-[200px] bg-[#174ebb] text-[4rem]">jean</NavLink>
+            <NavLink to="/Customize" className="flex items-center justify-center h-[200px] w-[200px] bg-[#174ebb] text-[4rem]">hooded</NavLink>
+            <NavLink to="/Customize" className="flex items-center justify-center h-[200px] w-[200px] bg-[#174ebb] text-[4rem]">dress</NavLink>
+            <NavLink to="/Customize" className="flex items-center justify-center h-[200px] w-[200px] bg-[#174ebb] text-[4rem]">jacket</NavLink>
+            <NavLink to="/Customize" className="flex items-center justify-center h-[200px] w-[200px] bg-[#174ebb] text-[4rem]">t-shirt</NavLink>
+        </div>
+
         </>
     )
 }
-export default Home
+

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 
-const Intro = () => {
+export const Intro = () => {
     return(
         <>
             <h1>Custom Craft</h1>
@@ -13,4 +13,3 @@ const Intro = () => {
         </>
     )
 }
-export default Intro

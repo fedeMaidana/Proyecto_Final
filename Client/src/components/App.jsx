@@ -2,7 +2,7 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import { Intro } from '../views/Intro'
 import { Home } from '../views/Home'
 import { Login } from '../views/Login'
-import { Nav } from '../views/Nav.jsx'
+import { Nav } from '../components/Nav.jsx'
 import { Customize } from '../views/Customize.jsx'
 
 export function App() {

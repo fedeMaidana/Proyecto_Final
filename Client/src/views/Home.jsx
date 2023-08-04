@@ -1,6 +1,6 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom"
+
 export const Home = () => {
-    
     return(
         <>
         <div className="h-[100%] w-[100%] flex items-center justify-center gap-[10px]">
@@ -15,4 +15,3 @@ export const Home = () => {
         </>
     )
 }
-

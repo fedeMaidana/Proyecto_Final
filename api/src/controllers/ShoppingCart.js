@@ -1,4 +1,4 @@
-const { Shopping_cart  } = require('../db');
+const { Shopping_cart, Product  } = require('../db');
 
 const cartController = {
   getShoppingCart: async () => {
@@ -9,42 +9,44 @@ const cartController = {
     }
   },
   
-  addToCart: async (userId, cartId, productId, quantity) => {
+  addToCart: async (id, cartId, productId, quantity) => {
     try {
-        // para verificar si el usuario se encuentra logeado
-        if (!userId) {
-          throw new Error('Usuario no autenticado. Debes iniciar sesión.');
-        }
-
-        //verificar carrito de compras
-        const cart = await Shopping_cart.findByPk(cartId);
-
-        if (!cart) {
-          throw new Error('Carrito de compras no encontrado');
-        }
-          // Validar la disponibilidad de stock si es necesario
-          const isStockAvailable = await cart.checkProductStock(productId, quantity);
-
-          if (!isStockAvailable) {
-            throw new Error('Stock insuficiente');
-          }
-    
-          // Agregar el producto al carrito
-    const addedProduct = await Shopping_cart.createProduct({
-        price_data: [], // Ajusta los detalles del precio según tu lógica
-        adjustable_quantity: [], // Ajusta según tu lógica
-        quantity: [], // Ajusta según tu lógica
-      });
+      if (!id) {
+        throw new Error('Usuario no autenticado. Debes iniciar sesión.');
+      }
   
-      return addedProduct;
+      const cart = await Shopping_cart.findByPk(cartId);
+  
+      if (!cart) {
+        throw new Error('Carrito de compras no encontrado');
+      }
+  
+      const product = await Product.findByPk(productId);
+  
+      if (!product) {
+        throw new Error('Producto no encontrado');
+      }
+  
+      const isStockAvailable = await cart.checkProductStock(productId, quantity);
+  
+      if (!isStockAvailable) {
+        throw new Error('Stock insuficiente');
+      }
+  
+      // Agregar el producto al carrito con la cantidad especificada
+      await cart.addProduct(product, { through: { quantity: quantity } });
+  
+      return { message: 'Producto agregado al carrito con éxito' };
     } catch (error) {
+      console.error('Error al agregar el producto al carrito:', error);
       throw new Error('Error al agregar el producto al carrito');
     }
   },
+  
 
-  removeFromCart: async (productId) => {
+  removeFromCart: async (id) => {
     try {
-      const product = await Shopping_cart.findByPk(productId);
+      const product = await Shopping_cart.findByPk(id);
       
       if (!product) {
         throw new Error('Producto no encontrado en el carrito');

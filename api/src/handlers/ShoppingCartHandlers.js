@@ -13,10 +13,10 @@ const cartHandler = {
   
   addToCart: async (req, res) => {
     try {
-        const userId = req.user.id; // Obtener el ID del usuario autenticado
+        const {id} = req.user; // Obtener el ID del usuario autenticado
         const cartId = req.params.cartId;
         const { productId, quantity } = req.body;
-      const addedProduct = await cartController.addToCart(userId, cartId, productId, quantity );
+      const addedProduct = await cartController.addToCart(id, cartId, productId, quantity );
       res.status(201).json(addedProduct);
     } catch (error) {
       console.error('Error al agregar el producto al carrito:', error);
@@ -26,8 +26,8 @@ const cartHandler = {
 
   removeFromCart: async (req, res) => {
     try {
-      const productId = req.params.productId;
-      const removedProduct = await cartController.removeFromCart(productId);
+      const id = req.params;
+      const removedProduct = await cartController.removeFromCart(id);
       res.json(removedProduct);
     } catch (error) {
       console.error('Error al eliminar el producto del carrito:', error);

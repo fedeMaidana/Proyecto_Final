@@ -15,7 +15,7 @@ const login = async (email, password) => {
 
     if(isCorrect) {
         const { id, name } = user;
-            
+        
         return { 
             message: "El usuario inició sesión con éxito",
             user: {

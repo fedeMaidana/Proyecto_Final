@@ -4,6 +4,7 @@ import { Home } from '../views/Home'
 import { Login } from '../views/Login'
 import { Nav } from '../views/Nav.jsx'
 import { Customize } from '../views/Customize.jsx'
+import { Register } from '../views/Register.jsx'
 
 export function App() {
   const location = useLocation()
@@ -16,7 +17,8 @@ export function App() {
         <Route path='/' element={ <Intro/> } />
         <Route path='/home' element={ <Home/> } />
         <Route path='/customize' element={ <Customize/> } />
-        <Route path='/form' element={ <Login/> } />
+        <Route path='/register' element={ <Register/> } />
+        <Route path='/login' element={ <Login/> } />
       </Routes>
     </>
   )

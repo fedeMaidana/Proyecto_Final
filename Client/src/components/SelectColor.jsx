@@ -1,9 +1,10 @@
 import { useDispatch } from "react-redux"
 import { handleColor } from "../handlers/handlers"
+import { NavMenuCanvas } from "./NavMenuCanvas"
 
 const colors = [ '#b9b9b9', '#d34c4c', '#c3538c', '#8049bd', '#4962bd', '#49adbd', '#6ab561', '#b6bd49', '#bd7f49', '#313131' ]
 
-export function SelectColor( { setCurrentPage } ){
+export function SelectColor( { currentPage, setCurrentPage } ){
     const dispatch = useDispatch()
 
     return(
@@ -16,10 +17,12 @@ export function SelectColor( { setCurrentPage } ){
                     flex-col
                     items-center
                     w-full
+                    h-full
                     border-t-[1px]
+                    bg-[#ffffff]
                 "
             >
-                <button onClick={ () => setCurrentPage( 1 ) } >Anterior</button>
+                <NavMenuCanvas name={ 'Color' } currentPage={ currentPage } setCurrentPage={ setCurrentPage } page={ 1 } />
                 <div className="flex gap-[10px]">
                     {colors.map( color => (
                         <div

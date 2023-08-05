@@ -5,7 +5,8 @@ import {
     GET_PRODUCT_DETAIL,
     SEARCH_PRODUCT,
     SET_COLOR,
-    SET_SIZE
+    SET_SIZE,
+    SET_MODAL
 } from "./action-types"
 
 export const getProducts = () => {
@@ -55,5 +56,12 @@ export const setSize = ( size ) => {
     return{
         type: SET_SIZE,
         payload: size
+    }
+}
+
+export const setModal = ( boolean ) => {
+    return{
+        type: SET_MODAL,
+        payload: boolean
     }
 }

@@ -93,7 +93,6 @@ const deleteHandler = async (req, res) => {
     
     
     
-    
 module.exports = {
     getUsersHandler, 
     registerHandler,

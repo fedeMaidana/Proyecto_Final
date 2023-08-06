@@ -5,6 +5,7 @@ import { Login } from '../views/Login'
 import { Customize } from '../views/Customize.jsx'
 import  Nav  from '../components/Nav'
 import { Community } from '../views/Community'
+import { Detail } from '../views/Detail'
 
 export function App() {
   const location = useLocation()
@@ -18,6 +19,7 @@ export function App() {
         <Route path='/customize' element={ <Customize/> } />
         <Route path='/form' element={ <Login/> } />
         <Route path="/social-shop" element={<Community />} />
+        <Route path='/detail' element ={<Detail />} />
       </Routes>
     </>
   )

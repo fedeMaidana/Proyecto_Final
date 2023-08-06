@@ -7,7 +7,7 @@ const login = async (email, password) => {
     const user = await User.findOne({ where: { email, estado: 1 }});
 
     if (!user) {
-        return { message: 'Usuario no encontrado' };
+        return { message: 'Usuario no encontrado', valid: false };
 
     }
 
@@ -17,7 +17,7 @@ const login = async (email, password) => {
         const { id, name } = user;
         
         return { 
-            message: "El usuario inició sesión con éxito",
+            message: "El usuario inició sesión con éxito", valid: true,
             user: {
                 id,
                 name
@@ -25,7 +25,7 @@ const login = async (email, password) => {
         };
     }
     else {
-        return { message: 'Incorrect password' };
+        return { message: 'Incorrect password', valid: false };
     }
 
 };

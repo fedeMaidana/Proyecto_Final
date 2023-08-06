@@ -10,7 +10,8 @@ export default {
         'principal-black': '#1f1f1f',
         'principal-white': '#ebebeb',
         'secondary-violet': '#52489c',
-        'secondary-blue': '#2e4ac5'
+        'secondary-blue': '#2e4ac5',
+        'secondary-blue2': '#33A1FD'
       }
     },
   },

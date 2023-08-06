@@ -6,8 +6,13 @@ import {
     SET_COLOR,
     SET_SIZE,
     SET_MODAL,
-    SET_DESIGN_TITLE
+    SET_DESIGN_TITLE,
+    APPLY_SORTING,
+    APPLY_FILTERS,
+    ALL_CATEGORIES
+
 } from "./action-types"
+
 
 const initialState = {
     products: [],
@@ -16,7 +21,11 @@ const initialState = {
     clothingColor: '',
     clothingSize: '',
     openModal: false,
-    designTitle: 'Diseño sin titulo'
+    designTitle: 'Diseño sin titulo',
+    filters:[],
+    sorting: [],
+    categories:[]
+
 }
 
 const reducer = ( state = initialState, { type, payload } ) => {
@@ -51,6 +60,14 @@ const reducer = ( state = initialState, { type, payload } ) => {
 
         case SET_DESIGN_TITLE:
             return{ ...state, designTitle: payload }
+
+        case APPLY_FILTERS:
+                return { ...state, allProducts: payload, filters: payload }
+
+        case APPLY_SORTING:
+                return { ...state, products: payload, sorting: payload }
+
+        case ALL_CATEGORIES: return{ ...state, categories: payload }
 
         default:
             return { ...state }

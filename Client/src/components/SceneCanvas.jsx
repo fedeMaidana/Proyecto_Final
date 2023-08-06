@@ -2,15 +2,12 @@ import { useSelector } from "react-redux"
 import { OrbitControls } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
 import { Center, Environment } from "@react-three/drei"
-import { TShirt } from "../clothes/TShirt"
-import { Shirt } from "../clothes/Shirt"
-import { Pant } from "../clothes/Pant"
-import { Dress } from "../clothes/Dress"
-import { Jacket } from "../clothes/Jacket"
-import { Hooded } from "../clothes/Hooded"
+import { selectModel } from "../auxFunctions/selectModel"
 
-export function SceneCanvas( { position = [ 0, 0, 15 ], fov = 25 } ){
+export function SceneCanvas( { position = [ 0, 0, 15 ], fov = 25, currentModel } ){
     const clothingColor = useSelector( state => state.clothingColor )
+
+    let Model = selectModel( currentModel )
 
     return(
         <Canvas
@@ -23,7 +20,7 @@ export function SceneCanvas( { position = [ 0, 0, 15 ], fov = 25 } ){
             <ambientLight intensity={ 0.5 } />
             <Environment preset="city" />
             <Center>
-                <Hooded clothingColor={ clothingColor } />
+                <Model clothingColor={ clothingColor } />
             </Center>
             <OrbitControls minDistance={ 12 } maxDistance={ 12 } />
         </Canvas>

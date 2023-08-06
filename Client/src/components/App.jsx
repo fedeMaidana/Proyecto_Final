@@ -15,7 +15,7 @@ export function App() {
       <Routes>
         <Route path='/' element={ <Intro/> } />
         <Route path='/home' element={ <Home/> } />
-        <Route path='/customize' element={ <Customize/> } />
+        <Route path='/customize/:model' element={ <Customize/> } />
         <Route path='/login' element={ <Login/> } />
       </Routes>
     </>

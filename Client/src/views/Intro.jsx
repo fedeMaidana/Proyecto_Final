@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom"
-import shirt from '../assets/shirt01.png'
-import shirt02 from '../assets/shirt02.png'
-import jacket from '../assets/shirt03.png'
-import circle from '../assets/circleBlue_33a1fd.png'
+import shirt from '../assets/images/shirt01.png'
+import shirt02 from '../assets/images/shirt02.png'
+import jacket from '../assets/images/shirt03.png'
+import circle from '../assets/images/circleBlue_33a1fd.png'
 
 export const Intro = () => {
     return(

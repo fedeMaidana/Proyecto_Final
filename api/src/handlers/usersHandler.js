@@ -90,8 +90,6 @@ const deleteHandler = async (req, res) => {
     }
 };
     
-//backend
-    
     
     
     

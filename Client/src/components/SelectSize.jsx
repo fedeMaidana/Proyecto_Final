@@ -1,9 +1,10 @@
 import { useDispatch } from "react-redux"
 import { handleSize } from "../handlers/handlers"
+import { NavMenuCanvas } from "./NavMenuCanvas"
 
 const sizes = [ 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL' ]
 
-export function SelectSize( { setCurrentPage } ){
+export function SelectSize( { currentPage, setCurrentPage } ){
     const dispatch = useDispatch()
 
     return(
@@ -16,10 +17,12 @@ export function SelectSize( { setCurrentPage } ){
                     flex-col
                     items-center
                     w-full
+                    h-full
                     border-t-[1px]
+                    bg-[#ffffff]
                 "
             >
-                <button onClick={ () => setCurrentPage( 2 ) } >Siguiente</button>
+                <NavMenuCanvas name={ 'Talle' } currentPage={ currentPage } setCurrentPage={ setCurrentPage } page={ 2 } />
                 <div className="flex flex-row gap-[10px]" >
                     {sizes.map( size => (
                         <div
@@ -31,6 +34,7 @@ export function SelectSize( { setCurrentPage } ){
                                 font-semibold
                                 rounded-full
                                 border-[1px]
+                                border-[#e5e5e5]
                                 flex items-center
                                 justify-center
                                 border-white

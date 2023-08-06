@@ -1,20 +1,18 @@
-import Card from "./Card";
-import { useSelector } from "react-redux";
+import { useSelector } from "react-redux"
+import { Card } from "./Card"
 
-const CardsContainer = (props) => {
-    const productos = useSelector((state)=> state.allProducts)
-    if(!productos){
-        return <div>Cargando productos...</div>;
-    }
+export const CardsContainer = () => {
+    const products = useSelector( state => state.allProducts )
+
+    if( !products ) return <div>Cargando productos...</div>
+
     return(
-       <Card
-       key={productos.id}
-       id={productos.id}
-       name={productos.name}
-       image={productos.image}
-       types={productos.types}
-       />
+        <Card
+            key={ products.id }
+            id={ products.id }
+            name={ products.name }
+            image={ products.image }
+            types={ products.types }
+        />
     )
 }
-
-export default CardsContainer;

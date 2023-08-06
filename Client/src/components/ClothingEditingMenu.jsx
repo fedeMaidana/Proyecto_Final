@@ -8,11 +8,11 @@ export function ClothingEditingMenu(){
     return (
         <>
             {currentPage === 1 && (
-                <SelectSize setCurrentPage={ setCurrentPage } />
+                <SelectSize currentPage={ currentPage } setCurrentPage={ setCurrentPage } />
             )}
 
             {currentPage === 2 && (
-                <SelectColor setCurrentPage={ setCurrentPage } />
+                <SelectColor currentPage={ currentPage } setCurrentPage={ setCurrentPage } />
             )}
         </>
     )

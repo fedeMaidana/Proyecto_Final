@@ -1,15 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
-const Card = (props) => {
+export const Card = ( { image, name, id } ) => {
     return(
         <div>
-            <div><img srx={props.image} alt={props.name} /></div>
-            <div><p>{props.name}</p></div>
-            <button className={style.buttonLink}>
-            <Link to={`detail/${props.id}`}>Detalle</Link>
+            <div>
+                <img src={ image } alt={ name } />
+            </div>
+            <div>
+                <p>{ name }</p>
+            </div>
+            <button>
+                <Link to={ `detail/${ id }` }>Detalle</Link>
             </button>
         </div>
     )
 }
-
-export default Card;

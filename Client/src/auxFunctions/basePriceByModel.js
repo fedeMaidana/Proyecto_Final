@@ -5,25 +5,25 @@ import { Dress } from "../clothes/Dress"
 import { Jacket } from "../clothes/Jacket"
 import { Hooded } from "../clothes/Hooded"
 
-export function selectModel( currentModel ){
+export function basePriceByModel( currentModel ){
     switch ( currentModel ) {
         case 'TShirt':
-            return TShirt
+            return 10
 
         case 'Shirt':
-            return Shirt
+            return 15
 
         case 'Pant':
-            return Pant
+            return 12
 
         case 'Dress':
-            return Dress
+            return 30
 
         case 'Jacket':
-            return Jacket
+            return 25
 
         case 'Hooded':
-            return Hooded
+            return 18
 
         default:
             return TShirt

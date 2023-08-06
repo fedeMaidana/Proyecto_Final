@@ -31,8 +31,6 @@ export function SelectColor( { currentPage, setCurrentPage } ){
                                 h-[40px]
                                 w-[40px]
                                 rounded-full
-                                border-2
-                                border-white
                                 transition-transform
                                 duration-600
                                 ease-in-out

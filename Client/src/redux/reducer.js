@@ -5,7 +5,8 @@ import {
     SEARCH_PRODUCT,
     SET_COLOR,
     SET_SIZE,
-    SET_MODAL
+    SET_MODAL,
+    SET_DESIGN_TITLE
 } from "./action-types"
 
 const initialState = {
@@ -14,7 +15,8 @@ const initialState = {
     productDetail: {},
     clothingColor: '',
     clothingSize: '',
-    openModal: false
+    openModal: false,
+    designTitle: 'Diseño sin titulo'
 }
 
 const reducer = ( state = initialState, { type, payload } ) => {
@@ -46,6 +48,9 @@ const reducer = ( state = initialState, { type, payload } ) => {
 
         case SET_MODAL:
             return{ ...state, openModal: payload }
+
+        case SET_DESIGN_TITLE:
+            return{ ...state, designTitle: payload }
 
         default:
             return { ...state }

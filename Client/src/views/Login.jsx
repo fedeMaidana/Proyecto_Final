@@ -46,7 +46,7 @@ export const Login = () => {
         <>
             <div className="bg-gray-100 min-h-screen flex items-center justify-center" >
                 <div className="bg-white p-8 rounded shadow-md w-96" >
-                    <h1 className="text-5xl font-bold mb-6" >Bienvenido</h1>
+                    <h1 className="text-5xl font-bold mb-6" >Inicia Sesión</h1>
 
                     <form method='post' onSubmit={ handleSubmit } >
                         <div>

@@ -1,9 +1,15 @@
+import { useState } from "react"
 import { NavLink } from "react-router-dom"
+import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { setModal } from "../redux/actions"
+import { handleTitleChange } from "../handlers/handlers"
 
 export function HeaderCanvas(){
     const dispatch = useDispatch()
+
+    const title = useSelector( state => state.designTitle )
+    const [ isEditing, setIsEditing ] = useState( false )
 
     return(
         <>
@@ -14,7 +20,31 @@ export function HeaderCanvas(){
                             <path d="M1 20L16 1M16 1L31 20M16 1V49" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </NavLink>
-                    <h2 className="text-[2rem] font-semibold" >$ 10</h2>
+                </div>
+                <div className="flex gap-[10px]">
+                    {isEditing ? (
+                        <input
+                            type="text"
+                            value={ title }
+                            onChange={ event => handleTitleChange( event, dispatch ) }
+                            onBlur={ () => setIsEditing( false ) }
+                            autoFocus
+                            className="
+                                ml-[60px]
+                                text-[1.5rem]
+                                font-semibold
+                                border
+                                border-gray-300
+                                rounded-full
+                                px-2
+                                py-1
+                                focus:outline-none
+                                text-center
+                            "
+                        />
+                    ) : (
+                        <p className="text-[1.5rem] font-semibold ml-[60px]" onClick={ () => setIsEditing( true ) }>{title}</p>
+                    )}
                 </div>
                 <div className="flex flex-row gap-[10px]">
                     <button

@@ -7,7 +7,7 @@ const cartRouter = express.Router();
 cartRouter.get('/', cartHandler.getShoppingCart);
 
 // Ruta POST para agregar un producto al carrito de compras
-cartRouter.post('/', cartHandler.addToCart);
+cartRouter.post('/:id', cartHandler.addToCart);
 
 // Ruta DELETE para eliminar un producto del carrito de compras
 cartRouter.delete('/:productId', cartHandler.removeFromCart);

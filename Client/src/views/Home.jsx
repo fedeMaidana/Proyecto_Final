@@ -11,8 +11,8 @@ export const Home = () => {
     return(
         <div >
             <div> {/* Sección Customize your clothing */}
-                <img className="absolute w-[20rem] right-[0rem] top-[0rem] hidden lg:block" src={pattern} alt="pattern top" />
-                <img className="absolute w-[20rem] right-[172rem] top-[56.5rem] rotate-180" src={pattern} alt="pattern bottom" />
+                <img className="absolute w-[20rem] right-[0rem] top-[5rem] hidden lg:block" src={pattern} alt="pattern top" />
+                <img className="absolute w-[20rem] right-[172rem] top-[62rem] rotate-180 hidden lg:block" src={pattern} alt="pattern bottom" />
 
                 <h1 className="text-secondary-blue2 font-extrabold text-[5rem] mt-32 flex justify-center">
                     Customize your clothing

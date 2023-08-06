@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-function Nav() {
+export function Nav() {
   return (
     <nav className="bg-blue-400 p-4">
       <div className="container mx-auto">

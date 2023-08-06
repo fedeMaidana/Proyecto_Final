@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const Card = () => {
+export const Card = () => {
     return(
         // <div>
         //     <div><img srx={props.image} alt={props.name} /></div>
@@ -23,6 +23,5 @@ const Card = () => {
     )
 }
 
-export default Card;
 
 

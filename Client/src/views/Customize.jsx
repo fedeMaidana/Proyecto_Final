@@ -3,7 +3,7 @@ import { SceneCanvas } from "../components/SceneCanvas"
 import { ClothingEditingMenu } from "../components/ClothingEditingMenu"
 import { HeaderCanvas } from "../components/HeaderCanvas"
 import { ModalCustomize } from "../components/ModalCustomize"
-import { ClothingDetails } from "../components/clothingDetails"
+import { ClothingDetails } from "../components/ClothingDetails"
 
 export function Customize() {
     const { model } = useParams()

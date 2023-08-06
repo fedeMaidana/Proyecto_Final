@@ -1,7 +1,21 @@
+import CardsContainer from "../components/CardsContainer"
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { getProducts } from "../redux/actions"
+
 export function Community () {
+    const dispatch = useDispatch();
+    const productos = useSelector((state)=> state.products);
+
+    useEffect(() => {
+        dispatch(getPokemons());
+      }, [dispatch]);
+
     return(
         <>
-        <h1>Esta es la vista Social-Shop</h1>
+        <CardsContainer />
         </>
     )
 }
+
+export default Community;

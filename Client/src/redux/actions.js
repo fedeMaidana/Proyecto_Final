@@ -5,7 +5,10 @@ import {
     GET_PRODUCT_DETAIL,
     SEARCH_PRODUCT,
     SET_COLOR,
-    SET_SIZE
+    SET_SIZE,
+    APPLY_FILTERS,
+    APPLY_SORTING,
+    ALL_CATEGORIES
 } from "./action-types"
 
 export const getProducts = () => {
@@ -57,3 +60,73 @@ export const setSize = ( size ) => {
         payload: size
     }
 }
+
+
+//FILTERS Y ORDENAMIENTO
+
+export const applyFilters = (filters) => {
+    return async (dispatch) => {
+
+        try {
+            const response = await axios.get('http://localhost:3001/filter', {
+                params: {
+                    category: filters.category,
+                    min_price: filters.minPrice,
+                    max_price: filters.maxPrice,
+                },
+            });
+
+            dispatch({
+                type: APPLY_FILTERS,
+                payload: {
+                    allProducts: response.data,
+                    filters: filters, // Aquí estás agregando los filtros aplicados al estado
+                },
+            });
+        } catch (error) {
+            console.error('Error fetching filtered products:', error);
+        }
+    };
+};
+
+export const applySorting = (sorting) => {
+    return async (dispatch,) => {
+
+        try {
+            const response = await axios.get('http://localhost:3001/filter', {
+                params: {
+                    sortOption: sorting,
+                },
+            });
+
+            dispatch({
+                type: APPLY_SORTING,
+                payload: {
+                    allProducts: response.data,
+                    sorting: sorting
+                },
+            });
+        } catch (error) {
+            console.error('Error fetching sorted products:', error);
+        }
+    };
+};
+
+
+//CATEGORIAS
+
+export const getCategories = () => {
+    return async (dispatch) => {
+        
+        try {
+            const response = await axios.get('http://localhost:3001/categories')
+
+            dispatch({
+                type: ALL_CATEGORIES,
+                payload: response.data,
+            });
+        } catch (error) {
+            console.error('Error fetching sorted products:', error);
+        }
+    };
+};

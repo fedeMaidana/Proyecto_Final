@@ -4,15 +4,24 @@ import {
     GET_PRODUCT_DETAIL,
     SEARCH_PRODUCT,
     SET_COLOR,
-    SET_SIZE
+    SET_SIZE,
+    APPLY_SORTING,
+    APPLY_FILTERS,
+    ALL_CATEGORIES
+
 } from "./action-types"
+
 
 const initialState = {
     products: [],
     allProducts: [],
     productDetail: {},
     clothingColor: '',
-    clothingSize: ''
+    clothingSize: '',
+    filters:[],
+    sorting: [],
+    categories:[]
+
 }
 
 const reducer = ( state = initialState, { type, payload } ) => {
@@ -41,6 +50,20 @@ const reducer = ( state = initialState, { type, payload } ) => {
 
         case SET_SIZE:
             return{ ...state, clothingSize: payload }
+
+        case APPLY_FILTERS:
+                return { ...state, 
+                    allProducts: payload,
+                    filters: payload };
+        case APPLY_SORTING:
+                return { ...state, 
+                    products: payload,
+                    sorting: payload };
+
+        case ALL_CATEGORIES: return{
+            ...state,
+            categories: payload
+        }
 
         default:
             return { ...state }

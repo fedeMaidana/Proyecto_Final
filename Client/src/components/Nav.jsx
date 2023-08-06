@@ -1,32 +1,34 @@
 import { Link } from 'react-router-dom'
+import logo from '../assets/DiseñoBase_de_logoCustomCraft_black.png'
 
 export function Nav() {
   return (
-    <nav className="bg-blue-400 p-4">
+    <nav className="bg-secondary-blue2 p-4">
       <div className="container mx-auto">
         <div className="flex items-center justify-between">
           <Link to="/">
             <img
-              src="/assets/DiseñoBase_de_logoCustomCraft_white.png"
+              src={logo}
               alt="Custom Craft Logo"
-              className="w-24 h-24 cursor-pointer"
+              className="w-[11rem] cursor-pointer"
             />
           </Link>
           <ul className="flex space-x-4">
             <li>
               <Link
                 to="/home"
-                className="text-gray-300 text-3xl transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
+                className="text-principal-black text-3xl transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
               >
-                Inicio
+                <p className='font-bold pr-5'>Home</p>
+                
               </Link>
             </li>
             <li>
               <Link
                 to="/social-shop"
-                className="text-gray-300 text-3xl transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
+                className="text-principal-black text-3xl transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
               >
-                Comunidad
+                <p  className='font-bold'>Comunity</p>
               </Link>
             </li>
           </ul>

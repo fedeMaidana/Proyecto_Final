@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import logo from '../assets/DiseñoBase_de_logoCustomCraft_black.png'
+import logo from '../assets/images/DiseñoBase_de_logoCustomCraft_black.png'
 
 export function Nav() {
   return (

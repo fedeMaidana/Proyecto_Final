@@ -11,7 +11,7 @@ const register = async (name, email, password) => {
   } 
 
   else if (!name || !email || !password) {
-    return { message: 'missing data' };
+    return { message: 'Faltan datos' };
   } 
 
   else {
@@ -24,7 +24,7 @@ const register = async (name, email, password) => {
 
     });
 
-    return { message: 'User created successfully!', user: newUser };
+    return { message: 'Usuario creado correctamente!', user: newUser };
   }
 
 };

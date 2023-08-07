@@ -2,11 +2,6 @@ import { useSelector } from "react-redux"
 import { Card } from "./Card"
 
 export const CardsContainer = () => {
-    const products = useSelector( state => state.allProducts )
-
-    if( !products ) return <div>Cargando productos...</div>
-
-const CardsContainer = () => {
     // const productos = useSelector((state)=> state.allProducts)
     // if(!productos){
     //     return <div>Cargando productos...</div>;
@@ -38,4 +33,4 @@ const CardsContainer = () => {
         </div>
       </div>
     )
-} }
+}

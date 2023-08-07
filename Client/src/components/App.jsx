@@ -24,7 +24,6 @@ export function App() {
         <Route path='/register' element={ <Register/> } />
         <Route path="/community" element={<Community />} />
         <Route path='/detail' element ={<Detail />} />
-
       </Routes>
     </>
   )

@@ -25,8 +25,8 @@ export function Nav() {
             </li>
             <li>
               <Link
-                to="/social-shop"
-                className="text-principal-black text-3xl transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
+                to="/community"
+                className="text-gray-300 text-3xl transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
               >
                 <p  className='font-bold'>Comunity</p>
               </Link>

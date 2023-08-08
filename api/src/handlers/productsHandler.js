@@ -22,26 +22,28 @@ const getProductsHandlerById = async (req, res) =>{
 };
 
 const postProductHandler = async (req, res) => {
-    
+
     try {
         const {name,
             price,
             description,
-            stock,images, category} = req.body;
-        const response = createProduct(name,
+            stock, category,color, size} = req.body;
+            const images = req.files;
+            console.log(images)
+        const response = await createProduct(name,
             price,
             description,
-            stock,images,category);
-        res.status(201).json({response, message: 'Se creo correctamente el producto'})
+            stock,images,category, color, size);
+            console.log(response);
+            if (response instanceof Error) {
+                res.status(400).json({ error: response.message });
+            } else {
+                res.status(201).json({ response, message: 'Se creó correctamente el producto' });
+            }
     } catch (error) {
         res.status(500).json({error: error.message})
     }
 
 }
 
-
-module.exports = {
-    getProductsHandler,
-    getProductsHandlerById,
-    postProductHandler
-}
+module.exports = { getProductsHandler, getProductsHandlerById, postProductHandler }

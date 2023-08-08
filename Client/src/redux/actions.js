@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {
     GET_PRODUCTS,
+    POST_PRODUCTS,
     DELETE_PRODUCTS,
     GET_PRODUCT_DETAIL,
     SEARCH_PRODUCT,
@@ -10,20 +11,29 @@ import {
     SET_DESIGN_TITLE,
     APPLY_FILTERS,
     APPLY_SORTING,
-    ALL_CATEGORIES
+    ALL_CATEGORIES,
+    ADD_IMAGE,
+    CLEAR_IMAGES
 } from "./action-types"
 
 export const getProducts = () => {
     return async ( dispatch ) => {
-        const { data } = await axios.get( 'http://localhost:3001/products' )
+        const { data } = await axios.get( '/products' )
         return dispatch( { type: GET_PRODUCTS, payload: data } )
+    }
+}
+
+export const postProducts = ( dataProduct ) => {
+    return async ( dispatch ) => {
+        const { data } = await axios.post( '/products', dataProduct )
+        return dispatch( { type: POST_PRODUCTS, payload: data } )
     }
 }
 
 export const deleteProducts = ( payload ) => {
     return async ( dispatch ) => {
         try{
-            let info = await axios.delete( `http://localhost:3001/products?name=${ payload }`)
+            let info = await axios.delete( `/products?name=${ payload }`)
             return dispatch( { type: DELETE_PRODUCTS, payload: info.data } )
         } catch ( error ){
             console.log( 'Error deleting a Product', error )
@@ -33,7 +43,7 @@ export const deleteProducts = ( payload ) => {
 
 export const getProductDetail = ( id ) => {
     return async ( dispatch ) => {
-        let info = await axios.get( `http://localhost:3001/products/${ id }` )
+        let info = await axios.get( `/products/${ id }` )
         return dispatch( { type: GET_PRODUCT_DETAIL, payload: info.data } )
     }
 }
@@ -41,7 +51,7 @@ export const getProductDetail = ( id ) => {
 export const searchProduct = ( payload ) => {
     return async ( dispatch ) => {
         try{
-            let info = await axios.get( `http://localhost:3001/products/?name=${ payload }` )
+            let info = await axios.get( `/products/?name=${ payload }` )
             return dispatch( { type: SEARCH_PRODUCT, payload: info.data } )
         }catch ( error ){
             console.log( 'Error searching for a product', error )
@@ -80,7 +90,7 @@ export const setTitle = ( string ) => {
 export const applyFilters = ( filters ) => {
     return async ( dispatch ) => {
         try {
-            const response = await axios.get( 'http://localhost:3001/filter', {
+            const response = await axios.get( '/filter', {
                 params: {
                     category: filters.category,
                     min_price: filters.minPrice,
@@ -104,7 +114,7 @@ export const applyFilters = ( filters ) => {
 export const applySorting = ( sorting ) => {
     return async ( dispatch ) => {
         try {
-            const response = await axios.get( 'http://localhost:3001/filter', {
+            const response = await axios.get( '/filter', {
                 params: {
                     sortOption: sorting,
                 }
@@ -126,7 +136,7 @@ export const applySorting = ( sorting ) => {
 export const getCategories = () => {
     return async ( dispatch ) => {
         try {
-            const response = await axios.get( 'http://localhost:3001/categories' )
+            const response = await axios.get( '/categories' )
 
             dispatch( { type: ALL_CATEGORIES, payload: response.data } )
         } catch( error ){
@@ -134,3 +144,12 @@ export const getCategories = () => {
         }
     }
 }
+
+export const addImage = (imageDataUrl) => ({
+    type: ADD_IMAGE,
+    payload: imageDataUrl,
+});
+
+export const clearImages = () => ({
+    type: CLEAR_IMAGES,
+});

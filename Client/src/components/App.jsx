@@ -7,6 +7,9 @@ import { Customize } from '../views/Customize.jsx'
 import { Register } from '../views/Register.jsx'
 import { Community } from '../views/Community'
 import { Detail } from '../views/Detail'
+import axios from 'axios'
+
+axios.defaults.baseURL = 'http://localhost:3001'
 
 export function App() {
   const location = useLocation()

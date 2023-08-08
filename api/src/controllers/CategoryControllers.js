@@ -35,29 +35,25 @@ const categoryController ={
             .split(" ")
             .map(
                 (word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
-                )
-                .join(" ");
-            
-                
+            )
+            .join(" ");
+
+
                 const category = await Category.findOne({
                     where: { name: { [Op.iLike]: `%${formattedName}%` } },
                 });
                 console.log(category);
 
-          if (!category) {
-            const newCategory = await Category.create({
-              name: formattedName
-            });
-          
-            return newCategory;
+            if (!category) {
+                const newCategory = await Category.create({
+                    name: formattedName
+                });
 
-           
-        } else{
-            return res.status(404).json({ error: `La categoria ya existe`});
-        }
-          
-            
-        } catch (error) {
+                return newCategory;
+            } else{
+                return res.status(404).json({ error: 'La categoria ya existe'});
+            }
+        }catch(error) {
             console.error('Error en la creación de categoría:', error);
             throw new Error('Error al crear la categoria');
         }

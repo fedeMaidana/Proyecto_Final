@@ -1,5 +1,6 @@
 import {
     GET_PRODUCTS,
+    POST_PRODUCTS,
     DELETE_PRODUCTS,
     GET_PRODUCT_DETAIL,
     SEARCH_PRODUCT,
@@ -9,8 +10,9 @@ import {
     SET_DESIGN_TITLE,
     APPLY_SORTING,
     APPLY_FILTERS,
-    ALL_CATEGORIES
-
+    ALL_CATEGORIES,
+    ADD_IMAGE,
+    CLEAR_IMAGES
 } from "./action-types"
 
 
@@ -24,13 +26,16 @@ const initialState = {
     designTitle: 'Diseño sin titulo',
     filters:[],
     sorting: [],
-    categories:[]
-
+    categories:[],
+    capturedImages: []
 }
 
 const reducer = ( state = initialState, { type, payload } ) => {
     switch( type ){
         case GET_PRODUCTS:
+            return { ...state, products: payload, allProducts: payload }
+
+        case POST_PRODUCTS:
             return { ...state, products: payload, allProducts: payload }
 
         case GET_PRODUCT_DETAIL:
@@ -68,6 +73,12 @@ const reducer = ( state = initialState, { type, payload } ) => {
                 return { ...state, products: payload, sorting: payload }
 
         case ALL_CATEGORIES: return{ ...state, categories: payload }
+
+        case ADD_IMAGE:
+            return { ...state, capturedImages: [...state.capturedImages, payload] };
+
+        case CLEAR_IMAGES:
+            return { ...state, capturedImages: [] };
 
         default:
             return { ...state }

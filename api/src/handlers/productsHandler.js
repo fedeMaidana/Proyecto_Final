@@ -1,5 +1,5 @@
 const {getProducts, getProductsById} = require('../controllers/getProducts');
-const createProduct = require('../controllers/postProdcuts');
+const {createProduct} = require('../controllers/postProdcuts');
 
 const getProductsHandler = async (req, res) => {
     const {name} = req.query;
@@ -27,12 +27,19 @@ const postProductHandler = async (req, res) => {
         const {name,
             price,
             description,
-            stock,images, category} = req.body;
-        const response = createProduct(name,
+            stock, category,color, size} = req.body;
+            const images = req.files;
+            console.log(req.files)
+        const response = await createProduct(name,
             price,
             description,
-            stock,images,category);
-        res.status(201).json({response, message: 'Se creo correctamente el producto'})
+            stock,images,category, color, size);
+            console.log(response);
+            if (response instanceof Error) {
+                res.status(400).json({ error: response.message });
+            } else {
+                res.status(201).json({ response, message: 'Se creó correctamente el producto' });
+            }
     } catch (error) {
         res.status(500).json({error: error.message})
     }

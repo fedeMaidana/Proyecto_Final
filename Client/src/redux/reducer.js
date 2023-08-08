@@ -9,7 +9,9 @@ import {
     SET_DESIGN_TITLE,
     APPLY_SORTING,
     APPLY_FILTERS,
-    ALL_CATEGORIES
+    ALL_CATEGORIES,
+    CLEAR_IMAGES,
+    ADD_IMAGE,
 
 } from "./action-types"
 
@@ -24,7 +26,8 @@ const initialState = {
     designTitle: 'Diseño sin titulo',
     filters:[],
     sorting: [],
-    categories:[]
+    categories:[],
+    capturedImages: []
 
 }
 
@@ -69,6 +72,11 @@ const reducer = ( state = initialState, { type, payload } ) => {
 
         case ALL_CATEGORIES: return{ ...state, categories: payload }
 
+        case ADD_IMAGE:
+            return { ...state, capturedImages: [...state.capturedImages, payload] };
+
+        case CLEAR_IMAGES:
+            return { ...state, capturedImages: [] };
         default:
             return { ...state }
     }

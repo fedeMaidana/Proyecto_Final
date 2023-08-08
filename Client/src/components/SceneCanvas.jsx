@@ -12,6 +12,7 @@ export function SceneCanvas( { position = [ 0, 0, 15 ], fov = 25, currentModel }
     return(
         <Canvas
             shadows
+            gl={ { preserveDrawingBuffer: true } }
             eventSource={ document.getElementById( 'root' ) }
             eventPrefix="client"
             camera={ { position, fov } }

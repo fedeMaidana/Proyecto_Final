@@ -19,7 +19,7 @@ const getUsersHandler = async (req, res) => {
 
 const getUserIDHandler = async (req, res) => {
 
-    const { id } = req.params;
+    const { id } = req.user; // lo q guardamos en el midleware
 
     const totalUsers = await getUsers();
     

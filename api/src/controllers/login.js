@@ -21,7 +21,9 @@ const login = async (email, password) => {
             name: name
         }
 
-        const token = jwt.sign(userForToken, process.env.SECRET_KEY, { expiresIn: '1h' })
+        const token = jwt.sign(userForToken, process.env.SECRET_KEY, { 
+            expiresIn: 86400 //24hs
+        })
 
         return { 
             message: "El usuario inició sesión con éxito", valid: true,

@@ -24,12 +24,13 @@ export const Login = () => {
             const User = { email, password }
 
             await axios.post( 'http://localhost:3001/login', User ).then( ( { data } ) => {
-                console.log(data);
                 setMessage( data.message )
                 // setInputs( { email: '', password: '' } )
 
                 setTimeout(() => {
                     setMessage( '' )
+                    console.log(data);
+                    localStorage.setItem("token", data?.user.token)
                     if (data.valid) {
                         setAccess(true); 
                     }

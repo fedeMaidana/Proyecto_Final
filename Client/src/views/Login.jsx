@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 export const Login = () => {
@@ -24,9 +24,9 @@ export const Login = () => {
             const User = { email, password }
 
             await axios.post( 'http://localhost:3001/login', User ).then( ( { data } ) => {
-                
+                console.log(data);
                 setMessage( data.message )
-                setInputs( { email: '', password: '' } )
+                // setInputs( { email: '', password: '' } )
 
                 setTimeout(() => {
                     setMessage( '' )

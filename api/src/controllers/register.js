@@ -24,7 +24,14 @@ const register = async (name, email, password) => {
 
     });
 
-    return { message: 'Usuario creado correctamente!', user: newUser };
+    const responseUser = {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      estado: newUser.estado,
+    };
+    
+    return { message: 'Usuario creado correctamente!', user: responseUser };
   }
 
 };

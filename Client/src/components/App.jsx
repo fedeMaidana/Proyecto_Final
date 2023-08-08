@@ -10,7 +10,7 @@ import { Detail } from '../views/Detail'
 
 export function App() {
   const location = useLocation()
-  const shouldShowNavBar = [ '/home', '/Community' ].some( path => location.pathname.startsWith( path ) )
+  const shouldShowNavBar = [ '/home', '/Community', '/login', '/register' ].some( path => location.pathname.startsWith( path ) )
 
   return (
     <>

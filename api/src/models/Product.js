@@ -25,6 +25,12 @@ module.exports = (sequilize) =>{
             allowNull: false,
           },
           images: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+          },
+          color: {
+            type: DataTypes.STRING,
+          },
+          size: {
             type: DataTypes.STRING,
           },
           

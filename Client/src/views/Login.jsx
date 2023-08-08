@@ -1,5 +1,4 @@
-
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 import axios from 'axios'
 
@@ -9,6 +8,8 @@ export const Login = () => {
     const [ inputs, setInputs ] = useState( { email: '', password: '' } )
     const [ message, setMessage ] = useState(  )
     const [ loading, setLoading ] = useState( false )
+    const [access, setAccess] = useState(false);
+    
 
     const handlerUser = ( event ) => {
         setInputs( { ...inputs, [ event.target.name ]: event.target.value } )
@@ -23,14 +24,18 @@ export const Login = () => {
             const User = { email, password }
 
             await axios.post( 'http://localhost:3001/login', User ).then( ( { data } ) => {
+                
                 setMessage( data.message )
                 setInputs( { email: '', password: '' } )
 
                 setTimeout(() => {
                     setMessage( '' )
-                    navigate( `/home` )
+                    if (data.valid) {
+                        setAccess(true); 
+                    }
                     setLoading( false )
                 }, 1500)
+                
             }).catch( error => {
                 console.error( error )
                 setMessage( 'Hubo un error' )
@@ -41,6 +46,15 @@ export const Login = () => {
             } )
         }
     }
+
+    useEffect(() => {
+        if (access) {
+          navigate('/home'); // Redirecciona al usuario a '/home' cuando access es true
+        }
+    }, [access, navigate]);
+
+    
+    
 
     return(
         <>

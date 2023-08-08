@@ -14,6 +14,7 @@ export function ClothingEditingMenu(){
             {currentPage === 2 && (
                 <SelectColor currentPage={ currentPage } setCurrentPage={ setCurrentPage } />
             )}
+            
         </>
     )
 }

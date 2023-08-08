@@ -3,7 +3,7 @@ import { SceneCanvas } from "../components/SceneCanvas"
 import { ClothingEditingMenu } from "../components/ClothingEditingMenu"
 import { HeaderCanvas } from "../components/HeaderCanvas"
 import { ModalCustomize } from "../components/ModalCustomize"
-import { ClothingDetails } from "../components/ClothingDetails"
+import { ClothingDetails } from "../components/clothingDetails"
 
 export function Customize() {
     const { model } = useParams()
@@ -14,7 +14,7 @@ export function Customize() {
                 <div className="h-[15%] w-[100%] p-5 bg-[#f6f6f6]">
                     <HeaderCanvas/>
                 </div>
-                <div className="w-[100%] h-[70%]">
+                <div className="w-[100%] h-[70%] capture-container" >
                     <SceneCanvas currentModel={ model } />
                 </div>
                 <div className="h-[15%] w-[100%]">

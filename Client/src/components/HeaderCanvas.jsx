@@ -1,15 +1,92 @@
 import { useState } from "react"
 import { NavLink } from "react-router-dom"
-import { useSelector } from "react-redux"
-import { useDispatch } from "react-redux"
-import { setModal } from "../redux/actions"
+import { useSelector, useDispatch } from "react-redux"
+import html2canvas from 'html2canvas'
+import { setModal, addImage, postProducts } from "../redux/actions"
 import { handleTitleChange } from "../handlers/handlers"
+import axios from "axios"
 
-export function HeaderCanvas(){
+export function HeaderCanvas( { price } ){
     const dispatch = useDispatch()
 
     const title = useSelector( state => state.designTitle )
+    const clothingColor = useSelector( state => state.clothingColor )
+    const clothingSize = useSelector( state => state.clothingSize )
+    const designTitle = useSelector( state => state.designTitle )
+    const capturedImages = useSelector( state => state.capturedImages )
     const [ isEditing, setIsEditing ] = useState( false )
+
+    const handleCaptureScreenshot = async () => {
+        const canvas = document.querySelector( '.capture-container' )
+
+        if( canvas ){
+            const screenshot = await html2canvas( canvas )
+
+            screenshot.toBlob( async blob => {
+                let imageName = 'screenshot.png'
+                let number = 1
+
+                while ( capturedImages.some( image => image.name === imageName ) ){
+                    imageName = `screenshot_${ number }.png`
+                    number++
+                }
+
+                const imageFile = new File( [ blob ], imageName, { type: 'image/png' } )
+                dispatch( addImage( imageFile ) )
+            }, 'image/png')
+        }
+    }
+
+    const formData = new FormData();
+formData.append('name', designTitle);
+formData.append('price', 10);
+formData.append('description', "hhhjjjk");
+formData.append('stock', 10);
+formData.append('color', clothingColor);
+formData.append('size', clothingSize);
+formData.append('category', 1);
+
+capturedImages.forEach((image, index) => {
+  formData.append(`image${index}`, image); // Agrega cada imagen al FormData
+});
+
+    const handleModal = async () => {
+    //     const dataDesign = {
+    //         name: designTitle,
+    //         price: 10,
+    //         description: '',
+    //         stock: 0,
+    //         images: capturedImages,
+    //         color: clothingColor,
+    //         size: clothingSize,
+    //         category: 1
+    //     }
+
+    const formData = new FormData();
+    formData.append('name', designTitle);
+    formData.append('price', 10);
+    formData.append('description', "hhhjjjk");
+    formData.append('stock', 10);
+    formData.append('color', clothingColor);
+    formData.append('size', clothingSize);
+    formData.append('category', 1);
+    
+    capturedImages.forEach((image, index) => {
+        formData.append('images', image, `image_${index}.png`); // Agrega las imágenes bajo el nombre 'image'
+      });
+      
+    
+
+    await axios.post('/products', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Importante para el envío de archivos
+        },
+      });
+
+        console.log(formData)
+
+        dispatch( setModal( true ) )
+    }
 
     return(
         <>
@@ -47,6 +124,23 @@ export function HeaderCanvas(){
                     )}
                 </div>
                 <div className="flex flex-row gap-[10px]">
+                <button
+                        className="
+                            w-[100px]
+                            h-[40px]
+                            bg-[#ffffff]
+                            p-5 flex
+                            items-center
+                            justify-center
+                            rounded-full
+                            text-[1.5rem]
+                            font-semibold
+                            border-[1px]
+                        "
+                        onClick={ handleCaptureScreenshot }
+                    >
+                        Foto
+                    </button>
                     <button
                         className="
                             w-[100px]
@@ -60,7 +154,7 @@ export function HeaderCanvas(){
                             font-semibold
                             border-[1px]
                         "
-                        onClick={ () => dispatch( setModal( true ) ) }
+                        onClick={ handleModal }
                     >
                         Finalizar
                     </button>

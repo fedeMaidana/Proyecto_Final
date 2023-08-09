@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom"
 
-export const Card = ( { image, name, id } ) => {
-    return(
+export const Card = ({ image, name, id }) => {
+    return (
         <div>
             <div>
-                <img src={ image } alt={ name } />
+                <img src={image} alt={name} />
             </div>
             <div>
-                <p>{ name }</p>
+                <p>{name}</p>
             </div>
             <button>
-                <Link to={ `detail/${ id }` }>Detalle</Link>
+                <Link to={`detail/${id}`}>Detalle</Link>
             </button>
         </div>
     )

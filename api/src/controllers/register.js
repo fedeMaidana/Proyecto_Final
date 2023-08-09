@@ -8,11 +8,11 @@ const register = async (name, email, password) => {
 
   if (user) {
     return { message: 'Ya hay un usuario con este correo' };
-  } 
+  }
 
   else if (!name || !email || !password) {
     return { message: 'Faltan datos' };
-  } 
+  }
 
   else {
     const passwordHash = await bcrypt.hash(password, 10);

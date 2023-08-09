@@ -1,6 +1,6 @@
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { getProducts } from "../redux/actions"
+//import { useEffect } from "react"
+//import { useDispatch, useSelector } from "react-redux"
+//import { getProducts } from "../redux/actions"
 import { CardsContainer } from "../components/CardsContainer"
 import { Filter } from "../components/Filters"
 

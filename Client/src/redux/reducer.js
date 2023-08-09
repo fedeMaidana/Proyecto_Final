@@ -8,11 +8,13 @@ import {
     SET_SIZE,
     SET_MODAL,
     SET_DESIGN_TITLE,
+    SET_DESIGN_DESCRIPTION,
     APPLY_SORTING,
     APPLY_FILTERS,
     ALL_CATEGORIES,
+    CLEAR_IMAGES,
     ADD_IMAGE,
-    CLEAR_IMAGES
+
 } from "./action-types"
 
 
@@ -24,6 +26,7 @@ const initialState = {
     clothingSize: '',
     openModal: false,
     designTitle: 'Diseño sin titulo',
+    designDescription: '',
     filters:[],
     sorting: [],
     categories:[],
@@ -66,6 +69,9 @@ const reducer = ( state = initialState, { type, payload } ) => {
         case SET_DESIGN_TITLE:
             return{ ...state, designTitle: payload }
 
+        case SET_DESIGN_DESCRIPTION:
+            return{ ...state, designDescription: payload }
+
         case APPLY_FILTERS:
                 return { ...state, allProducts: payload, filters: payload }
 
@@ -79,7 +85,6 @@ const reducer = ( state = initialState, { type, payload } ) => {
 
         case CLEAR_IMAGES:
             return { ...state, capturedImages: [] };
-
         default:
             return { ...state }
     }

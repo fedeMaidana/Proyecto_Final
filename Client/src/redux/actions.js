@@ -9,6 +9,7 @@ import {
     SET_SIZE,
     SET_MODAL,
     SET_DESIGN_TITLE,
+    SET_DESIGN_DESCRIPTION,
     APPLY_FILTERS,
     APPLY_SORTING,
     ALL_CATEGORIES,
@@ -83,6 +84,13 @@ export const setModal = ( boolean ) => {
 export const setTitle = ( string ) => {
     return{
         type: SET_DESIGN_TITLE,
+        payload: string
+    }
+}
+
+export const setDescription = ( string ) => {
+    return{
+        type: SET_DESIGN_DESCRIPTION,
         payload: string
     }
 }

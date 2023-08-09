@@ -15,7 +15,7 @@ export function Customize() {
         <>
             <div className="w-[100%] h-[100%] flex flex-col justify-between">
                 <div className="h-[15%] w-[100%] p-5 bg-[#f6f6f6]">
-                    <HeaderCanvas price={ price } />
+                    <HeaderCanvas/>
                 </div>
                 <div className="w-[100%] h-[70%] capture-container">
                     <SceneCanvas currentModel={ model } />
@@ -27,7 +27,7 @@ export function Customize() {
 
             <ClothingDetails price={ price } />
 
-            <ModalCustomize/>
+            <ModalCustomize price={ price } />
         </>
     )
 }

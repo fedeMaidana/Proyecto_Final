@@ -34,7 +34,7 @@ export function SelectSize( { currentPage, setCurrentPage } ){
                                 font-semibold
                                 rounded-full
                                 border-[1px]
-                                border-[#e5e5e5]
+                                border-[#000]
                                 flex items-center
                                 justify-center
                                 border-white
@@ -45,7 +45,9 @@ export function SelectSize( { currentPage, setCurrentPage } ){
                                 cursor-pointer
                             "
                             onClick={ () => handleSize( size, dispatch ) }
-                        >{ size }</div>
+                        >
+                            { size }
+                        </div>
                     ))}
                 </div>
             </section>

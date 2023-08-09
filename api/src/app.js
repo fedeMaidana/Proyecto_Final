@@ -1,36 +1,32 @@
-const express = require('express');
+const express = require( 'express' )
+const cookieParser = require( 'cookie-parser' )
+const morgan = require( 'morgan' )
+const mainRouter = require( './routes/index' )
 
-const cookieParser = require('cookie-parser');
+const server = express()
 
-const morgan = require('morgan');
-const mainRouter = require('./routes/index')
+server.use( morgan( 'dev' ) )
 
-const server = express();
+server.use( cookieParser() )
+server.use( express.json( { limit: '300mb' } ) )
+server.use( ( _req, res, next ) => {
+    res.header( 'Access-Control-Allow-Origin', '*' )
+    res.header( 'Access-Control-Allow-Credentials', 'true' )
+    res.header( 'Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept' )
+    res.header( 'Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE' )
 
-server.use(morgan("dev"));
+    next()
+  })
 
-server.use(cookieParser());
-server.use(express.json({ limit: '50mb' }));
-server.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'); 
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-    next();
-  });
+server.use( '/', mainRouter )
 
-server.use("/",mainRouter)
+server.use( ( err, _req, res, _next ) => {
+    const status = err.status || 500
+    const message = err.message || err
 
-// Error catching endware.
-server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-    const status = err.status || 500;
-    const message = err.message || err;
-    console.error(err);
-    res.status(status).send(message);
-  });
+    console.error( err )
 
+    res.status( status ).send( message )
+  })
 
-
-
-
-module.exports = server;
+module.exports = server

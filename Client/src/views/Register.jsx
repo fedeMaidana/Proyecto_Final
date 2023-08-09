@@ -44,29 +44,31 @@ export const Register = () => {
     }
 
     return(
-        <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-            <div className="bg-white p-8 rounded shadow-md w-96">
-                <h1 className="text-5xl font-bold mb-6">Registrate en Custom Craft</h1>
+        <div className="bg-principal-black min-h-screen flex items-center justify-center">
+            <div className="bg-principal-white p-8 rounded shadow-md w-[30rem] h-auto text-2xl">
+                <h1 className="text-5xl font-bold mb-8">Register in Custom Craft</h1>
 
                 <form onSubmit={ event => onSubmit( event ) } >
                     <div className="mb-6">
                         <div>
                             <label
-                                className="block font-semibold text-gray-700"
-                                htmlFor="name">Nombre
+                                className="block font-semibold text-gray-700 mb-3"
+                                htmlFor="name">Name
                             </label>
 
                             <input
                                 className="
+                                    bg-principal-white
                                     mt-1
                                     p-3
                                     border
-                                    border-gray-300
+                                    border-principal-black
                                     w-full
                                     rounded
                                     focus:outline-none
                                     focus:ring
                                     focus:border-blue-300
+                                    mb-1
                                 "
                                 onChange={ event => onChange( event ) }
                                 type="text"
@@ -80,21 +82,23 @@ export const Register = () => {
                     <div>
                         <div>
                             <label
-                                className="block font-semibold text-gray-700"
-                                htmlFor="email">Correo
+                                className="block font-semibold text-gray-700 mb-3"
+                                htmlFor="email">Email
                             </label>
 
                             <input
                                 className="
+                                    bg-principal-white
                                     mt-1
                                     p-3
                                     border
-                                    border-gray-300
+                                    border-principal-black
                                     w-full
                                     rounded
                                     focus:outline-none
                                     focus:ring
                                     focus:border-blue-300
+                                    mb-6
                                 "
                                 onChange={ event => onChange( event ) }
                                 type="email"
@@ -108,21 +112,23 @@ export const Register = () => {
                     <div>
                         <div>
                             <label
-                                className="block font-semibold text-gray-700"
-                                htmlFor="password">Contraseña
+                                className="block font-semibold text-gray-700 mb-3"
+                                htmlFor="password">Password
                             </label>
 
                             <input
                                 className="
+                                    bg-principal-white
                                     mt-1
                                     p-3
                                     border
-                                    border-gray-300
+                                    border-principal-black
                                     w-full
                                     rounded
                                     focus:outline-none
                                     focus:ring
                                     focus:border-blue-300
+                                    mb-8
                                 "
                                 onChange={ event => onChange( event ) }
                                 type="password"
@@ -135,7 +141,7 @@ export const Register = () => {
                     <button
                         className="
                             w-full
-                            bg-blue-500
+                            bg-secondary-blue2
                             text-white
                             font-semibold
                             py-3
@@ -143,6 +149,7 @@ export const Register = () => {
                             hover:bg-blue-600
                             transition-colors
                             duration-300
+                            mb-5
                         "
                         type="submit"
                     >
@@ -150,8 +157,8 @@ export const Register = () => {
                     </button>
 
                     <p className="mt-4 text-center">
-                        Tenes una cuenta ?
-                        <b className="cursor-pointer text-blue-500" onClick={ () => navigate( '/login' ) }>Inicia Sesión</b>
+                        Do you have an account?
+                        <br /> <b className="cursor-pointer text-blue-500" onClick={ () => navigate( '/login' ) }>Log in</b>
                     </p>
                 </form>
             </div>

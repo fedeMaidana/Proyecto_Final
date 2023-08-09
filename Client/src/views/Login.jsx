@@ -1,5 +1,4 @@
-
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 import axios from 'axios'
 
@@ -9,6 +8,8 @@ export const Login = () => {
     const [ inputs, setInputs ] = useState( { email: '', password: '' } )
     const [ message, setMessage ] = useState(  )
     const [ loading, setLoading ] = useState( false )
+    const [access, setAccess] = useState(false);
+    
 
     const handlerUser = ( event ) => {
         setInputs( { ...inputs, [ event.target.name ]: event.target.value } )
@@ -23,14 +24,18 @@ export const Login = () => {
             const User = { email, password }
 
             await axios.post( 'http://localhost:3001/login', User ).then( ( { data } ) => {
+                
                 setMessage( data.message )
                 setInputs( { email: '', password: '' } )
 
                 setTimeout(() => {
                     setMessage( '' )
-                    navigate( `/home` )
+                    if (data.valid) {
+                        setAccess(true); 
+                    }
                     setLoading( false )
                 }, 1500)
+                
             }).catch( error => {
                 console.error( error )
                 setMessage( 'Hubo un error' )
@@ -42,27 +47,38 @@ export const Login = () => {
         }
     }
 
+    useEffect(() => {
+        if (access) {
+          navigate('/home'); // Redirecciona al usuario a '/home' cuando access es true
+        }
+    }, [access, navigate]);
+
+    
+    
+
     return(
         <>
-            <div className="bg-gray-100 min-h-screen flex items-center justify-center" >
-                <div className="bg-white p-8 rounded shadow-md w-96" >
-                    <h1 className="text-5xl font-bold mb-6" >Inicia Sesión</h1>
+            <div className="bg-principal-black min-h-screen flex items-center justify-center" >
+                <div className="bg-principal-white p-8 rounded shadow-md w-[30rem] h-auto text-2xl" >
+                    <h1 className="text-5xl font-bold mb-8" >Log in</h1>
 
                     <form method='post' onSubmit={ handleSubmit } >
                         <div>
                             <div>
-                                <label className="block font-semibold text-gray-700" htmlFor="email">Correo</label>
+                                <label className="block font-semibold text-gray-700 mb-3" htmlFor="email">Email</label>
                                 <input
                                     className="
+                                    bg-principal-white
                                         mt-1
                                         p-3
                                         border
-                                        border-gray-300
+                                        border-principal-black
                                         w-full
                                         rounded
                                         focus:outline-none
                                         focus:ring
                                         focus:border-blue-300
+                                        mb-6
                                     "
                                     type="email"
                                     name='email'
@@ -75,18 +91,20 @@ export const Login = () => {
                         </div>
                         <div>
                             <div>
-                                <label className="block font-semibold text-gray-700" htmlFor="password">Contraseña</label>
+                                <label className="block font-semibold text-gray-700 mb-3" htmlFor="password">Password</label>
                                 <input
                                     className="
+                                    bg-principal-white
                                         mt-1
                                         p-3
                                         border
-                                        border-gray-300
+                                        border-principal-black
                                         w-full
                                         rounded
                                         focus:outline-none
                                         focus:ring
                                         focus:border-blue-300
+                                        mb-8
                                     "
                                     type="password"
                                     name='password'
@@ -102,7 +120,7 @@ export const Login = () => {
                             type="submit"
                             className="
                                 w-full
-                                bg-blue-500
+                                bg-secondary-blue2
                                 text-white
                                 font-semibold
                                 py-3
@@ -110,13 +128,14 @@ export const Login = () => {
                                 hover:bg-blue-600
                                 transition-colors
                                 duration-300
+                                mb-3
                             "
                         >
-                            { loading ? 'Loading...' : 'Ingresar' }
+                            { loading ? 'Loading...' : 'Login' }
                         </button>
 
-                        <p className="mt-4 text-center">No tenes una cuenta ?
-                            <b className="cursor-pointer text-blue-500" onClick={ () => navigate( '/register' ) }>Registrate</b>
+                        <p className="mt-4 text-center">Don't have an account?
+                           <br /> <b className="cursor-pointer text-blue-500" onClick={ () => navigate( '/register' ) }>Register</b>
                         </p>
                     </form>
                 </div>

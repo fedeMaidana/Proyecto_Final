@@ -182,7 +182,7 @@ export const Register = () => {
                         py-3
                         transition
                         duration-300
-                        translate-y-[-80px]
+                        translate-y-[-7px]
                     "
                 >
                     { message }

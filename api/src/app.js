@@ -1,5 +1,5 @@
 const express = require('express');
-
+const path = require('path');
 const cookieParser = require('cookie-parser');
 
 const morgan = require('morgan');
@@ -20,6 +20,9 @@ server.use((req, res, next) => {
   });
 
 server.use("/",mainRouter)
+server.use('/upload', express.static(path.join(__dirname, 'upload')));
+
+
 
 // Error catching endware.
 server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars

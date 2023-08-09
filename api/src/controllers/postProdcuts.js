@@ -6,14 +6,16 @@ const uploadDirectory = path.join(__dirname, '../upload'); // Ruta a la carpeta 
 
 // Configuración de multer
 const storage = multer.diskStorage({
-    destination: uploadDirectory,
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      const fileExtension = path.extname(file.originalname); // Obtener la extensión del archivo original
-      const newFilename = uniqueSuffix + fileExtension;
-      cb(null, newFilename);
-    },
-  });
+  destination: uploadDirectory,
+  filename: (req, file, cb) => {
+    const originalFileName = path.parse(file.originalname).name; // Obtener el nombre original del archivo
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const fileExtension = path.extname(file.originalname); // Obtener la extensión del archivo original
+    const newFilename = `${originalFileName}_${uniqueSuffix}${fileExtension}`; // Combinar todo
+    cb(null, newFilename);
+  },
+});
+
   
   const upload = multer({
     storage: storage,
@@ -61,11 +63,13 @@ const createProduct = async (
       .map((word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase())
       .join(' ');
 
-    const imageUrls = await Promise.all(images.map(async (image) => {
-      const imageUrl = `/upload/${image.filename}`; // URL relativa a la imagen
-
-      return imageUrl;
-    }));
+      const baseUrl = 'http://localhost:3001'; // Cambia esto a la URL de tu servidor
+      const imageUrls = await Promise.all(images.map(async (image) => {
+        const imageUrl = `/upload/${image.filename}`; // URL relativa a la imagen
+        const fullImageUrl = baseUrl + imageUrl; // URL completa de la imagen
+      
+        return fullImageUrl;
+      }));
 
     const product = await Product.create({
       name: formattedName,

@@ -5,7 +5,12 @@ const getUsers = async () => {
         where: { estado: 1 }
     })
 
-    return [ ...dataBaseUsers ]
+    const usersWithoutPassword = dataBaseUsers.map( user => {
+        const { password, ...userWithoutPassword } = user.toJSON()
+        return userWithoutPassword
+    })
+
+    return [ ...usersWithoutPassword ]
 }
 
 module.exports = { getUsers }

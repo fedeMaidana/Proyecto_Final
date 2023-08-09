@@ -12,7 +12,14 @@ const register = async ( name, email, password ) => {
 
     const newUser = await User.create( { name, email, password: passwordHash } )
 
-    return { message: 'Usuario creado correctamente!', user: newUser }
+    const responseUser = {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      estado: newUser.estado,
+    }
+
+    return { message: 'Usuario creado correctamente!', user: responseUser }
   }
 }
 

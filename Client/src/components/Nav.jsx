@@ -31,14 +31,6 @@ export function Nav() {
                 <p  className='font-bold'>Comunity</p>
               </Link>
             </li>
-            <li>
-              <Link
-                to="/login"
-                className="text-principal-black text-3xl transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
-              >
-                <p  className='font-bold'>Login</p>
-              </Link>
-            </li>
           </ul>
         </div>
       </div>

@@ -1,6 +1,6 @@
 const { User } = require('../db');
 const bcrypt = require('bcrypt');
-
+const jwt = require('jsonwebtoken');
 
 const login = async (email, password) => {
 
@@ -16,11 +16,21 @@ const login = async (email, password) => {
     if(isCorrect) {
         const { id, name } = user;
         
+        const userForToken = {
+            id: id,
+            name: name
+        }
+
+        const token = jwt.sign(userForToken, process.env.SECRET_KEY, { 
+            expiresIn: 86400 //24hs
+        })
+
         return { 
             message: "El usuario inició sesión con éxito", valid: true,
             user: {
                 id,
-                name
+                name, 
+                token
             },
         };
     }

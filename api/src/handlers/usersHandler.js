@@ -8,6 +8,7 @@ const { deleteUser } = require('../controllers/deleteUser');
 
 
 
+
 const getUsersHandler = async (req, res) => {
 
     const users = await getUsers();
@@ -18,22 +19,25 @@ const getUsersHandler = async (req, res) => {
 
 
 const getUserIDHandler = async (req, res) => {
-
-    const { id } = req.params;
+    const {id} = req.user; 
 
     const totalUsers = await getUsers();
-    
-    if(id) {
-        const recipesID = totalUsers.filter(el => el.id == id)
-        recipesID.length ?
-        res.status(200).json(recipesID):
-        res.status(400).json("No hay ningún usuario con ese ID");
+
+    const userId = totalUsers.find(user => user.id === id);
+
+    if (userId) {
+
+        res.json(userId);
+    } else {
+        res.json({ mensaje: 'No se encontró ningún usuario con esa ID' });
     }
 };
-
-
-
-
+  
+  
+  
+  
+  
+  
 const registerHandler = async (req, res) => {
 
     const { name, email, password } = req.body;

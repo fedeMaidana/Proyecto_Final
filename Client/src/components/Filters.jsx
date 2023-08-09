@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { applyFilters, getCategories, applySorting } from '../redux/actions';
 
-function Filter() {
+export function Filter() {
     const dispatch = useDispatch();
     const filters = useSelector(state => state.filters);
     const sorting = useSelector(state => state.sorting);
@@ -114,5 +114,3 @@ function Filter() {
     );
     
 }
-
-export default Filter;

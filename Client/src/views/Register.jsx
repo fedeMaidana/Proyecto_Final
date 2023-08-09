@@ -40,7 +40,6 @@ export const Register = () => {
                     setMessage( '' )
                 }, 1500)
             })
-
         }
     }
 

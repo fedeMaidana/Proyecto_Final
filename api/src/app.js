@@ -1,5 +1,6 @@
-const express = require( 'express' )
-const cookieParser = require( 'cookie-parser' )
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
 const morgan = require( 'morgan' )
 const mainRouter = require( './routes/index' )
 
@@ -18,7 +19,9 @@ server.use( ( _req, res, next ) => {
     next()
   })
 
-server.use( '/', mainRouter )
+server.use("/",mainRouter)
+server.use('/upload', express.static(path.join(__dirname, 'upload')));
+
 
 server.use( ( err, _req, res, _next ) => {
     const status = err.status || 500

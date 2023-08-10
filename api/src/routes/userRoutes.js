@@ -1,18 +1,13 @@
-const {Router} = require("express");
-const { getUsersHandler, registerHandler, getUserIDHandler, loginHandler, deleteHandler } = require('../handlers/usersHandler');
+const { Router } = require( 'express' )
+const { getUsersHandler, registerHandler, getUserIDHandler, loginHandler, deleteHandler } = require( '../handlers/usersHandler' )
+const authMiddleware = require( '../middleware/authMiddleware' )
 
+const userRoutes = Router()
 
-const userRoutes = Router();
+userRoutes.get( '/users', getUsersHandler )
+userRoutes.get( '/user', authMiddleware, getUserIDHandler )
+userRoutes.post( '/register', registerHandler )
+userRoutes.post( '/login', loginHandler )
+userRoutes.put( '/deleteuser/:id', deleteHandler )
 
-
-userRoutes.get("/users", getUsersHandler);
-userRoutes.get("/users/:id", getUserIDHandler);
-userRoutes.post("/register", registerHandler);
-userRoutes.post("/login", loginHandler);
-userRoutes.put("/deleteuser/:id", deleteHandler);
-
-
-
-module.exports = {
-    userRoutes
-}
+module.exports = { userRoutes }

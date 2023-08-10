@@ -83,7 +83,7 @@ const createProduct = async (
     });
 
     return product;
-    
+
   } catch (error) {
     console.error('Error al agregar el producto al carrito:', error);
     throw new Error('Error al crear el producto: ' + error.message);

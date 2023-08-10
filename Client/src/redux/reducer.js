@@ -1,5 +1,6 @@
 import {
     GET_PRODUCTS,
+    POST_PRODUCTS,
     DELETE_PRODUCTS,
     GET_PRODUCT_DETAIL,
     SEARCH_PRODUCT,
@@ -7,6 +8,7 @@ import {
     SET_SIZE,
     SET_MODAL,
     SET_DESIGN_TITLE,
+    SET_DESIGN_DESCRIPTION,
     APPLY_SORTING,
     APPLY_FILTERS,
     ALL_CATEGORIES,
@@ -24,16 +26,19 @@ const initialState = {
     clothingSize: '',
     openModal: false,
     designTitle: 'Diseño sin titulo',
+    designDescription: '',
     filters:[],
     sorting: [],
     categories:[],
     capturedImages: []
-
 }
 
 const reducer = ( state = initialState, { type, payload } ) => {
     switch( type ){
         case GET_PRODUCTS:
+            return { ...state, products: payload, allProducts: payload }
+
+        case POST_PRODUCTS:
             return { ...state, products: payload, allProducts: payload }
 
         case GET_PRODUCT_DETAIL:
@@ -63,6 +68,9 @@ const reducer = ( state = initialState, { type, payload } ) => {
 
         case SET_DESIGN_TITLE:
             return{ ...state, designTitle: payload }
+
+        case SET_DESIGN_DESCRIPTION:
+            return{ ...state, designDescription: payload }
 
         case APPLY_FILTERS:
                 return { ...state, allProducts: payload, filters: payload }

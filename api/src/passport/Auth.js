@@ -14,12 +14,13 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+        //se busca el mail si esta registrado
         const existingUser = await User.findOne({
             where: { email: profile.emails[0].value },
           });
   
           if (existingUser) {
-            // Si el correo ya está registrado inicia sesión con el usuario existente
+            // Si el mail ya está registrado inicia sesión con el usuario existente
             return done(null, existingUser);
           }
           //sino crea uno nuevo en la base

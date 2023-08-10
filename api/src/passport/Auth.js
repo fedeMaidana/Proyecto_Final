@@ -4,11 +4,12 @@ const { User } = require('../db');
 const bcrypt = require('bcrypt');
 const URL = 'http://localhost:3001'
 
+
 passport.use(
   new GoogleStrategy(
     {
-      clientID: 'id de cliente de google',
-      clientSecret: 'un cliente de google secreto',
+      clientID: process.env.GOOGLE_ID,
+      clientSecret: process.env.SECRET_CLIENT,
       //esta el la url que se pasa al crear la app en google para que redirija
       callbackURL: `${URL}/login/auth/google/callback`, 
     },

@@ -63,9 +63,9 @@ const createProduct = async (
       .map((word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase())
       .join(' ');
 
-      const baseUrl = 'http://localhost:3001'; // Cambia esto a la URL de tu servidor
+      const baseUrl = 'http://localhost:3001'; // Cambiar esto al hacer deploy
       const imageUrls = await Promise.all(images.map(async (image) => {
-        const imageUrl = `/upload/${image.filename}`; // URL relativa a la imagen
+        const imageUrl = `/upload/${image.filename}`; 
         const fullImageUrl = baseUrl + imageUrl; // URL completa de la imagen
       
         return fullImageUrl;

@@ -1,15 +1,12 @@
-const express = require('express');
-const cartHandler = require('../handlers/ShoppingCartHandlers');
+const express = require( 'express' )
+const cartHandler = require( '../handlers/ShoppingCartHandlers' )
 
-const cartRouter = express.Router();
+const cartRouter = express.Router()
 
-// Ruta GET para obtener el contenido del carrito de compras
-cartRouter.get('/', cartHandler.getShoppingCart);
+cartRouter.get( '/', cartHandler.getShoppingCart ) // Ruta GET para obtener el contenido del carrito de compras
 
-// Ruta POST para agregar un producto al carrito de compras
-cartRouter.post('/:id', cartHandler.addToCart);
+cartRouter.post( '/:id', cartHandler.addToCart ) // Ruta POST para agregar un producto al carrito de compras
 
-// Ruta DELETE para eliminar un producto del carrito de compras
-cartRouter.delete('/:productId', cartHandler.removeFromCart);
+cartRouter.delete( '/:productId', cartHandler.removeFromCart ) // Ruta DELETE para eliminar un producto del carrito de compras
 
-module.exports = cartRouter;
+module.exports = cartRouter

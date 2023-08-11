@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 export const Login = () => {
@@ -24,12 +24,13 @@ export const Login = () => {
             const User = { email, password }
 
             await axios.post( 'http://localhost:3001/login', User ).then( ( { data } ) => {
-                
                 setMessage( data.message )
-                setInputs( { email: '', password: '' } )
+                // setInputs( { email: '', password: '' } )
 
                 setTimeout(() => {
                     setMessage( '' )
+                    console.log(data);
+                    localStorage.setItem("token", data?.user.token)
                     if (data.valid) {
                         setAccess(true); 
                     }
@@ -158,7 +159,7 @@ export const Login = () => {
                             py-3
                             transition
                             duration-300
-                            translate-y-[-80px]
+                            translate-y-[-30px]
                         "
                     >
                         { message }

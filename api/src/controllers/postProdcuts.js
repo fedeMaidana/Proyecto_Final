@@ -30,48 +30,31 @@ const storage = multer.diskStorage({
       }
     },
   });
-  
 
-const createProduct = async (
-  name,
-  price,
-  description,
-  stock,
-  images,
-  category,
-  color,
-  size
-) => {
-  try {
-    if (
-      !name ||
-      !price ||
-      !description ||
-      !stock ||
-      !images ||
-      !category ||
-      !color ||
-      !size
-    ) {
-     
-      throw new Error ('Faltan datos');
+const createProduct = async ( idUser, name, price, description, stock, images, category, color, size, stateShare ) => {
+  try{
+    if( !idUser || !name || !price || !description || !stock || !images || !category || !color || !size || !stateShare ){
+      throw new Error ( 'Faltan datos' )
     }
 
-    const formattedName = name
-      .toLowerCase()
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase())
-      .join(' ');
+    const formattedName =
+      name
+        .toLowerCase()
+        .split( ' ' )
+        .map( word => word.charAt( 0 ).toUpperCase() + word.substring( 1 ).toLowerCase() )
+        .join( ' ' )
 
       const baseUrl = 'http://localhost:3001'; // Cambiar esto al hacer deploy
+      
       const imageUrls = await Promise.all(images.map(async (image) => {
         const imageUrl = `/upload/${image.filename}`; 
         const fullImageUrl = baseUrl + imageUrl; // URL completa de la imagen
-      
+
         return fullImageUrl;
       }));
 
     const product = await Product.create({
+      userId: idUser,
       name: formattedName,
       price,
       description,
@@ -80,7 +63,8 @@ const createProduct = async (
       color,
       size,
       categoryId: category,
-    });
+      stateShare
+    })
 
     return product;
 
@@ -92,5 +76,5 @@ const createProduct = async (
 
 module.exports = {
   createProduct,
-  upload, 
-};
+  upload
+}

@@ -1,18 +1,33 @@
-import { useSelector } from "react-redux"
+import { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import { Card } from "./Card"
+import { getUsers, getProducts } from "../redux/actions"
 
 export const CardsContainer = () => {
-    const products = useSelector( state => state.allProducts )
+    const dispatch = useDispatch()
 
-    if( !products ) return <div>Cargando productos...</div>
+    const allUsers = useSelector( state => state.allUsers )
+    const allProducts = useSelector( state => state.allProducts )
+
+    useEffect( () => {
+        dispatch( getUsers() )
+        dispatch( getProducts() )
+    }, [ dispatch ] )
 
     return(
-        <Card
-            key={ products.id }
-            id={ products.id }
-            name={ products.name }
-            image={ products.image }
-            types={ products.types }
-        />
+        <>
+            {allUsers.map(user => (
+                user.Products.map(product => (
+                    <Card
+                        key={ product.id }
+                        name={ user.name }
+                        nameProduct={ product.name }
+                        description={ product.description }
+                        images={ product.images }
+                        price={ product.price }
+                    />
+                ))
+            ))}
+        </>
     )
 }

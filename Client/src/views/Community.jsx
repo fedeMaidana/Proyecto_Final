@@ -1,12 +1,9 @@
-//import { useEffect } from "react"
-//import { useDispatch, useSelector } from "react-redux"
-//import { getProducts } from "../redux/actions"
 import { CardsContainer } from "../components/CardsContainer"
 import { Filter } from "../components/Filters"
 
 export function Community () {
   return (
-    <div>
+    <div className="w-full h-[auto] h-full flex flex-col">
       <div className="bg-gray-200 p-4">
         <div className="container mx-auto px-4">
           <div className="flex justify-between">
@@ -25,21 +22,13 @@ export function Community () {
         </div>
       </div>
 
-      <div className="bg-gray-200 p-4">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between">
-            <Filter/>
-          </div>
-        </div>
+      <div className="w-full bg-[#e5e7eb] flex flex-col items-center gap-[10px]">
+        <Filter/>
       </div>
 
-      <div className="container mx-auto px-4 mt-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <CardsContainer />
-        </div>
+      <div className="w-full h-full bg-[#e5e7eb] flex flex-col items-center gap-[10px]">
+        <CardsContainer/>
       </div>
     </div>
-  );
+  )
 }
-
-export default Community;

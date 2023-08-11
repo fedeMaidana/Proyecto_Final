@@ -1,3 +1,4 @@
+const { User } = require( '../db' )
 const { getUsers } = require( '../controllers/getUsers' )
 const { register } = require( '../controllers/register' )
 const { login } = require( '../controllers/login' )

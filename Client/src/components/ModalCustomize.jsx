@@ -5,8 +5,8 @@ import { handleDescriptionChange } from "../handlers/handlers"
 import { IconCart, IconShare } from "../assets/icons/icons"
 import { handlerSaveDesign } from "../handlers/handlers"
 
-const enabledButtonClasses = "h-[40px] w-[40px] bg-white border rounded-full flex items-center justify-center cursor-pointer";
-const disabledButtonClasses = "h-[40px] w-[40px] bg-gray-300 border rounded-full flex items-center justify-center cursor-not-allowed";
+const enabledButtonClasses = "h-[40px] w-[40px] bg-white border rounded-full flex items-center justify-center cursor-pointer"
+const disabledButtonClasses = "h-[40px] w-[40px] bg-gray-300 border rounded-full flex items-center justify-center cursor-not-allowed"
 
 export function ModalCustomize( { price } ){
     const dispatch = useDispatch()
@@ -47,7 +47,7 @@ export function ModalCustomize( { price } ){
                             <div className="w-full flex justify-center gap-[30px]">
                                 <button
                                     className="w-[25%] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full"
-                                    onClick={ () => handlerSaveDesign( setButtonsEnabled, description, images, color, size, title, price ) }
+                                    onClick={ () => handlerSaveDesign( setButtonsEnabled, description, images, color, size, title, price, 1, 1 ) }
                                 >
                                     Guardar diseño
                                 </button>

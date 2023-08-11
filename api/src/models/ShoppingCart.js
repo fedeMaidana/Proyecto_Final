@@ -9,15 +9,15 @@ module.exports = ( sequelize ) => {
           autoIncrement: true
         },
         price_data: {
-          type: DataTypes.ARRAY(DataTypes.STRING),
+          type: DataTypes.ARRAY( DataTypes.STRING ),
           allowNull: false
         },
         adjustable_quantity: {
-          type: DataTypes.ARRAY(DataTypes.STRING),
+          type: DataTypes.ARRAY( DataTypes.STRING ),
           allowNull: false
         },
         quantity: {
-          type: DataTypes.ARRAY(DataTypes.STRING),
+          type: DataTypes.ARRAY( DataTypes.STRING ),
           allowNull: false
         },
     }, {

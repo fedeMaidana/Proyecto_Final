@@ -26,9 +26,11 @@ const upload = multer({
   }
 })
 
-const createProduct = async ( name, price, description, stock, images, category, color, size ) => {
+const createProduct = async ( idUser, name, price, description, stock, images, category, color, size, stateShare ) => {
   try{
-    if( !name || !price || !description || !stock || !images || !category || !color || !size ) throw new Error ( 'Faltan datos' )
+    if( !idUser || !name || !price || !description || !stock || !images || !category || !color || !size || !stateShare ){
+      throw new Error ( 'Faltan datos' )
+    }
 
     const formattedName =
       name
@@ -44,6 +46,7 @@ const createProduct = async ( name, price, description, stock, images, category,
     }))
 
     const product = await Product.create({
+      userId: idUser,
       name: formattedName,
       price,
       description,
@@ -51,7 +54,8 @@ const createProduct = async ( name, price, description, stock, images, category,
       images: imageUrls,
       color,
       size,
-      categoryId: category
+      categoryId: category,
+      stateShare
     })
 
     return product

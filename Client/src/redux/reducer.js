@@ -14,7 +14,7 @@ import {
     ALL_CATEGORIES,
     CLEAR_IMAGES,
     ADD_IMAGE,
-
+    GET_USERS
 } from "./action-types"
 
 
@@ -30,7 +30,9 @@ const initialState = {
     filters:[],
     sorting: [],
     categories:[],
-    capturedImages: []
+    capturedImages: [],
+    users: [],
+    allUsers: []
 }
 
 const reducer = ( state = initialState, { type, payload } ) => {
@@ -81,10 +83,14 @@ const reducer = ( state = initialState, { type, payload } ) => {
         case ALL_CATEGORIES: return{ ...state, categories: payload }
 
         case ADD_IMAGE:
-            return { ...state, capturedImages: [...state.capturedImages, payload] };
+            return { ...state, capturedImages: [ ...state.capturedImages, payload ] }
 
         case CLEAR_IMAGES:
-            return { ...state, capturedImages: [] };
+            return { ...state, capturedImages: [] }
+
+        case GET_USERS:
+            return { ...state, users: payload, allUsers: payload }
+
         default:
             return { ...state }
     }

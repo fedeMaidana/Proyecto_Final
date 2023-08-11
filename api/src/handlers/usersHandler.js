@@ -2,6 +2,7 @@ const { getUsers } = require( '../controllers/getUsers' )
 const { register } = require( '../controllers/register' )
 const { login } = require( '../controllers/login' )
 const { deleteUser } = require( '../controllers/deleteUser' )
+const { sendWelcomeEmail } = require('../controllers/emailService');
 
 const getUsersHandler = async ( _req, res ) => {
     const users = await getUsers()
@@ -24,6 +25,7 @@ const registerHandler = async ( req, res ) => {
 
     try{
         const result = await register( name, email, password )
+        await sendWelcomeEmail(email);
 
         res.status( 200 ).json( result )
 

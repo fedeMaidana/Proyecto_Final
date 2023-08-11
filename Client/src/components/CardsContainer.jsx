@@ -1,15 +1,17 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Card } from "./Card"
-import { getUsers } from "../redux/actions"
+import { getUsers, getProducts } from "../redux/actions"
 
 export const CardsContainer = () => {
     const dispatch = useDispatch()
 
     const allUsers = useSelector( state => state.allUsers )
+    const allProducts = useSelector( state => state.allProducts )
 
     useEffect( () => {
         dispatch( getUsers() )
+        dispatch( getProducts() )
     }, [ dispatch ] )
 
     return(
@@ -22,6 +24,7 @@ export const CardsContainer = () => {
                         nameProduct={ product.name }
                         description={ product.description }
                         images={ product.images }
+                        price={ product.price }
                     />
                 ))
             ))}

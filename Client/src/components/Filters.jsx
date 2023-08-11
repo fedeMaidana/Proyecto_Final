@@ -44,14 +44,14 @@ export function Filter() {
     const showClearFiltersButton = category !== '' || minPrice !== '' || maxPrice !== ''
 
     return(
-        <div className="w-[90%] flex justify-center bg-white rounded-[10px] text-black p-5">
-            <div className="w-[50%] flex flex-col space-x-4 items-center text-black gap-[10px]">
+        <div className="w-[90%] flex justify-center bg-white rounded-[10px] text-black p-5 border border-[#e7e9ec]">
+            <div className="w-[60%] flex flex-col items-center text-black gap-[10px] border-l-[1px] border-r-[1px]">
                 <h2 className="text-xl font-bold">Filtrar</h2>
-                <div className='flex'>
-                    <div className='w-[200px] border-[1px] flex items-center justify-center gap-[10px]'>
+                <div className='w-full flex gap-[10px] px-[10px]'>
+                    <div className='w-[40%] border-[1px] flex items-center justify-center gap-[10px] rounded-[10px]'>
                         <p>Categoría:</p>
                         <select
-                            className="h-full outline-none border-[1px] flex items-center"
+                            className="outline-none bg-transparent flex items-center border-b-[2px] border-black"
                             onChange={ e => setCategory( e.target.value ) }
                         >
                             <option value="all">Todo</option>
@@ -63,33 +63,37 @@ export function Filter() {
                         </select>
                     </div>
 
-                    <input
-                        className="border rounded p-1 outline-none"
-                        type="number"
-                        value={ minPrice }
-                        onChange={ e => setMinPrice( e.target.value ) }
-                        placeholder='Minimo...'
-                    />
+                    <div className='w-[90%] border-[1px] flex items-center justify-center gap-[10px] rounded-[10px] py-[5px]'>
+                        <p>Precio:</p>
+                        <input
+                            className="w-[80px] border-b-[2px] border-black rounded p-1 outline-none"
+                            type="number"
+                            value={ minPrice }
+                            onChange={ e => setMinPrice( e.target.value ) }
+                            placeholder='Minimo...'
+                        />
 
-                    <input
-                        className="border rounded p-1 outline-none"
-                        type="number"
-                        value={ maxPrice }
-                        onChange={ e => setMaxPrice( e.target.value ) }
-                        placeholder='Maximo...'
-                    />
+                        <input
+                            className="w-[80px] border-b-[2px] border-black rounded p-1 outline-none"
+                            type="number"
+                            value={ maxPrice }
+                            onChange={ e => setMaxPrice( e.target.value ) }
+                            placeholder='Maximo...'
+                        />
+                    </div>
                 </div>
             </div>
 
-            <div className="w-[50%] flex flex-col items-center gap-[10px]">
+            <div className="w-[30%] flex flex-col items-center gap-[10px] border-r-[1px]">
                 <h2 className="text-xl font-bold">Ordenar</h2>
-                <div className='flex'>
+                <div className='w-[200px] flex border-[1px] flex items-center justify-center gap-[10px] rounded-[10px] py-[5px]'>
+                    <p>Por:</p>
                     <select
-                        className="border rounded p-1 outline-none"
+                        className="outline-none border-b-[2px] border-black"
                         value={ `${ selectedSorting }` }
                         onChange={ e => handleSortingChange( e.target.value ) }
                     >
-                        <option value=""></option>
+                        <option value="">Defecto</option>
                         <option value="priceAsc">Menor precio</option>
                         <option value="priceDesc">Mayor precio</option>
                         <option value="nameAsc">A a la Z</option>
@@ -98,21 +102,23 @@ export function Filter() {
                 </div>
             </div>
 
-            <button
-                className="bg-blue-500 hover:bg-blue-600 rounded px-4 py-2"
-                onClick={ handleApplyFilters }
-            >
-                Apply Filters
-            </button>
-
-            { showClearFiltersButton && (
+            <div className='w-[20%] flex flex-col justify-center items-center gap-[10px] border-r-[1px]'>
                 <button
-                    className="bg-red-500 hover:bg-red-600 rounded px-4 py-2"
-                    onClick={ handleClearFilters }
+                    className="w-[100px] border-[1px] border-[#25a010] rounded-[10px] rounded px-4 py-2"
+                    onClick={ handleApplyFilters }
                 >
-                    Clear Filters
+                    <p className='text-[#25a010] font-semibold'>Aplicar filtros</p>
                 </button>
-            )}
+
+                { showClearFiltersButton && (
+                    <button
+                        className="w-[100px] border-[1px] border-[#a01010] rounded-[10px] rounded px-4 py-2"
+                        onClick={ handleClearFilters }
+                    >
+                        <p className='text-[#a01010] font-semibold'>Eliminar filtros</p>
+                    </button>
+                )}
+            </div>
         </div>
     )
 }

@@ -47,7 +47,7 @@ export function ModalCustomize( { price } ){
                             <div className="w-full flex justify-center gap-[30px]">
                                 <button
                                     className="w-[25%] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full"
-                                    onClick={ () => handlerSaveDesign( setButtonsEnabled, description, images, color, size, title, price, 1, 1 ) }
+                                    onClick={ () => handlerSaveDesign( setButtonsEnabled, description, images, color, size, title, price, 1, 3 ) }
                                 >
                                     Guardar diseño
                                 </button>

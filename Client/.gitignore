@@ -22,3 +22,6 @@ package-lock.json
 *.ntvs*
 *.njsproj
 *.sln
+
+# Ignorar el contenido de la carpeta upload
+upload/*

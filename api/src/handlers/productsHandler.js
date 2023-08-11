@@ -25,6 +25,7 @@ const postProductHandler = async ( req, res ) => {
     try{
         const { idUser, name, price, description, stock, category, color, size, stateShare } = req.body
         const images = req.files
+
         const response = await createProduct( idUser, name, price, description, stock, images, category, color, size, stateShare )
 
         if( response instanceof Error ) res.status( 400 ).json( { error: response.message } )

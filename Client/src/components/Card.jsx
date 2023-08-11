@@ -1,23 +1,44 @@
-export const Card = ( { name, nameProduct, description, images } ) => {
+import { useState, useEffect } from "react"
 
-    console.log(images)
+export const Card = ( { name, nameProduct, description, images, price } ) => {
+    const [currentIndex, setCurrentIndex] = useState( 0 )
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const nextIndex = ( currentIndex + 1 ) % images.length
+            setCurrentIndex( nextIndex )
+        }, 3000)
+
+        return () => clearInterval( interval )
+    }, [ currentIndex, images.length ] )
 
     return(
-        <div className="w-[90%] h-[auto] bg-[#474a4f] rounded-[10px] flex flex-col p-[10px] gap-[10px]">
-            <header className="flex items-center gap-[10px]">
-                <div className="w-[40px] h-[40px] rounded-full bg-[#b7bbc3]"></div>
-                <p className="text-[1.5rem] font-semibold">{ name }</p>
-            </header>
+        <div className="w-[90%] h-[300px] bg-white rounded-[10px] grid grid-cols-2 grid-rows-4 p-[10px] border border-[#e7e9ec]">
+            <div className="flex items-center gap-[10px] row-span-1 border-b-[1px]">
+                <span className="w-[50px] h-[50px] rounded-full bg-[#b7bbc3]"></span>
+                <p className="text-[2rem] font-semibold">{ name }</p>
+            </div>
 
-            <h3 className="text-center mb-[10px] text-[2rem] font-semibold">{ nameProduct }</h3>
+            <div className="flex items-center justify-between border-l-[1px] border-b-[1px] pl-[10px]">
+                <h3 className="text-[3rem] font-bold">{ nameProduct }</h3>
+                <p className="text-[2rem] font-semibold">{ `$${price}` }</p>
+            </div>
 
-            <div className="flex justify-around">
+            <div className="flex justify-center row-span-3 border-r-[1px]">
                 {images.map( ( image, index ) => (
-                    <img key={ index } src="" alt="" className="w-[100px] h-[100px] rounded-[10px] bg-[#b7bbc3]" />
+                    <img
+                        key={ index }
+                        src={ image }
+                        alt={ image }
+                        className={ `w-[90%] h-full rounded-[10px] mt-[5px] bg-[#b7bbc3] object-cover ${ index === currentIndex ? 'visible' : 'hidden' }` }
+                    />
                 ))}
             </div>
 
-            <p className="text-center mt-[10px] text-[1.2rem]">{ description }</p>
+            <div className="flex flex-col items-center justify-around row-span-3">
+                <h3 className="text-[2rem] font-semibold">Sobre el producto</h3>
+                <p className="text-[1.5rem]">{ description }</p>
+            </div>
         </div>
     )
 }

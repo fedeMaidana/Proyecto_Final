@@ -57,6 +57,8 @@ export const handlerSaveDesign = async ( setButtonsEnabled, description, images,
         formData.append( 'images', image, `image_${ index }.png` )
     })
 
+    console.log(formData);
+
     await axios.post( '/products', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'

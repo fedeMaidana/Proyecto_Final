@@ -3,6 +3,7 @@
 //import { getProducts } from "../redux/actions"
 import { CardsContainer } from "../components/CardsContainer"
 import { Filter } from "../components/Filters"
+import SearchBar from "../components/SearchBar";
 
 export function Community () {
   return (
@@ -15,11 +16,7 @@ export function Community () {
               <p className="text-xl font-bold mb-2">Encuentra lo que quieres</p>
               {/* Aquí va el contenido del Searchbar */}
               {/* ... */}
-              <input
-                type="text"
-                placeholder="Buscar..."
-                className="border border-gray-300 rounded p-2 w-full"
-              />
+              <SearchBar/>
             </div>
           </div>
         </div>
@@ -27,9 +24,9 @@ export function Community () {
 
       <div className="bg-gray-200 p-4">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between">
+          
             <Filter/>
-          </div>
+          
         </div>
       </div>
 

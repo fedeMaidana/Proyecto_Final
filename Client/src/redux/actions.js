@@ -14,7 +14,9 @@ import {
     APPLY_SORTING,
     ALL_CATEGORIES,
     ADD_IMAGE,
-    CLEAR_IMAGES
+    CLEAR_IMAGES,
+    SEARCH_PRODUCT_FAILURE,
+    CLEAR_SEARCH_PRODUCTS
 } from "./action-types"
 
 export const getProducts = () => {
@@ -49,16 +51,33 @@ export const getProductDetail = ( id ) => {
     }
 }
 
-export const searchProduct = ( payload ) => {
-    return async ( dispatch ) => {
-        try{
-            let info = await axios.get( `/products/?name=${ payload }` )
-            return dispatch( { type: SEARCH_PRODUCT, payload: info.data } )
-        }catch ( error ){
-            console.log( 'Error searching for a product', error )
-        }
-    }
-}
+
+export const getSearch = (name) => {
+    const url = `/products/search/?name=${name}`;
+    return async (dispatch) => {
+      try {
+        const response = await axios.get(url);
+        const products = response.data;
+        console.log(products); // Verifica si los datos se reciben correctamente
+        dispatch({
+          type: SEARCH_PRODUCT,
+          payload: products,
+        });
+      } catch (error) {
+        dispatch({
+          type: SEARCH_PRODUCT_FAILURE,
+          payload: error.response.data.message,
+          
+        });
+      }
+    };
+  };
+  
+  export const clearSearch = ()=>{
+      return{
+          type: CLEAR_SEARCH_PRODUCTS
+      }
+  }
 
 export const setColor = ( color ) => {
     return{

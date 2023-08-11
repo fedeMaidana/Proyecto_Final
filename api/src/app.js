@@ -1,13 +1,16 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const morgan = require( 'morgan' )
 const mainRouter = require( './routes/index' )
+const session = require('express-session'); // Agregamos express-session
+const passport = require('passport');
 
 const server = express()
 
+server.use(cors());
 server.use( morgan( 'dev' ) )
-
 server.use( cookieParser() )
 server.use( express.json( { limit: '300mb' } ) )
 server.use( ( _req, res, next ) => {
@@ -18,6 +21,19 @@ server.use( ( _req, res, next ) => {
 
     next()
   })
+
+  // Configuración de express-session
+server.use(
+  session({
+    secret: process.env.SECRET_KEY_SESSION, // Cambia esto a una cadena de caracteres segura
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+// Inicialización de Passport
+server.use(passport.initialize());
+server.use(passport.session());
 
 server.use("/",mainRouter)
 server.use('/upload', express.static(path.join(__dirname, 'upload')));

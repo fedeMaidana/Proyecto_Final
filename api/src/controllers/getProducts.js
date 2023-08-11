@@ -1,7 +1,7 @@
 const { Product } = require( '../db' )
 const { Op } = require( 'sequelize' )
 
-const getProducts = async ( name ) => {
+const getProductsByName = async ( name ) => {
     if( name ){
         const productByName = await Product.findAll({
             where: {
@@ -23,19 +23,23 @@ const getProducts = async ( name ) => {
         return productFilter
 
     }else{
-        const products = await Product.findAll()
-
-        const productFilter = products.map( product => ({
-            id: product.id,
-            name: product.name,
-            description: product.description,
-            stock: product.stock,
-            images: product.images,
-            price: product.price
-        }))
-
-        return productFilter
+        return []
     }
+}
+
+const getProducts = async () => {
+    const products = await Product.findAll()
+
+    const productFilter = products.map( product => ({
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        stock: product.stock,
+        images: product.images,
+        price: product.price
+    }))
+
+    return productFilter
 }
 
 const getProductsById = async ( id ) => {
@@ -54,4 +58,4 @@ const getProductsById = async ( id ) => {
     return productFilter
 }
 
-module.exports = { getProductsById, getProducts }
+module.exports = { getProductsById, getProducts, getProductsByName }

@@ -14,6 +14,8 @@ import {
     ALL_CATEGORIES,
     CLEAR_IMAGES,
     ADD_IMAGE,
+    SEARCH_PRODUCT_FAILURE,
+    CLEAR_SEARCH_PRODUCTS
 
 } from "./action-types"
 
@@ -30,7 +32,8 @@ const initialState = {
     filters:[],
     sorting: [],
     categories:[],
-    capturedImages: []
+    capturedImages: [],
+    searchProducts: []
 }
 
 const reducer = ( state = initialState, { type, payload } ) => {
@@ -46,16 +49,6 @@ const reducer = ( state = initialState, { type, payload } ) => {
 
         case DELETE_PRODUCTS:
             return { ...state }
-
-        case SEARCH_PRODUCT:
-            let ProductosBuscados = payload
-            let productosfiltrados = state.products
-
-            if( state.products !== state.allProducts ){
-                ProductosBuscados = productosfiltrados.filter( product => payload.some( count => count.id === product.id ) )
-            }
-
-            return {...state, countries:ProductosBuscados }
 
         case SET_COLOR:
             return{ ...state, clothingColor: payload }
@@ -85,7 +78,37 @@ const reducer = ( state = initialState, { type, payload } ) => {
 
         case CLEAR_IMAGES:
             return { ...state, capturedImages: [] };
-        default:
+        
+            case SEARCH_PRODUCT: 
+      if (typeof payload === "object" && payload.message) {
+        // Si 'payload' es un objeto con un mensaje de error, actualiza el estado 'error'
+        return {
+          ...state,
+          searchProducts: [],
+          error: payload.message,
+        };
+      } else {
+        
+        return {
+          ...state,
+          searchProducts: payload,
+          error: null,
+        };
+      }
+        
+    
+    case SEARCH_PRODUCT_FAILURE: return{
+        ...state,
+        error: { message: payload, statusCode: null },
+        
+    }
+    case CLEAR_SEARCH_PRODUCTS: return{
+        ...state,
+        searchProducts: [],
+        
+    }
+    
+            default:
             return { ...state }
     }
 }

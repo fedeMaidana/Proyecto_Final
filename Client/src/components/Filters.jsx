@@ -42,7 +42,7 @@ export function Filter() {
         category !== '' || minPrice !== '' || maxPrice !== '';
 
     return (
-        <div className="flex justify-between bg-gray-900 text-black p-4">
+        <div className="flex justify-between bg-gray-900 text-black p-4 border rounded-lg">
             <div className="flex space-x-4 items-center ml-20">
                 <h2 className="text-xl font-bold text-white">Filters</h2>
                 <select

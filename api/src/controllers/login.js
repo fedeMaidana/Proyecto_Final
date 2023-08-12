@@ -1,36 +1,39 @@
-const { User } = require( '../db' )
-const bcrypt = require( 'bcrypt' )
-const jwt = require( 'jsonwebtoken' )
+const { User } = require("../db");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const login = async ( email, password ) => {
-    const user = await User.findOne( { where: { email, estado: 1 } } )
+const login = async (email, password) => {
+  const user = await User.findOne({ where: { email, estado: 1 } });
 
-    if( !user ) return { message: 'Usuario no encontrado', valid: false }
+  if (!user) return { message: "Usuario no encontrado", valid: false };
 
-    const isCorrect = await bcrypt.compare( password, user.password )
+  const isCorrect = await bcrypt.compare(password, user.password);
+  console.log(email);
+  console.log(password);
+  if (isCorrect) {
+    console.log(email);
+    console.log(password);
+    const { id, name } = user;
 
-    if( isCorrect ){
-        const { id, name } = user
+    const userForToken = {
+      id: id,
+      name: name,
+    };
 
-        const userForToken = {
-            id: id,
-            name: name
-        }
+    const token = jwt.sign(userForToken, process.env.SECRET_KEY, {
+      expiresIn: 86400, //24hs
+    });
 
-        const token = jwt.sign( userForToken, process.env.SECRET_KEY, {
-            expiresIn: 86400 //24hs
-        })
+    return {
+      message: "El usuario inició sesión con éxito",
+      valid: true,
+      user: {
+        id,
+        name,
+        token,
+      },
+    };
+  }
+};
 
-        return {
-            message: "El usuario inició sesión con éxito",
-            valid: true,
-            user: {
-                id,
-                name,
-                token
-            }
-        }
-    }
-}
-
-module.exports = { login }
+module.exports = { login };

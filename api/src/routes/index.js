@@ -17,7 +17,16 @@ mainRouter.use( '/', userRoutes )
 
 mainRouter.use( '/products',productRouter )
 
-mainRouter.use( '/filter', filterRouter )
+mainRouter.use("/shopping_cart", cartRouter)
+
+mainRouter.use("/categories", categoryRouter)
+
+mainRouter.use('/', userRoutes)
+
+mainRouter.use('/products',productRouter)
+
+mainRouter.use('/filter', filterRouter)
+
 
 mainRouter.use(paymentRouter)
 

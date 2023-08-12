@@ -14,7 +14,8 @@ import {
     APPLY_SORTING,
     ALL_CATEGORIES,
     ADD_IMAGE,
-    CLEAR_IMAGES
+    CLEAR_IMAGES,
+    GET_USERS
 } from "./action-types"
 
 export const getProducts = () => {
@@ -156,8 +157,16 @@ export const getCategories = () => {
 export const addImage = (imageDataUrl) => ({
     type: ADD_IMAGE,
     payload: imageDataUrl,
-});
+})
 
 export const clearImages = () => ({
     type: CLEAR_IMAGES,
-});
+})
+
+export const getUsers = () => {
+    return async ( dispatch ) => {
+        const { data } = await axios.get( '/users' )
+        return dispatch( { type: GET_USERS, payload: data } )
+    }
+}
+

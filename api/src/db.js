@@ -29,4 +29,7 @@ Shopping_cart.belongsTo( User, { foreignKey: 'userId' } )
 Product.belongsTo( Category, { foreignKey: "categoryId" } )
 Category.hasMany( Product, { foreignKey: "categoryId" } )
 
+User.hasMany( Product, { foreignKey: "userId" } )
+Product.belongsTo( User, { foreignKey: "userId" } )
+
 module.exports = { ...sequelize.models, conn: sequelize }

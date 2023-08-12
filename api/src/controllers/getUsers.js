@@ -1,8 +1,10 @@
 const { User } = require( '../db' )
+const { Product } = require( '../db' )
 
 const getUsers = async () => {
     const dataBaseUsers = await User.findAll({
-        where: { estado: 1 }
+        where: { estado: 1 },
+        include: Product
     })
 
     const usersWithoutPassword = dataBaseUsers.map( user => {

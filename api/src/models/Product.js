@@ -32,6 +32,11 @@ module.exports = ( sequilize ) => {
       },
       size: {
         type: DataTypes.STRING
+      },
+      stateShare: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
       }
     }, { timestamps: false }
   )

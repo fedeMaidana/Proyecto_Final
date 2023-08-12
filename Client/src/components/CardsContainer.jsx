@@ -13,6 +13,7 @@ export const CardsContainer = () => {
             name={ products.name }
             image={ products.image }
             types={ products.types }
+            description={products.description}
         />
     )
 }

@@ -1,6 +1,23 @@
-import { Link } from "react-router-dom"
+import React from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-export const Card = ({ image, name, id }) => {
+export const Card = ({ image, name, description,id }) => {
+    const handleBuyButton = async () => {
+        try {
+            const response = await axios.post('http://localhost:3001/create-checkout-session', {
+                cardName: name,
+                cardDescription: description,
+            });
+
+            
+            console.log(response.data);
+        } catch (error) {
+            
+            console.error('Error al enviar datos al backend:', error);
+        }
+    };
+
     return (
         <div>
             <div>
@@ -9,9 +26,8 @@ export const Card = ({ image, name, id }) => {
             <div>
                 <p>{name}</p>
             </div>
-            <button>
-                <Link to={`detail/${id}`}>Detalle</Link>
-            </button>
+            <button onClick={handleBuyButton}>Buy</button>
+            <Link to={`detail/${id}`}>Detalles</Link>
         </div>
-    )
-}
+    );
+};

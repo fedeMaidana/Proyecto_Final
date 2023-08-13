@@ -15,9 +15,16 @@ import {
     ALL_CATEGORIES,
     ADD_IMAGE,
     CLEAR_IMAGES,
+    ADD_TO_CART,
+    REMOVE_FROM_CART,
+    CLEAR_CART,
+    INCREMENT_PRODUCT,
+    DECREMENT_PRODUCT,
+    LOAD_CART
     SEARCH_PRODUCT_FAILURE,
     CLEAR_SEARCH_PRODUCTS,
     GET_USERS
+
 } from "./action-types"
 
 export const getProducts = () => {
@@ -177,6 +184,47 @@ export const addImage = (imageDataUrl) => ({
 
 export const clearImages = () => ({
     type: CLEAR_IMAGES,
+
+});
+
+
+/* Carrito de compras */
+
+export const addToCart = (product) => ({
+    type: ADD_TO_CART,
+    payload: product,
+  });
+  
+  export const removeFromCart = (productId) => ({
+    type: REMOVE_FROM_CART,
+    payload: productId,
+  });
+  export const clearCart = () => {
+    return {
+      type: CLEAR_CART,
+    };
+  };
+  export const incrementProduct = (product) => {
+    return {
+      type: INCREMENT_PRODUCT,
+      payload: {product},
+    };
+  };
+  
+  export const decrementProduct = (product) => {
+    return {
+      type: DECREMENT_PRODUCT,
+      payload: {product},
+    };
+  };
+
+export const loadCart = (cartData) => {
+    return {
+      type: LOAD_CART,
+      payload: cartData,
+    };
+  };
+
 })
 
 export const getUsers = () => {
@@ -185,4 +233,5 @@ export const getUsers = () => {
         return dispatch( { type: GET_USERS, payload: data } )
     }
 }
+
 

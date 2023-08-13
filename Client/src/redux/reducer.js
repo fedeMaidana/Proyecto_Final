@@ -1,5 +1,6 @@
 import {
     GET_PRODUCTS,
+    POST_PRODUCTS,
     DELETE_PRODUCTS,
     GET_PRODUCT_DETAIL,
     SEARCH_PRODUCT,
@@ -7,6 +8,7 @@ import {
     SET_SIZE,
     SET_MODAL,
     SET_DESIGN_TITLE,
+    SET_DESIGN_DESCRIPTION,
     APPLY_SORTING,
     APPLY_FILTERS,
     ALL_CATEGORIES,
@@ -17,7 +19,10 @@ import {
     CLEAR_CART,
     INCREMENT_PRODUCT,
     DECREMENT_PRODUCT,
-    LOAD_CART
+    LOAD_CART,
+    SEARCH_PRODUCT_FAILURE,
+    CLEAR_SEARCH_PRODUCTS,
+    GET_USERS
 
 } from "./action-types"
 
@@ -30,6 +35,7 @@ const initialState = {
     clothingSize: '',
     openModal: false,
     designTitle: 'Diseño sin titulo',
+    designDescription: '',
     filters:[],
     sorting: [],
     categories:[],
@@ -37,6 +43,10 @@ const initialState = {
     cartProducts: [], // Aquí se almacenan los productos en el carrito
     cartTotal: 0, // Aquí se almacenan el total del carrito
     cartCount: 0, // Aquí se almacenan la cantidad total de productos en el carrito
+    searchProducts: [],
+    capturedImages: [],
+    users: [],
+    allUsers: []
 
 }
 
@@ -45,21 +55,14 @@ const reducer = ( state = initialState, { type, payload } ) => {
         case GET_PRODUCTS:
             return { ...state, products: payload, allProducts: payload }
 
+        case POST_PRODUCTS:
+            return { ...state, products: payload, allProducts: payload }
+
         case GET_PRODUCT_DETAIL:
             return { ...state, productDetail: payload }
 
         case DELETE_PRODUCTS:
             return { ...state }
-
-        case SEARCH_PRODUCT:
-            let ProductosBuscados = payload
-            let productosfiltrados = state.products
-
-            if( state.products !== state.allProducts ){
-                ProductosBuscados = productosfiltrados.filter( product => payload.some( count => count.id === product.id ) )
-            }
-
-            return {...state, countries:ProductosBuscados }
 
         case SET_COLOR:
             return{ ...state, clothingColor: payload }
@@ -73,20 +76,56 @@ const reducer = ( state = initialState, { type, payload } ) => {
         case SET_DESIGN_TITLE:
             return{ ...state, designTitle: payload }
 
+        case SET_DESIGN_DESCRIPTION:
+            return{ ...state, designDescription: payload }
+
         case APPLY_FILTERS:
-                return { ...state, allProducts: payload, filters: payload }
+                return { ...state, allUsers: payload}
 
         case APPLY_SORTING:
-                return { ...state, products: payload, sorting: payload }
+                return { ...state, allUsers: payload}
 
         case ALL_CATEGORIES: return{ ...state, categories: payload }
 
         case ADD_IMAGE:
-            return { ...state, capturedImages: [...state.capturedImages, payload] };
+            return { ...state, capturedImages: [ ...state.capturedImages, payload ] }
 
         case CLEAR_IMAGES:
             return { ...state, capturedImages: [] };
-        default:
+        
+            case SEARCH_PRODUCT: 
+      if (typeof payload === "object" && payload.message) {
+        // Si 'payload' es un objeto con un mensaje de error, actualiza el estado 'error'
+        return {
+          ...state,
+          searchProducts: [],
+          error: payload.message,
+        };
+      } else {
+        
+        return {
+          ...state,
+          searchProducts: payload,
+          error: null,
+        };
+      }
+        
+    
+    case SEARCH_PRODUCT_FAILURE: return{
+        ...state,
+        error: { message: payload, statusCode: null },
+        
+    }
+    case CLEAR_SEARCH_PRODUCTS: return{
+        ...state,
+        searchProducts: [],
+        
+    }
+
+    case GET_USERS:
+            return { ...state, users: payload, allUsers: payload }
+
+    default:
             return { ...state }
         
         case ADD_TO_CART:

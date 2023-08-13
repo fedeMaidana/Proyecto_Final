@@ -1,11 +1,8 @@
 import { useSelector } from "react-redux"
-import { basePriceByModel } from "../auxFunctions/basePriceByModel"
 
-export function ClothingDetails( { currentModel } ){
+export function ClothingDetails( { price } ){
     const clothingColor = useSelector( state => state.clothingColor )
     const clothingSize = useSelector( state => state.clothingSize )
-
-    let price = basePriceByModel( currentModel )
 
     return(
         <>

@@ -1,18 +1,13 @@
-const { User } = require('../db')
+const { User } = require( '../db' )
 
+const deleteUser = async ( id ) => {
+    const user = await User.findByPk( id )
 
-const deleteUser = async (id) => {
+    if( !user ) return { message: 'Usuario no encontrado' }
 
-    const user = await User.findByPk(id);
-    
-    if(!user) {
-        return { message: 'Usuario no encontrado'};
-    }
+    await user.update( { estado: 0 } )
 
-    await user.update({ estado: 0 });  
+    return { message: 'Usuario eliminado correctamente' }
+}
 
-    return { message: 'Usuario eliminado correctamente'}
-
-};
-
-module.exports = {deleteUser}
+module.exports = { deleteUser }

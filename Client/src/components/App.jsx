@@ -11,7 +11,9 @@ axios.defaults.baseURL = 'http://localhost:3001/'
 
 export function App() {
   const location = useLocation()
-  const shouldShowNavBar = [ '/home', '/Community'].some( path => location.pathname.startsWith( path ) )
+
+  const shouldShowNavBar = [ '/home', '/Community' ].some( path => location.pathname.startsWith( path ) )
+
 
   return (
     <>
@@ -24,6 +26,7 @@ export function App() {
         <Route path='/login' element={ <Login/> } />
         <Route path='/register' element={ <Register/> } />
         <Route path="/community" element={<Community />} />
+        
       </Routes>
     </>
   )

@@ -6,14 +6,16 @@ const uploadDirectory = path.join(__dirname, '../upload'); // Ruta a la carpeta 
 
 // Configuración de multer
 const storage = multer.diskStorage({
-    destination: uploadDirectory,
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      const fileExtension = path.extname(file.originalname); // Obtener la extensión del archivo original
-      const newFilename = uniqueSuffix + fileExtension;
-      cb(null, newFilename);
-    },
-  });
+  destination: uploadDirectory,
+  filename: (req, file, cb) => {
+    const originalFileName = path.parse(file.originalname).name; // Obtener el nombre original del archivo
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const fileExtension = path.extname(file.originalname); // Obtener la extensión del archivo original
+    const newFilename = `${originalFileName}_${uniqueSuffix}${fileExtension}`; // Combinar todo
+    cb(null, newFilename);
+  },
+});
+
   
   const upload = multer({
     storage: storage,
@@ -28,46 +30,32 @@ const storage = multer.diskStorage({
       }
     },
   });
-  
 
-const createProduct = async (
-  name,
-  price,
-  description,
-  stock,
-  images,
-  category,
-  color,
-  size
-) => {
-  try {
-    if (
-      !name ||
-      !price ||
-      !description ||
-      !stock ||
-      !images ||
-      !category ||
-      !color ||
-      !size
-    ) {
-     
-      throw new Error ('Faltan datos');
+const createProduct = async ( idUser, name, price, description, stock, images, category, color, size, stateShare ) => {
+  try{
+    if( !idUser || !name || !price || !description || !stock || !images || !category || !color || !size || !stateShare ){
+      throw new Error ( 'Faltan datos' )
     }
 
-    const formattedName = name
-      .toLowerCase()
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase())
-      .join(' ');
+    const formattedName =
+      name
+        .toLowerCase()
+        .split( ' ' )
+        .map( word => word.charAt( 0 ).toUpperCase() + word.substring( 1 ).toLowerCase() )
+        .join( ' ' )
 
-    const imageUrls = await Promise.all(images.map(async (image) => {
-      const imageUrl = `/upload/${image.filename}`; // URL relativa a la imagen
+      console.log(images);
+      const baseUrl = 'http://localhost:3001'; // Cambiar esto al hacer deploy
+      
+      const imageUrls = await Promise.all(images.map(async (image) => {
+        const imageUrl = `/upload/${image.filename}`; 
+        const fullImageUrl = baseUrl + imageUrl; // URL completa de la imagen
 
-      return imageUrl;
-    }));
+        return fullImageUrl;
+      }));
 
     const product = await Product.create({
+      userId: idUser,
       name: formattedName,
       price,
       description,
@@ -76,10 +64,11 @@ const createProduct = async (
       color,
       size,
       categoryId: category,
-    });
+      stateShare
+    })
 
     return product;
-    
+
   } catch (error) {
     console.error('Error al agregar el producto al carrito:', error);
     throw new Error('Error al crear el producto: ' + error.message);
@@ -88,5 +77,5 @@ const createProduct = async (
 
 module.exports = {
   createProduct,
-  upload, 
-};
+  upload
+}

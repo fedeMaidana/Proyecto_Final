@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-export const Card = ({ image, name, description, id, nameProduct, price }) => {
+export const Card = ({ images, name, description, id, nameProduct, price }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
@@ -17,11 +17,19 @@ export const Card = ({ image, name, description, id, nameProduct, price }) => {
     const handleBuyButton = async () => {
         try {
             const response = await axios.post('http://localhost:3001/create-checkout-session', {
-                cardName: name,
+                cardName: nameProduct,
                 cardDescription: description,
             });
-
-            console.log(response.data);
+    
+            const { sessionUrl } = response.data; // Obtiene la URL de sesión
+    
+            if (sessionUrl) {
+                // Redirige a la URL de sesión usando window.location
+                window.location.href = sessionUrl;
+            } else {
+                console.error('URL de sesión no disponible.');
+            }
+    
         } catch (error) {
             console.error('Error al enviar datos al backend:', error);
         }
@@ -48,7 +56,7 @@ export const Card = ({ image, name, description, id, nameProduct, price }) => {
                 <p className="text-[1.5rem]">{description}</p>
             </div>
 
-            <button onClick={handleBuyButton}>Buy</button>
+            <button onClick={handleBuyButton}>Comprar</button>
             <Link to={`detail/${id}`}>Detalles</Link>
         </div>
     );

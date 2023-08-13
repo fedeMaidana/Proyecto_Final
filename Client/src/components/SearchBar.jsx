@@ -1,8 +1,11 @@
-import {  useState } from "react";
+import {  useState} from "react";
 import {getSearch, clearSearch} from "../redux/actions"
  import { useDispatch, useSelector } from "react-redux";
  import { debounce } from "lodash"; 
  import { FaSearch } from "react-icons/fa";
+
+
+
 
 
 function SearchBar() {
@@ -40,7 +43,7 @@ function SearchBar() {
       
   };
 
-  
+
 
   return (
     <div className="p-4">
@@ -57,19 +60,27 @@ function SearchBar() {
     <FaSearch className="text-gray-500" />
   </div>
 </div>
-      <div>
-        {searchResults !== 0 ? searchResults.map((result) => (
-              <div key={result.id} className="flex items-center my-2">
-                <img
-                  src={result.images[0]}
-                  alt={`Product ${result.id}`}
-                  className="rounded-lg w-15 h-12"
-                />
-                <span className="ml-2">{result.name}</span>
-              </div>
-            )): ""
-          }
-      </div>
+<div>
+  {searchResults !== 0 ? searchResults.map((result) => (
+    <div
+      key={result.id}
+      className="flex items-center my-2 cursor-pointer"
+    >
+      <a href={`#${result.id}`}>
+        <img
+          src={result.images[0]}
+          alt={`Product ${result.id}`}
+          className="rounded-lg w-15 h-12"
+        />
+        <span className="ml-2">{result.name}</span>
+      </a>
+    </div>
+  )) : ""}
+</div>
+
+
+
+
     </div>
   );
 }

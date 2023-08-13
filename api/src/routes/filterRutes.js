@@ -1,8 +1,8 @@
 const express = require( 'express' )
 const filterRouter = express.Router()
 
-const filter = require( '../Filters/filters' )
+const FilterHandlers = require( '../handlers/FiltersHandlers' )
 
-filterRouter.get( '/', filter )
+filterRouter.get( '/', FilterHandlers )
 
 module.exports = filterRouter

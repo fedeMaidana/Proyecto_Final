@@ -15,15 +15,15 @@ mainRouter.use( '/', userRoutes )
 
 mainRouter.use( '/products',productRouter )
 
-mainRouter.use("/shopping_cart", cartRouter);
+mainRouter.use("/shopping_cart", cartRouter)
 
-mainRouter.use("/categories", categoryRouter);
+mainRouter.use("/categories", categoryRouter)
 
-mainRouter.use('/', userRoutes);
+mainRouter.use('/', userRoutes)
 
-mainRouter.use('/products',productRouter);
+mainRouter.use('/products',productRouter)
 
-mainRouter.use('/filter', filterRouter);
+mainRouter.use('/filter', filterRouter)
 
 
 module.exports = mainRouter

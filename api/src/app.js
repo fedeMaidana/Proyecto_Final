@@ -36,7 +36,7 @@ server.use(passport.initialize());
 server.use(passport.session());
 
 server.use("/",mainRouter)
-server.use('/upload', express.static(path.join(__dirname, 'upload')));
+server.use('/upload', express.static(path.join(__dirname, 'upload')))
 
 
 server.use( ( err, _req, res, _next ) => {

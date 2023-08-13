@@ -15,8 +15,8 @@ import {
     CLEAR_IMAGES,
     ADD_IMAGE,
     SEARCH_PRODUCT_FAILURE,
-    CLEAR_SEARCH_PRODUCTS
-
+    CLEAR_SEARCH_PRODUCTS,
+    GET_USERS
 } from "./action-types"
 
 
@@ -32,8 +32,10 @@ const initialState = {
     filters:[],
     sorting: [],
     categories:[],
+    searchProducts: [],
     capturedImages: [],
-    searchProducts: []
+    users: [],
+    allUsers: []
 }
 
 const reducer = ( state = initialState, { type, payload } ) => {
@@ -66,15 +68,15 @@ const reducer = ( state = initialState, { type, payload } ) => {
             return{ ...state, designDescription: payload }
 
         case APPLY_FILTERS:
-                return { ...state, allProducts: payload, filters: payload }
+                return { ...state, allUsers: payload}
 
         case APPLY_SORTING:
-                return { ...state, products: payload, sorting: payload }
+                return { ...state, allUsers: payload}
 
         case ALL_CATEGORIES: return{ ...state, categories: payload }
 
         case ADD_IMAGE:
-            return { ...state, capturedImages: [...state.capturedImages, payload] };
+            return { ...state, capturedImages: [ ...state.capturedImages, payload ] }
 
         case CLEAR_IMAGES:
             return { ...state, capturedImages: [] };
@@ -107,8 +109,11 @@ const reducer = ( state = initialState, { type, payload } ) => {
         searchProducts: [],
         
     }
-    
-            default:
+
+    case GET_USERS:
+            return { ...state, users: payload, allUsers: payload }
+
+    default:
             return { ...state }
     }
 }

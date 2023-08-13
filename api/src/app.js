@@ -39,6 +39,7 @@ server.use("/",mainRouter)
 server.use('/upload', express.static(path.join(__dirname, 'upload')))
 
 
+ 
 server.use( ( err, _req, res, _next ) => {
     const status = err.status || 500
     const message = err.message || err

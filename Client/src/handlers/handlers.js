@@ -45,7 +45,7 @@ export const handleModal = async ( dispatch ) => {
 
 export const handlerSaveDesign = async ( setButtonsEnabled, description, images, color, size, title, price, stateShare, userId ) => {
     const formData = new FormData()
-    formData.append( 'idUser', userId )
+    formData.append( 'idUser', 1 )
     formData.append( 'description', description )
     formData.append( 'color', color )
     formData.append( 'size', size )
@@ -58,6 +58,8 @@ export const handlerSaveDesign = async ( setButtonsEnabled, description, images,
     images.forEach( ( image, index ) => {
         formData.append( 'images', image, `image_${ index }.png` )
     })
+
+    console.log(formData);
 
     await axios.post( '/products', formData, {
         headers: {

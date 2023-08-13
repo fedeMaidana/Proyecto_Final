@@ -8,6 +8,7 @@ export const CardsContainer = () => {
 
     const allUsers = useSelector( state => state.allUsers )
     const allProducts = useSelector( state => state.allProducts )
+    console.log(allUsers)
 
     useEffect( () => {
         dispatch( getUsers() )
@@ -16,10 +17,11 @@ export const CardsContainer = () => {
 
     return(
         <>
-            {allUsers.map(user => (
-                user.Products.map(product => (
+            {allUsers?.map(user => (
+                user.Products?.map(product => (
                     <Card
                         key={ product.id }
+                        id= { product.id }
                         name={ user.name }
                         nameProduct={ product.name }
                         description={ product.description }

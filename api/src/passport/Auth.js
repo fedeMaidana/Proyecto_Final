@@ -1,10 +1,21 @@
-const passport = require( 'passport' )
-const GoogleStrategy = require( 'passport-google-oauth' ).OAuth2Strategy
-const { User } = require( '../db' )
-const bcrypt = require( 'bcrypt' )
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const { User } = require('../db');
+const bcrypt = require('bcrypt');
+const URL = 'http://localhost:3001';
 
-const URL = 'http://localhost:3001'
 
+// Serialización del usuario en la sesión
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+// Deserialización del usuario desde la sesión
+passport.deserializeUser((id, done) => {
+  User.findByPk(id, (err, user) => {
+    done(err, user);
+  });
+});
 
 passport.use(
   new GoogleStrategy(

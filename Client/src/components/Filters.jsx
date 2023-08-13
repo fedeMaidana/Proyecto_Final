@@ -5,8 +5,8 @@ import { applyFilters, getCategories, applySorting } from '../redux/actions'
 export function Filter() {
     const dispatch = useDispatch()
 
-    const filters = useSelector( state => state.filters )
-    const sorting = useSelector( state => state.sorting )
+    // const filters = useSelector( state => state.filters )
+    // const sorting = useSelector( state => state.sorting )
     const categories = useSelector( state => state.categories )
 
     useEffect(() => {
@@ -14,9 +14,9 @@ export function Filter() {
     }, [ dispatch ] )
 
     const [ category, setCategory ] = useState( '' )
-    const [ minPrice, setMinPrice ] = useState( filters.minPrice || '' )
-    const [ maxPrice, setMaxPrice ] = useState( filters.maxPrice || '' )
-    const [ selectedSorting, setSelectedSorting ] = useState( sorting || '' )
+    const [ minPrice, setMinPrice ] = useState( '' )
+    const [ maxPrice, setMaxPrice ] = useState( '' )
+    const [ selectedSorting, setSelectedSorting ] = useState( '' )
 
     const handleApplyFilters = () => {
         const newFilters = {
@@ -84,6 +84,24 @@ export function Filter() {
                 </div>
             </div>
 
+            <div className='w-[20%] flex flex-col justify-center items-center gap-[10px] border-r-[1px]'>
+                <button
+                    className="w-[100px] border-[1px] border-[#25a010] rounded-[10px] rounded px-4 py-2"
+                    onClick={ handleApplyFilters }
+                >
+                    <p className='text-[#25a010] font-semibold'>Aplicar filtros</p>
+                </button>
+
+                { showClearFiltersButton && (
+                    <button
+                        className="w-[100px] border-[1px] border-[#a01010] rounded-[10px] rounded px-4 py-2"
+                        onClick={ handleClearFilters }
+                    >
+                        <p className='text-[#a01010] font-semibold'>Eliminar filtros</p>
+                    </button>
+                )}
+            </div>
+
             <div className="w-[30%] flex flex-col items-center gap-[10px] border-r-[1px]">
                 <h2 className="text-xl font-bold">Ordenar</h2>
                 <div className='w-[200px] flex border-[1px] flex items-center justify-center gap-[10px] rounded-[10px] py-[5px]'>
@@ -102,23 +120,7 @@ export function Filter() {
                 </div>
             </div>
 
-            <div className='w-[20%] flex flex-col justify-center items-center gap-[10px] border-r-[1px]'>
-                <button
-                    className="w-[100px] border-[1px] border-[#25a010] rounded-[10px] rounded px-4 py-2"
-                    onClick={ handleApplyFilters }
-                >
-                    <p className='text-[#25a010] font-semibold'>Aplicar filtros</p>
-                </button>
 
-                { showClearFiltersButton && (
-                    <button
-                        className="w-[100px] border-[1px] border-[#a01010] rounded-[10px] rounded px-4 py-2"
-                        onClick={ handleClearFilters }
-                    >
-                        <p className='text-[#a01010] font-semibold'>Eliminar filtros</p>
-                    </button>
-                )}
-            </div>
         </div>
     )
 }

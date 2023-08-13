@@ -1,10 +1,19 @@
-const { getProducts, getProductsById } = require( '../controllers/getProducts' )
+const { getProducts, getProductsById, getProductsByName } = require( '../controllers/getProducts' )
 const { createProduct } = require( '../controllers/postProdcuts' )
 
-const getProductsHandler = async ( req, res ) => {
+const getProductsNameHandler = async ( req, res ) => {
     const { name } = req.query
     try{
-        const response = await getProducts( name )
+        const response = await getProductsByName( name )
+        res.status( 200 ).json( response )
+    }catch( error ){
+        res.status( 500 ).json( { error: error.message, description: 'no se encontraron prendas' } )
+    }
+}
+
+const getProductsHandler = async ( req, res ) => {
+    try{
+        const response = await getProducts( )
         res.status( 200 ).json( response )
     }catch( error ){
         res.status( 500 ).json( { error: error.message, description: 'no se encontraron prendas' } )
@@ -35,4 +44,4 @@ const postProductHandler = async ( req, res ) => {
     }
 }
 
-module.exports = { getProductsHandler, getProductsHandlerById, postProductHandler }
+module.exports = { getProductsHandler, getProductsHandlerById, postProductHandler, getProductsNameHandler }

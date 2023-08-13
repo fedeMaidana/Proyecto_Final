@@ -15,6 +15,8 @@ import {
     ALL_CATEGORIES,
     ADD_IMAGE,
     CLEAR_IMAGES,
+    SEARCH_PRODUCT_FAILURE,
+    CLEAR_SEARCH_PRODUCTS,
     GET_USERS
 } from "./action-types"
 
@@ -50,16 +52,33 @@ export const getProductDetail = ( id ) => {
     }
 }
 
-export const searchProduct = ( payload ) => {
-    return async ( dispatch ) => {
-        try{
-            let info = await axios.get( `/products/?name=${ payload }` )
-            return dispatch( { type: SEARCH_PRODUCT, payload: info.data } )
-        }catch ( error ){
-            console.log( 'Error searching for a product', error )
-        }
-    }
-}
+
+export const getSearch = (name) => {
+    const url = `/products/search/?name=${name}`;
+    return async (dispatch) => {
+      try {
+        const response = await axios.get(url);
+        const products = response.data;
+        console.log(products); // Verifica si los datos se reciben correctamente
+        dispatch({
+          type: SEARCH_PRODUCT,
+          payload: products,
+        });
+      } catch (error) {
+        dispatch({
+          type: SEARCH_PRODUCT_FAILURE,
+          payload: error.response.data.message,
+          
+        });
+      }
+    };
+  };
+  
+  export const clearSearch = ()=>{
+      return{
+          type: CLEAR_SEARCH_PRODUCTS
+      }
+  }
 
 export const setColor = ( color ) => {
     return{
@@ -95,52 +114,49 @@ export const setDescription = ( string ) => {
         payload: string
     }
 }
+export const applyFilters = (filters) => {
+    return async (dispatch) => {
+      try {
+        const response = await axios.get('/filter', {
+          params: {
+            category: filters.category,
+            min_price: filters.minPrice,
+            max_price: filters.maxPrice,
+            
+          },
+        });
+  
+        dispatch({
+          type: APPLY_FILTERS,
+          payload: response.data,
+        filters : filters
+        });
+      } catch (error) {
+        console.error('Error fetching filtered products:', error);
+      }
+    };
+  };
 
-export const applyFilters = ( filters ) => {
-    return async ( dispatch ) => {
-        try {
-            const response = await axios.get( '/filter', {
-                params: {
-                    category: filters.category,
-                    min_price: filters.minPrice,
-                    max_price: filters.maxPrice,
-                }
-            })
-
-            dispatch({
-                type: APPLY_FILTERS,
-                payload: {
-                    allProducts: response.data,
-                    filters: filters
-                }
-            })
-        } catch( error ) {
-            console.error( 'Error fetching filtered products:', error )
-        }
-    }
-}
 
 export const applySorting = ( sorting ) => {
     return async ( dispatch ) => {
-        try {
-            const response = await axios.get( '/filter', {
+         try {
+             const response = await axios.get( '/filter', {
                 params: {
-                    sortOption: sorting,
-                }
-            })
+                     sortOption: sorting,
+                 }
+             })
 
             dispatch({
-                type: APPLY_SORTING,
-                payload: {
-                    allProducts: response.data,
-                    sorting: sorting
-                }
+                 type: APPLY_SORTING,
+                payload: response.data,
+                sorting: sorting
             })
-        } catch( error ) {
+         } catch( error ) {
             console.error( 'Error fetching sorted products:', error )
         }
     }
-}
+ }
 
 export const getCategories = () => {
     return async ( dispatch ) => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-export const Card = ( { name, nameProduct, description, images, price } ) => {
+export const Card = ( { name, nameProduct, description, images, price, id } ) => {
     const [currentIndex, setCurrentIndex] = useState( 0 )
 
     useEffect(() => {
@@ -13,7 +13,8 @@ export const Card = ( { name, nameProduct, description, images, price } ) => {
     }, [ currentIndex, images.length ] )
 
     return(
-        <div className="w-[90%] h-[300px] bg-white rounded-[10px] grid grid-cols-2 grid-rows-4 p-[10px] border border-[#e7e9ec]">
+        <div className="w-[90%] h-[300px] bg-white rounded-[10px] grid grid-cols-2 grid-rows-4 p-[10px] border border-[#e7e9ec]" key={id }
+        id= { id }>
             <div className="flex items-center gap-[10px] row-span-1 border-b-[1px]">
                 <span className="w-[50px] h-[50px] rounded-full bg-[#b7bbc3]"></span>
                 <p className="text-[2rem] font-semibold">{ name }</p>

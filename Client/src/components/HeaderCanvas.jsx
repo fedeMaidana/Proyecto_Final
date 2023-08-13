@@ -5,6 +5,8 @@ import html2canvas from 'html2canvas'
 import { setModal, addImage, postProducts } from "../redux/actions"
 import { handleTitleChange } from "../handlers/handlers"
 import axios from "axios"
+import { v4 as uuidv4 } from 'uuid';
+import { addToCart } from "../redux/actions"
 
 export function HeaderCanvas( { price } ){
     const dispatch = useDispatch()
@@ -15,6 +17,7 @@ export function HeaderCanvas( { price } ){
     const designTitle = useSelector( state => state.designTitle )
     const capturedImages = useSelector( state => state.capturedImages )
     const [ isEditing, setIsEditing ] = useState( false )
+    const [allProducts, setAllProducts] = useState([]);
 
     const handleCaptureScreenshot = async () => {
         const canvas = document.querySelector( '.capture-container' )
@@ -51,7 +54,7 @@ capturedImages.forEach((image, index) => {
 });
 
     const handleModal = async () => {
-    //     const dataDesign = {
+        //     const dataDesign = {
     //         name: designTitle,
     //         price: 10,
     //         description: '',
@@ -81,13 +84,30 @@ capturedImages.forEach((image, index) => {
         headers: {
           'Content-Type': 'multipart/form-data', // Importante para el envío de archivos
         },
-      });
-
+    });
+    
         console.log(formData)
 
         dispatch( setModal( true ) )
     }
-
+    const onAddProduct = (formData) => {
+        const newProduct = {
+            id: uuidv4(), 
+            name: formData.get('name'),
+            price: formData.get('price'),
+            description: formData.get('description'),
+            stock: formData.get('stock'),
+            color: formData.get('color'),
+            size: formData.get('size'),
+            category: formData.get('category'),
+            images: capturedImages.map((image, index) => formData.get(`image${index}`)),
+        };
+    
+        setAllProducts([...allProducts, newProduct]);
+        dispatch (addToCart(newProduct));
+        /* console.log(allProducts); */
+    }
+    
     return(
         <>
             <header className="flex h-full justify-between items-center" >
@@ -154,7 +174,10 @@ capturedImages.forEach((image, index) => {
                             font-semibold
                             border-[1px]
                         "
-                        onClick={ handleModal }
+                        onClick={async () => {
+                            await handleModal(dispatch); //Espera a que handleModal se complete
+                            onAddProduct(formData);
+                        }}
                     >
                         Finalizar
                     </button>

@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
-import logo from '../assets/images/DiseñoBase_de_logoCustomCraft_black.png';
+import { Link } from 'react-router-dom'
+import logo from '../assets/images/DiseñoBase_de_logoCustomCraft_black.png'
+import { Cart } from './Cart'
 
 export function Nav() {
   return (
@@ -30,6 +31,7 @@ export function Nav() {
                 <p className='font-bold'>Community</p>
               </Link>
             </li>
+
             <li className="relative group z-50">
               <label className='text-principal-black text-3xl font-bold cursor-pointer group-hover:bg-blue-600 group-hover:text-gray-300 rounded'>
                 nombre del usuario
@@ -53,7 +55,9 @@ export function Nav() {
                 </ul>
               </label>
             </li>
+
           </ul>
+          <Cart />
         </div>
       </div>
     </nav>

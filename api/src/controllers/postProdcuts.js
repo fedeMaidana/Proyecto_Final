@@ -44,6 +44,7 @@ const createProduct = async ( idUser, name, price, description, stock, images, c
         .map( word => word.charAt( 0 ).toUpperCase() + word.substring( 1 ).toLowerCase() )
         .join( ' ' )
 
+      console.log(images);
       const baseUrl = 'http://localhost:3001'; // Cambiar esto al hacer deploy
       
       const imageUrls = await Promise.all(images.map(async (image) => {

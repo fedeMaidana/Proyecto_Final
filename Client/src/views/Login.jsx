@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { IconGoogle} from "../assets/icons/icons"
 
 export const Login = () => {
     const navigate = useNavigate()
@@ -54,21 +55,28 @@ export const Login = () => {
         }
     }, [access, navigate]);
 
-    
+    const handleGoogleLogin = () => {
+        window.location.href = 'http://localhost:3001/login/auth/google'; // Cambia la URL según tu configuración
+      };
     
 
-    return(
-        <>
-            <div className="bg-principal-black min-h-screen flex items-center justify-center" >
-                <div className="bg-principal-white p-8 rounded shadow-md w-[30rem] h-auto text-2xl" >
-                    <h1 className="text-5xl font-bold mb-8" >Log in</h1>
+    return (
+      <>
+        <div className="bg-principal-black min-h-screen flex items-center justify-center">
+          <div className="bg-principal-white p-8 rounded shadow-md w-[30rem] h-auto text-2xl">
+            <h1 className="text-5xl font-bold mb-8">Log in</h1>
 
-                    <form method='post' onSubmit={ handleSubmit } >
-                        <div>
-                            <div>
-                                <label className="block font-semibold text-gray-700 mb-3" htmlFor="email">Email</label>
-                                <input
-                                    className="
+            <form method="post" onSubmit={handleSubmit}>
+              <div>
+                <div>
+                  <label
+                    className="block font-semibold text-gray-700 mb-3"
+                    htmlFor="email"
+                  >
+                    Email
+                  </label>
+                  <input
+                    className="
                                     bg-principal-white
                                         mt-1
                                         p-3
@@ -81,20 +89,25 @@ export const Login = () => {
                                         focus:border-blue-300
                                         mb-6
                                     "
-                                    type="email"
-                                    name='email'
-                                    id='email'
-                                    value={ email }
-                                    onChange={ event => handlerUser( event ) }
-                                    autoComplete='off'
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <div>
-                                <label className="block font-semibold text-gray-700 mb-3" htmlFor="password">Password</label>
-                                <input
-                                    className="
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={email}
+                    onChange={(event) => handlerUser(event)}
+                    autoComplete="off"
+                  />
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label
+                    className="block font-semibold text-gray-700 mb-3"
+                    htmlFor="password"
+                  >
+                    Password
+                  </label>
+                  <input
+                    className="
                                     bg-principal-white
                                         mt-1
                                         p-3
@@ -107,19 +120,19 @@ export const Login = () => {
                                         focus:border-blue-300
                                         mb-8
                                     "
-                                    type="password"
-                                    name='password'
-                                    id='password'
-                                    value={ password }
-                                    onChange={ event => handlerUser( event ) }
-                                    autoComplete='off'
-                                />
-                            </div>
-                        </div>
+                    type="password"
+                    name="password"
+                    id="password"
+                    value={password}
+                    onChange={(event) => handlerUser(event)}
+                    autoComplete="off"
+                  />
+                </div>
+              </div>
 
-                        <button
-                            type="submit"
-                            className="
+              <button
+                type="submit"
+                className="
                                 w-full
                                 bg-secondary-blue2
                                 text-white
@@ -131,19 +144,51 @@ export const Login = () => {
                                 duration-300
                                 mb-3
                             "
-                        >
-                            { loading ? 'Loading...' : 'Login' }
-                        </button>
+              >
+                {loading ? "Loading..." : "Login"}
+              </button>
 
-                        <p className="mt-4 text-center">Don't have an account?
-                           <br /> <b className="cursor-pointer text-blue-500" onClick={ () => navigate( '/register' ) }>Register</b>
-                        </p>
-                    </form>
-                </div>
+              <p className="mt-4 text-center">
+                Don't have an account?
+                <br />{" "}
+                <b
+                  className="cursor-pointer text-blue-500"
+                  onClick={() => navigate("/register")}
+                >
+                  Register
+                </b>
+              </p>
+            </form>
+            <div>
+            <button
+  onClick={handleGoogleLogin}
+  className="
+    w-full
+    bg-secondary-blue2
+    text-white
+    font-semibold
+    py-3
+    rounded
+    hover:bg-blue-600
+    transition-colors
+    duration-300
+    mb-3
+    flex
+    items-center
+    justify-center
+    mt-4 
+  "
+>
+  <IconGoogle className="mr-2" />
+  <p className="text-center">Iniciar con Google</p>
+</button>
 
-                { message && (
-                    <div
-                        className="
+            </div>
+          </div>
+
+          {message && (
+            <div
+              className="
                             text-2xl
                             font-bold
                             text-black-500
@@ -161,11 +206,11 @@ export const Login = () => {
                             duration-300
                             translate-y-[-30px]
                         "
-                    >
-                        { message }
-                    </div>
-                )}
+            >
+              {message}
             </div>
-        </>
-    )
+          )}
+        </div>
+      </>
+    );
 }

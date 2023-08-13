@@ -14,6 +14,8 @@ import {
     ALL_CATEGORIES,
     CLEAR_IMAGES,
     ADD_IMAGE,
+    SEARCH_PRODUCT_FAILURE,
+    CLEAR_SEARCH_PRODUCTS,
     GET_USERS
 } from "./action-types"
 
@@ -30,6 +32,7 @@ const initialState = {
     filters:[],
     sorting: [],
     categories:[],
+    searchProducts: [],
     capturedImages: [],
     users: [],
     allUsers: []
@@ -49,16 +52,6 @@ const reducer = ( state = initialState, { type, payload } ) => {
         case DELETE_PRODUCTS:
             return { ...state }
 
-        case SEARCH_PRODUCT:
-            let ProductosBuscados = payload
-            let productosfiltrados = state.products
-
-            if( state.products !== state.allProducts ){
-                ProductosBuscados = productosfiltrados.filter( product => payload.some( count => count.id === product.id ) )
-            }
-
-            return {...state, countries:ProductosBuscados }
-
         case SET_COLOR:
             return{ ...state, clothingColor: payload }
 
@@ -75,10 +68,10 @@ const reducer = ( state = initialState, { type, payload } ) => {
             return{ ...state, designDescription: payload }
 
         case APPLY_FILTERS:
-                return { ...state, allProducts: payload, filters: payload }
+                return { ...state, allUsers: payload}
 
         case APPLY_SORTING:
-                return { ...state, products: payload, sorting: payload }
+                return { ...state, allUsers: payload}
 
         case ALL_CATEGORIES: return{ ...state, categories: payload }
 
@@ -86,12 +79,41 @@ const reducer = ( state = initialState, { type, payload } ) => {
             return { ...state, capturedImages: [ ...state.capturedImages, payload ] }
 
         case CLEAR_IMAGES:
-            return { ...state, capturedImages: [] }
+            return { ...state, capturedImages: [] };
+        
+            case SEARCH_PRODUCT: 
+      if (typeof payload === "object" && payload.message) {
+        // Si 'payload' es un objeto con un mensaje de error, actualiza el estado 'error'
+        return {
+          ...state,
+          searchProducts: [],
+          error: payload.message,
+        };
+      } else {
+        
+        return {
+          ...state,
+          searchProducts: payload,
+          error: null,
+        };
+      }
+        
+    
+    case SEARCH_PRODUCT_FAILURE: return{
+        ...state,
+        error: { message: payload, statusCode: null },
+        
+    }
+    case CLEAR_SEARCH_PRODUCTS: return{
+        ...state,
+        searchProducts: [],
+        
+    }
 
-        case GET_USERS:
+    case GET_USERS:
             return { ...state, users: payload, allUsers: payload }
 
-        default:
+    default:
             return { ...state }
     }
 }

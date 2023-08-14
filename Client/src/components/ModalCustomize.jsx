@@ -3,7 +3,9 @@ import { useSelector, useDispatch } from "react-redux"
 import { setModal } from "../redux/actions"
 import { handleDescriptionChange } from "../handlers/handlers"
 import { IconCart, IconShare } from "../assets/icons/icons"
-import { handlerSaveDesign } from "../handlers/handlers"
+import { handlerSaveDesign, handlerSendDesignDataBase } from "../handlers/handlers"
+import { v4 as uuidv4 } from 'uuid';
+import { addToCart } from "../redux/actions"
 
 const enabledButtonClasses = "h-[40px] w-[40px] bg-white border rounded-full flex items-center justify-center cursor-pointer"
 const disabledButtonClasses = "h-[40px] w-[40px] bg-gray-300 border rounded-full flex items-center justify-center cursor-not-allowed"
@@ -12,13 +14,33 @@ export function ModalCustomize( { price } ){
     const dispatch = useDispatch()
 
     const [ isButtonsEnabled, setButtonsEnabled ] = useState( false )
+    const [allProducts, setAllProducts] = useState([]);
 
     const description = useSelector( state => state.designDescription )
-    const images = useSelector( state => state.capturedImages )
     const color = useSelector( state => state.clothingColor )
     const size = useSelector( state => state.clothingSize )
     const title = useSelector( state => state.designTitle )
     const openModal = useSelector( state => state.openModal )
+    const capturedImages = useSelector( state => state.capturedImages )
+
+    let formdata = handlerSaveDesign(description, capturedImages, color, size, title, price, 1, 3)
+
+    const onAddProduct = (data) => {
+        const newProduct = {
+            id: uuidv4(),
+            name: data.get('name'),
+            price: data.get('price'),
+            description: data.get('description'),
+            stock: data.get('stock'),
+            color: data.get('color'),
+            size: data.get('size'),
+            category: data.get('category'),
+            images: capturedImages.map((image, index) => data.get(`image${index}`)),
+        };
+
+        setAllProducts([...allProducts, newProduct]);
+        dispatch (addToCart(newProduct));
+    }
 
     return(
         <>
@@ -47,7 +69,7 @@ export function ModalCustomize( { price } ){
                             <div className="w-full flex justify-center gap-[30px]">
                                 <button
                                     className="w-[25%] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full"
-                                    onClick={ () => handlerSaveDesign( setButtonsEnabled, description, images, color, size, title, price, 1, 3 ) }
+                                    onClick={ () => handlerSendDesignDataBase(setButtonsEnabled, formdata) }
                                 >
                                     Guardar diseño
                                 </button>
@@ -57,6 +79,7 @@ export function ModalCustomize( { price } ){
                                         className={ isButtonsEnabled ? enabledButtonClasses : disabledButtonClasses }
                                         title="Agregar diseño al carrito"
                                         disabled={ !isButtonsEnabled }
+                                        onClick={ () => onAddProduct(formdata) }
                                     >
                                         <IconCart isButtonsEnabled={ isButtonsEnabled } />
                                     </button>

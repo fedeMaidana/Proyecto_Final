@@ -225,7 +225,6 @@ export const loadCart = (cartData) => {
     };
   };
 
-
 export const getUsers = () => {
     return async ( dispatch ) => {
         const { data } = await axios.get( '/users' )

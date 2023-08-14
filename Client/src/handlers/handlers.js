@@ -43,7 +43,7 @@ export const handleModal = async ( dispatch ) => {
     dispatch( setModal( true ) )
 }
 
-export const handlerSaveDesign = async ( setButtonsEnabled, description, images, color, size, title, price, stateShare, userId ) => {
+export const handlerSaveDesign = (description, images, color, size, title, price, stateShare, userId ) => {
     const formData = new FormData()
     formData.append( 'idUser', 1 )
     formData.append( 'description', description )
@@ -59,8 +59,10 @@ export const handlerSaveDesign = async ( setButtonsEnabled, description, images,
         formData.append( 'images', image, `image_${ index }.png` )
     })
 
-    console.log(formData);
+    return formData
+}
 
+export const handlerSendDesignDataBase = async (setButtonsEnabled, formData) => {
     await axios.post( '/products', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'

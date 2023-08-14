@@ -20,7 +20,7 @@ import {
     CLEAR_CART,
     INCREMENT_PRODUCT,
     DECREMENT_PRODUCT,
-    LOAD_CART
+    LOAD_CART,
     SEARCH_PRODUCT_FAILURE,
     CLEAR_SEARCH_PRODUCTS,
     GET_USERS
@@ -224,8 +224,6 @@ export const loadCart = (cartData) => {
       payload: cartData,
     };
   };
-
-})
 
 export const getUsers = () => {
     return async ( dispatch ) => {

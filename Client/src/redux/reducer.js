@@ -44,7 +44,6 @@ const initialState = {
     cartTotal: 0, // Aquí se almacenan el total del carrito
     cartCount: 0, // Aquí se almacenan la cantidad total de productos en el carrito
     searchProducts: [],
-    capturedImages: [],
     users: [],
     allUsers: []
 

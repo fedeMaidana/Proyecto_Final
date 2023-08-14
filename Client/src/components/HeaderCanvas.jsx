@@ -14,6 +14,8 @@ export function HeaderCanvas(){
     const dispatch = useDispatch()
 
     const title = useSelector( state => state.designTitle )
+    const clothingColor = useSelector( state => state.clothingColor )
+    const clothingSize = useSelector( state => state.clothingSize )
     const capturedImages = useSelector( state => state.capturedImages )
     const [ isEditing, setIsEditing ] = useState( false )
     const [allProducts, setAllProducts] = useState([]);
@@ -41,7 +43,7 @@ export function HeaderCanvas(){
     }
 
     const formData = new FormData();
-formData.append('name', designTitle);
+formData.append('name', title);
 formData.append('price', 10);
 formData.append('description', "hhhjjjk");
 formData.append('stock', 10);
@@ -66,7 +68,7 @@ capturedImages.forEach((image, index) => {
     //     }
 
     const formData = new FormData();
-    formData.append('name', designTitle);
+    formData.append('name', title);
     formData.append('price', 10);
     formData.append('description', "hhhjjjk");
     formData.append('stock', 10);

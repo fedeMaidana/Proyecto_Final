@@ -1,16 +1,14 @@
-import { useState, useEffect  } from 'react';
-import { useSelector, useDispatch} from 'react-redux'; 
-import { removeFromCart, clearCart, incrementProduct, decrementProduct, loadCart} from '../redux/actions';
-import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage'; // Importa las funciones de localStorage
+import { useState, useEffect  } from 'react'
+import { useSelector, useDispatch} from 'react-redux'
+import { removeFromCart, clearCart, incrementProduct, decrementProduct, loadCart} from '../redux/actions'
+import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage' // Importa las funciones de localStorage
 
 export function Cart() {
+  const cartProducts = useSelector((state) => state.cartProducts) // estás asegurándote de que cartProducts tenga un valor (en este caso, un array vacío []) en caso de que sea undefined. Esto evitará que la función reduce genere errores debido a un valor no definido.
+  const cartTotal = useSelector((state) => state.cartTotal)
+  const cartCount = useSelector((state) => state.cartCount)
 
-    
-  const cartProducts = useSelector((state) => state.cartProducts); // estás asegurándote de que cartProducts tenga un valor (en este caso, un array vacío []) en caso de que sea undefined. Esto evitará que la función reduce genere errores debido a un valor no definido.
-  const cartTotal = useSelector((state) => state.cartTotal);
-  const cartCount = useSelector((state) => state.cartCount);
-
-  const dispatch = useDispatch(); // Obtiene la función dispatch
+  const dispatch = useDispatch() // Obtiene la función dispatch
 
   // Estado local para almacenar la cantidad de cada producto
   const [productQuantities, setProductQuantities] = useState(
@@ -29,39 +27,41 @@ export function Cart() {
   }, []); */
 
   const onDeleteProduct = (productId) => {
-    const productToDelete = cartProducts.find((product) => product.id === productId);
+    const productToDelete = cartProducts.find((product) => product.id === productId)
     if (productToDelete) {
-      dispatch(removeFromCart(productId));
+      dispatch(removeFromCart(productId))
     }
-  };
-  const clearCartButton = () => {
-    dispatch(clearCart());
   }
 
-  const [active, setActive] = useState(false);
+  const clearCartButton = () => {
+    dispatch(clearCart())
+  }
+
+  const [active, setActive] = useState(false)
 
 
   const handleIncrement = (product) => {
-    const updatedQuantities = { ...productQuantities };
-    updatedQuantities[product.id] += 1;
-    setProductQuantities(updatedQuantities);
+    const updatedQuantities = { ...productQuantities }
+    updatedQuantities[product.id] += 1
+    setProductQuantities(updatedQuantities)
 
-    dispatch(incrementProduct(product)); // Pasar el objeto de producto completo
-  };
+    dispatch(incrementProduct(product)) // Pasar el objeto de producto completo
+  }
+
   const handleDecrement = (product) => {
     if (productQuantities[product.id] > 1) {
-      const updatedQuantities = { ...productQuantities };
-      updatedQuantities[product.id] -= 1;
-      setProductQuantities(updatedQuantities);
+      const updatedQuantities = { ...productQuantities }
+      updatedQuantities[product.id] -= 1
+      setProductQuantities(updatedQuantities)
 
-      dispatch(decrementProduct(product)); // Pasar el objeto de producto completo
+      dispatch(decrementProduct(product)) // Pasar el objeto de producto completo
     }
   };
 
   // Guardar el carrito en Local Storage al cambiar
   useEffect(() => {
-    saveCartToLocalStorage(cartProducts);
-  }, [cartProducts]);
+    saveCartToLocalStorage(cartProducts)
+  }, [cartProducts])
 
 
     return(
@@ -83,7 +83,7 @@ export function Cart() {
             <div
               className={`absolute top-12 right-0 bg-white w-[30rem] z-10 shadow-md rounded ${active ? '' : 'hidden'}`}
             >
-              {cartProducts.length ? ( // existen productos ? 
+              {cartProducts.length ? ( // existen productos ?
                 <> {/* si hay productos entonces: */}
                   <div className='row-product '>
                     {cartProducts.map((product) => (
@@ -111,7 +111,7 @@ export function Cart() {
 
                         </div>
                         {/* Cruz de eliminar producto */}
-                        <svg 
+                        <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'
                           viewBox='0 0 24 24'
@@ -149,7 +149,5 @@ export function Cart() {
               )}
             </div>
           </div>
-        
-    );
-
+    )
 }

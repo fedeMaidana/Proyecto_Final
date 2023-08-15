@@ -10,7 +10,6 @@ export const Login = () => {
     const [ message, setMessage ] = useState(  )
     const [ loading, setLoading ] = useState( false )
     const [access, setAccess] = useState(false);
-    
 
     const handlerUser = ( event ) => {
         setInputs( { ...inputs, [ event.target.name ]: event.target.value } )
@@ -33,11 +32,11 @@ export const Login = () => {
                     console.log(data);
                     localStorage.setItem("token", data?.user.token)
                     if (data.user.token) {
-                        setAccess(true); 
+                        setAccess(true)
                     }
                     setLoading( false )
                 }, 1500)
-                
+
             }).catch( error => {
                 console.error( error )
                 setMessage( 'Hubo un error' )
@@ -57,8 +56,7 @@ export const Login = () => {
 
     const handleGoogleLogin = () => {
         window.location.href = 'http://localhost:3001/login/auth/google'; // Cambia la URL según tu configuración
-      };
-    
+      }
 
     return (
       <>

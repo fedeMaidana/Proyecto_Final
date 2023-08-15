@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import logo from '../assets/images/DiseñoBase_de_logoCustomCraft_black.png'
-import { Cart } from './Cart'
+// import { Cart } from './Cart'
 
 export function Nav() {
   return (
@@ -57,7 +57,7 @@ export function Nav() {
             </li>
 
           </ul>
-          <Cart />
+          {/* <Cart /> */}
         </div>
       </div>
     </nav>

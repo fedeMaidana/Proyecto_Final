@@ -31,7 +31,7 @@ export const Login = () => {
                     setMessage( '' )
                     console.log(data);
                     localStorage.setItem("token", data?.user.token)
-                    if (data.valid) {
+                    if (data.user.token) {
                         setAccess(true)
                     }
                     setLoading( false )

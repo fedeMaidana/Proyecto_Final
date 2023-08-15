@@ -5,32 +5,47 @@ const jwt = require("jsonwebtoken");
 const login = async (email, password) => {
   const user = await User.findOne({ where: { email, estado: 1 } })
 
-  if (!user) return { message: "Usuario no encontrado", valid: false }
+  if (!user) return { message: "Usuario no encontrado"};
 
-  const isCorrect = await bcrypt.compare(password, user.password)
+  const isCorrect = await bcrypt.compare(password, user.password);
 
   if (isCorrect) {
-    const { id, name } = user
+    const { id, name, email, userName, lastName, birthDate, profileImage } = user;
 
-    const userForToken = {
+    const data = {
       id: id,
+      email: email,
       name: name,
+      lastName: lastName,
+      userName: userName,
+      birthDate: birthDate,
+      profileImage: profileImage,
+
     };
 
-    const token = jwt.sign(userForToken, process.env.SECRET_KEY, {
-      expiresIn: 86400, //24hs
+    const token = jwt.sign(data, process.env.SECRET_KEY, {
+      expiresIn: '10000',
     });
 
     return {
       message: "El usuario inició sesión con éxito",
-      valid: true,
       user: {
         id,
+        email,
         name,
+        lastName,
+        userName,
+        birthDate,
+        profileImage,
         token,
       },
     };
   }
+
+  else {
+    return { message: 'Contraseña incorrecta'};
+  }
+
 };
 
 module.exports = { login };

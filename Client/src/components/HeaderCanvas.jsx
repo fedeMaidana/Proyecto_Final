@@ -9,6 +9,8 @@ export function HeaderCanvas(){
     const dispatch = useDispatch()
 
     const title = useSelector( state => state.designTitle )
+    const clothingColor = useSelector( state => state.clothingColor )
+    const clothingSize = useSelector( state => state.clothingSize )
     const capturedImages = useSelector( state => state.capturedImages )
     const [ isEditing, setIsEditing ] = useState( false )
 

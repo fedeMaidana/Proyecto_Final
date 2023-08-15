@@ -5,6 +5,7 @@ const CART_STORAGE_KEY = 'cart';
 export const loadCartFromLocalStorage = () => {
   try {
     const serializedCart = localStorage.getItem(CART_STORAGE_KEY);
+    //console.log(`serializedCart: ${serializedCart}`); //  {"cartProducts":[],"cartTotal":0,"cartCount":0}
     if (serializedCart === null) {
       return undefined;
     }

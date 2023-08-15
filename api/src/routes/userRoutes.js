@@ -14,10 +14,10 @@ userRoutes.post( '/login', loginHandler )
 userRoutes.put( '/deleteuser/:id', deleteHandler )
 userRoutes.get('/login/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-// Route for handling the Google callback after authentication
+// Route cuando google responde si es fallo en auth vuelve a login                                cambiar depende el puerto
 userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }), (req, res) => {
-  // Redirect the user to a success page or dashboard
-  res.redirect('http://localhost:5173/home'); // Change this URL to your desired success route
+  // En caso de ser respuesta positiva lo lleva a home e inicia sesion
+  res.redirect('http://localhost:5173/home'); // Cambiar la ruta depende de cada puerto
 });
 
 module.exports = { userRoutes }

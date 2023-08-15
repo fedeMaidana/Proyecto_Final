@@ -2,17 +2,24 @@ const { User } = require( '../db' )
 const { Product } = require( '../db' )
 
 const getUsers = async () => {
-    const dataBaseUsers = await User.findAll({
-        where: { estado: 1 },
-        include: Product
-    })
+    try {
+        const dataBaseUsers = await User.findAll({
+            where: { estado: 1 },
+            include: Product,
+            
+            
+        });
+        console.log(Product)
 
-    const usersWithoutPassword = dataBaseUsers.map( user => {
-        const { password, ...userWithoutPassword } = user.toJSON()
-        return userWithoutPassword
-    })
-
-    return [ ...usersWithoutPassword ]
-}
-
+        const usersWithoutPassword = dataBaseUsers.map(user => {
+            const { password, ...userWithoutPassword } = user.toJSON();
+            return userWithoutPassword;
+        });
+        console.log(usersWithoutPassword)
+        return [...usersWithoutPassword]; 
+    } catch (error) {
+        console.error("Error al obtener usuarios:", error);
+        throw error;
+    }
+};
 module.exports = { getUsers }

@@ -39,14 +39,47 @@ passport.use(
         const salt = bcrypt.genSaltSync( 10 )
         const hashedPassword = bcrypt.hashSync( randomPassword, salt )
 
+        let fullName = profile.displayName;
+        const spaceIndex1 = fullName.indexOf(' ');
+        const spaceIndex2 = fullName.lastIndexOf(' ');
+
+        let firstName = fullName;
+        let middleName = '';
+        let lastName = '';
+
+        if (spaceIndex1 !== -1 && spaceIndex1 !== spaceIndex2) {
+          firstName = fullName.substring(0, spaceIndex1);
+          middleName = fullName.substring(spaceIndex1 + 1, spaceIndex2);
+          lastName = fullName.substring(spaceIndex2 + 1);
+        } else if (spaceIndex1 !== -1) {
+          firstName = fullName.substring(0, spaceIndex1);
+          lastName = fullName.substring(spaceIndex1 + 1);
+        }
+
+        const birthDate = profile.birthday ? new Date(profile.birthday) : new Date();
+        // Generar un nombre de usuario único basado en el nombre y apellido
+        const baseUsername = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
+        let username = baseUsername;
+        let counter = 1;
+
+        // Verificar si el nombre de usuario ya existe en la base de datos y agregar un número si es necesario
+        while (await User.findOne({ where: { userName: username } })) {
+          username = `${baseUsername}${counter}`;
+          counter++;
+        }
+
         const user = await User.findOrCreate({
-          where: { email: profile.emails[ 0 ].value },
+          where: { email: profile.emails[0].value },
           defaults: {
-            name: profile.displayName,
-            email: profile.emails[ 0 ].value,
+            name: firstName + (middleName ? ' ' + middleName : ''),
+            userName: username, // Almacena el nombre de usuario
+            lastName: lastName || null,
+            email: profile.emails[0].value,
             password: hashedPassword,
+            birthDate: birthDate,
+            profileImage: profile.photos[0].value,
           }
-        })
+        });
 
         return done( null, user[ 0 ] )
 

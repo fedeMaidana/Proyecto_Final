@@ -6,9 +6,14 @@ const { deleteUser } = require( '../controllers/deleteUser' )
 const { sendWelcomeEmail } = require('../controllers/emailService');
 
 const getUsersHandler = async ( _req, res ) => {
-    const users = await getUsers()
-
-    res.status( 200 ).send( users )
+    try {
+        
+        const users = await getUsers()
+    
+        res.status( 200 ).send( users )
+    } catch (error) {
+        res.status( 500 ).json( { error: 'server error' } )
+    }
 }
 
 const getUserIDHandler = async ( req, res ) => {

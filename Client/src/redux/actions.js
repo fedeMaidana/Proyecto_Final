@@ -227,7 +227,8 @@ export const loadCart = (cartData) => {
 
 export const getUsers = () => {
     return async ( dispatch ) => {
-        const { data } = await axios.get( '/users' )
+        const response = await axios.get( '/users' )
+        const data = response.data
         return dispatch( { type: GET_USERS, payload: data } )
     }
 }

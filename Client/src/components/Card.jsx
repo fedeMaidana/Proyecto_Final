@@ -48,7 +48,14 @@ export const Card = ( { name, nameProduct, description, images, price, id } ) =>
             </div>
 
             <div className="flex justify-center row-span-3 border-r-[1px]">
-                {/* Your images mapping logic here */}
+            {images.map( ( image, index ) => (
+                    <img
+                        key={ index }
+                        src={ image }
+                        alt={ image }
+                        className={ `w-[90%] h-full rounded-[10px] mt-[5px] bg-[#b7bbc3] object-cover ${ index === currentIndex ? 'visible' : 'hidden' }` }
+                    />
+                ))}
             </div>
 
             <div className="flex flex-col items-center justify-around row-span-3">

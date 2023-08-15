@@ -3,17 +3,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const login = async (email, password) => {
-  const user = await User.findOne({ where: { email, estado: 1 } });
+  const user = await User.findOne({ where: { email, estado: 1 } })
 
-  if (!user) return { message: "Usuario no encontrado", valid: false };
+  if (!user) return { message: "Usuario no encontrado", valid: false }
 
-  const isCorrect = await bcrypt.compare(password, user.password);
-  console.log(email);
-  console.log(password);
+  const isCorrect = await bcrypt.compare(password, user.password)
+
   if (isCorrect) {
-    console.log(email);
-    console.log(password);
-    const { id, name } = user;
+    const { id, name } = user
 
     const userForToken = {
       id: id,

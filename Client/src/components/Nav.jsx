@@ -1,65 +1,97 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 import logo from '../assets/images/DiseñoBase_de_logoCustomCraft_black.png'
-// import { Cart } from './Cart'
+import { Cart } from './Cart'
 
 export function Nav() {
+  const [ user, setUser ] = useState( undefined )
+  const [ isModalOpen, setIsModalOpen ] = useState( false )
+
+  useEffect(() => {
+    const token = localStorage.getItem( 'token' )
+
+    if( token ){
+      const fetchUserDetails = async () => {
+        try{
+          const response = await axios.get( 'http://localhost:3001/user', {
+            headers: {
+              token: `${ token }`
+            }
+          })
+
+          setUser( response?.data?.name )
+
+        }catch( error ){
+          console.error( 'Error al obtener detalles del usuario:', error )
+        }
+      }
+
+      fetchUserDetails()
+    }
+  }, [] )
+
+  const handleLogout = () => {
+    localStorage.removeItem( 'token' )
+    setUser( undefined )
+    setIsModalOpen( false )
+  }
+
   return (
-    <nav className="bg-secondary-blue2 p-4 relative">
-      <div className="container mx-auto">
-        <div className="flex items-center justify-between">
-          <Link to="/">
-            <img
-              src={logo}
-              alt="Custom Craft Logo"
-              className="w-[11rem] cursor-pointer"
-            />
-          </Link>
-          <ul className="flex space-x-20">
-            <li>
-              <Link
-                to="/home"
-                className="text-principal-black text-3xl transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
-              >
-                <p className='font-bold'>Home</p>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/community"
-                className="text-principal-black text-3xl transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
-              >
-                <p className='font-bold'>Community</p>
-              </Link>
-            </li>
+    <nav className="w-full h-[10vh] fixed flex justify-between items-center p-3 bg-white/[.3] backdrop-blur-sm border-b-[1px] z-50">
+      <Link to="/">
+        <img src={ logo } alt="Custom Craft Logo" className="w-[10rem] cursor-pointer" />
+      </Link>
 
-            <li className="relative group z-50">
-              <label className='text-principal-black text-3xl font-bold cursor-pointer group-hover:bg-blue-600 group-hover:text-gray-300 rounded'>
-                nombre del usuario
-                <ul className="menu-vertical absolute left-0 hidden mt-1 space-y-2 group-hover:block z-60 bg-secondary-blue2 p-4"> {/* Cambiamos el color de fondo y agregamos un relleno interno */}
-                  <li>
-                    <Link
-                      to="/my-profile"
-                      className="text-principal-black text-3xl cursor-pointer"
-                    >
-                      Mi Perfil
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/other-link"
-                      className="text-principal-black text-3xl cursor-pointer"
-                    >
-                      Otro Enlace
-                    </Link>
-                  </li>
-                </ul>
-              </label>
-            </li>
+      <div className='flex w-[45%] justify-between'>
+        <ul className="w-[300px] flex items-center justify-evenly border-r-[1px] border-[#858585]">
+          <li>
+            <Link
+              to="/home"
+              className="text-principal-black text-[1.5rem] transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
+            >
+              <p className='font-semibold'>Inicio</p>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/community"
+              className="text-principal-black text-[1.5rem] transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
+            >
+              <p className='font-semibold'>Comunidad</p>
+            </Link>
+          </li>
+        </ul>
 
-          </ul>
-          {/* <Cart /> */}
-        </div>
+        { user !== undefined
+          ?(
+            <ul className='w-[55%] flex justify-around items-center'>
+              <Cart />
+              <li className="relative flex items-center gap-[10px] cursor-pointer" onClick={ () => setIsModalOpen( prevState => !prevState ) } >
+                <p className='text-[1.5rem]' >{ user }</p>
+                <span className='w-[40px] h-[40px] flex bg-black rounded-full'></span>
+
+                {isModalOpen && (
+                <div className="w-[200%] flex flex-col items-baseline absolute top-[47px] right-[-36px] bg-secondary-blue2 p-4 z-50 rounded-bl-[10px] rounded-br-[10px]">
+                  <Link to="/my-profile" className="text-[1.5rem] cursor-pointer">
+                    Mi Perfil
+                  </Link>
+                  <button className="text-[#b30000] text-[1.5rem] cursor-pointer" onClick={ handleLogout } >
+                    Cerrar Sesión
+                  </button>
+                </div>
+              )}
+
+              </li>
+            </ul>
+          ):(
+            <div className='w-[55%] flex items-center justify-center'>
+              <Link to='login'>
+                <button className='py-2 px-4 bg-[#33a1fd] text-white text-[1.2rem] font-semibold rounded-full'>Iniciar Sesión</button>
+              </Link>
+            </div>
+          )}
       </div>
     </nav>
-  );
+  )
 }

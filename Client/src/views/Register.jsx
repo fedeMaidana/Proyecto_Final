@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom"
 export const Register = () => {
     const navigate = useNavigate()
 
-    const [inputs, setInputs] = useState( { email: "", name: "", password: "" } )
+    const [inputs, setInputs] = useState( { email: "", name: "", password: "", userName:"", birthDate: "",  })
 
     const [ message, setMessage ] = useState()
     const [ loading, setLoading ] = useState( false )
 
-    const { email, name, password } = inputs
+    const { email, name, password, userName, lastName, birthDate } = inputs
 
 
     const onChange = ( event ) => {
@@ -20,17 +20,20 @@ export const Register = () => {
     const onSubmit = async ( event ) => {
         event.preventDefault()
 
-        if( name !== "" && email !== "" &&  password !== "" ){
-            const User = { name, email, password }
+        if( name !== "" && email !== "" &&  password !== "" &&  userName !== "" &&  lastName !== "" && birthDate !== "" ){
+            const User = { name, email, password, userName, lastName, birthDate }
 
             setLoading( true )
 
             await axios.post( 'http://localhost:3001/register', User ).then( ( { data } ) => {
                 setMessage( data.message )
-                setInputs( { email: "", name: "", password: "" } )
+                setInputs( { email: "", name: "", password: "", userName:"", lastName:"", birthDate: "", } )
                 setTimeout(() => {
                     setMessage( '' )
-                    navigate( '/login' )
+                    console.log(data);
+                    // if (data.valid) {
+                        navigate( '/login' )
+                    // }
                     setLoading( false )
                 }, 1500)
             }).catch( error => {
@@ -74,6 +77,96 @@ export const Register = () => {
                                 type="text"
                                 id="name"
                                 name="name"
+                                autoComplete="off"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mb-6">
+                        <div>
+                            <label
+                                className="block font-semibold text-gray-700 mb-3"
+                                htmlFor="lastName">Lastname
+                            </label>
+
+                            <input
+                                className="
+                                    bg-principal-white
+                                    mt-1
+                                    p-3
+                                    border
+                                    border-principal-black
+                                    w-full
+                                    rounded
+                                    focus:outline-none
+                                    focus:ring
+                                    focus:border-blue-300
+                                    mb-1
+                                "
+                                onChange={ event => onChange( event ) }
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                autoComplete="off"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mb-6">
+                        <div>
+                            <label
+                                className="block font-semibold text-gray-700 mb-3"
+                                htmlFor="userName">Username
+                            </label>
+
+                            <input
+                                className="
+                                    bg-principal-white
+                                    mt-1
+                                    p-3
+                                    border
+                                    border-principal-black
+                                    w-full
+                                    rounded
+                                    focus:outline-none
+                                    focus:ring
+                                    focus:border-blue-300
+                                    mb-1
+                                "
+                                onChange={ event => onChange( event ) }
+                                type="text"
+                                id="userName"
+                                name="userName"
+                                autoComplete="off"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mb-6">
+                        <div>
+                            <label
+                                className="block font-semibold text-gray-700 mb-3"
+                                htmlFor="birthDate">Birthdate
+                            </label>
+
+                            <input
+                                className="
+                                    bg-principal-white
+                                    mt-1
+                                    p-3
+                                    border
+                                    border-principal-black
+                                    w-full
+                                    rounded
+                                    focus:outline-none
+                                    focus:ring
+                                    focus:border-blue-300
+                                    mb-1
+                                "
+                                onChange={ event => onChange( event ) }
+                                type="date"
+                                id="birthDate"
+                                name="birthDate"
                                 autoComplete="off"
                             />
                         </div>

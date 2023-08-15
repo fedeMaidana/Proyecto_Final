@@ -12,6 +12,15 @@ module.exports = ( sequilize ) => {
         type: DataTypes.STRING,
         allowNull: false
       },
+      userName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      lastName: {
+          type: DataTypes.STRING,
+          allowNull: false, 
+      },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -25,6 +34,14 @@ module.exports = ( sequilize ) => {
       password: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      birthDate: {
+          type: DataTypes.DATEONLY,
+          allowNull: false, 
+      },
+      profileImage: {
+          type: DataTypes.STRING, 
+          allowNull: true, 
       },
       estado: {
         type: DataTypes.INTEGER,

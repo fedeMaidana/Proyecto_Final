@@ -5,9 +5,8 @@ const getUsers = async () => {
     try {
         const dataBaseUsers = await User.findAll({
             where: { estado: 1 },
-            include: Product,
-            
-            
+            include: 
+                { model: Product, as: 'CreatedProducts' }
         });
 
         const usersWithoutPassword = dataBaseUsers.map(user => {

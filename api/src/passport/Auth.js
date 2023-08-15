@@ -2,6 +2,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const { User } = require('../db');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const URL = 'http://localhost:3001';
 
 
@@ -81,7 +82,17 @@ passport.use(
           }
         });
 
-        return done( null, user[ 0 ] )
+        const data = {
+          userId: user[0].id,
+          userName: user[0].userName,
+          // Agrega otros datos del usuario que puedas necesitar en el cliente
+        };
+        
+        const token = jwt.sign(data, process.env.SECRET_KEY, {
+          expiresIn: '7d', // Ejemplo: el token expira en 7 días
+        });
+
+        return done( null, { user: user[0], token })
 
       }catch( error ){
         return done( error, null )

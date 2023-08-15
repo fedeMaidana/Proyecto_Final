@@ -33,11 +33,11 @@ Shopping_cart.belongsTo( User, { foreignKey: 'userId' } );
 Product.belongsTo( Category, { foreignKey: "categoryId" } );
 Category.hasMany( Product, { foreignKey: "categoryId" } );
 
-User.hasMany( Product, { foreignKey: "userId" } );
-Product.belongsTo( User, { foreignKey: "userId" } );
+User.hasMany( Product, { foreignKey: "userId",  as: "CreatedProducts"  } );
+Product.belongsTo( User, { foreignKey: "userId", as: "CreatedProducts"  } );
 
-User.belongsToMany(Product, {through: Favorite, timestamps: false,});
-Product.belongsToMany(User, {through: Favorite,timestamps: false,});
+User.belongsToMany(Product, {through: Favorite, timestamps: false, as: "FavoriteProducts" });
+Product.belongsToMany(User, {through: Favorite,timestamps: false, as: "FavoriteProducts" });
 
 
 User.hasMany(Comment, { foreignKey: 'userId' });

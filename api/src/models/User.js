@@ -14,7 +14,8 @@ module.exports = ( sequilize ) => {
       },
       userName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true,
       },
       lastName: {
           type: DataTypes.STRING,

@@ -9,7 +9,6 @@ const getUsers = async () => {
             
             
         });
-        console.log(Product)
 
         const usersWithoutPassword = dataBaseUsers.map(user => {
             const { password, ...userWithoutPassword } = user.toJSON();

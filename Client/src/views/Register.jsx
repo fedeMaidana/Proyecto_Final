@@ -9,6 +9,7 @@ export const Register = () => {
 
     const [ message, setMessage ] = useState()
     const [ loading, setLoading ] = useState( false )
+    const [profileImage, setProfileImage] = useState(null);
 
     const { email, name, password, userName, lastName, birthDate } = inputs
 
@@ -17,34 +18,60 @@ export const Register = () => {
         setInputs({ ...inputs, [ event.target.name ]: event.target.value } )
     }
 
-    const onSubmit = async ( event ) => {
-        event.preventDefault()
+    const onSubmit = async (event) => {
+    event.preventDefault();
 
-        if( name !== "" && email !== "" &&  password !== "" &&  userName !== "" &&  lastName !== "" && birthDate !== "" ){
-            const User = { name, email, password, userName, lastName, birthDate }
+    if (
+        name !== "" &&
+        email !== "" &&
+        password !== "" &&
+        userName !== "" &&
+        lastName !== "" &&
+        birthDate !== ""
+    ) {
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("userName", userName);
+        formData.append("lastName", lastName);
+        formData.append("birthDate", birthDate);
+        if (profileImage) {
+            formData.append("profileImage", profileImage);
+        }
 
-            setLoading( true )
+        setLoading(true);
 
-            await axios.post( 'http://localhost:3001/register', User ).then( ( { data } ) => {
-                setMessage( data.message )
-                setInputs( { email: "", name: "", password: "", userName:"", lastName:"", birthDate: "", } )
-                setTimeout(() => {
-                    setMessage( '' )
-                    console.log(data);
-                    // if (data.valid) {
-                        navigate( '/login' )
-                    // }
-                    setLoading( false )
-                }, 1500)
-            }).catch( error => {
-                console.error( error )
-                setMessage( 'Hubo un error al registrarse' )
-                setTimeout(() => {
-                    setMessage( '' )
-                }, 1500)
-            })
+        try {
+            const response = await axios.post(
+                "http://localhost:3001/register",
+                formData
+            );
+            setMessage(response.data.message);
+            setInputs({
+                email: "",
+                name: "",
+                password: "",
+                userName: "",
+                lastName: "",
+                birthDate: "",
+            });
+            setProfileImage(null);
+            setTimeout(() => {
+                setMessage("");
+                navigate("/login");
+                setLoading(false);
+            }, 1500);
+        } catch (error) {
+            console.error(error);
+            setMessage("Ocurrió un error al registrarse");
+            setTimeout(() => {
+                setMessage("");
+            }, 1500);
         }
     }
+};
+
 
     return(
         <div className="bg-principal-black min-h-screen flex items-center justify-center">
@@ -52,7 +79,64 @@ export const Register = () => {
                 <h1 className="text-5xl font-bold mb-8">Register in Custom Craft</h1>
 
                 <form onSubmit={ event => onSubmit( event ) } >
-                    <div className="mb-6">
+                <div className="mb-6 ">
+                            <label
+                                className="block font-semibold text-gray-700 mb-3"
+                                htmlFor="profileImage"
+                            >
+                                Profile Image
+                            </label>
+                <div className="flex items-center justify-center">
+                <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100">
+    {profileImage ? (
+        <div>
+            <img
+                id="image-preview"
+                src={URL.createObjectURL(profileImage)}
+                alt="Profile"
+                className="w-full h-full object-cover"
+            />
+            <label
+                htmlFor="profileImage"
+                className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-gray-500 absolute bottom-0 right-0 cursor-pointer"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+            </label>
+        </div>
+    ) : (
+        <label htmlFor="profileImage" className="flex items-center justify-center w-full h-full cursor-pointer">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6 text-gray-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+        </label>
+    )}
+</div>
+<input
+    type="file"
+    id="profileImage"
+    name="profileImage"
+    accept="image/*"
+    className="hidden"
+    onChange={(event) => setProfileImage(event.target.files[0])}
+/>
+
+
+                        </div>
+                    
                         <div>
                             <label
                                 className="block font-semibold text-gray-700 mb-3"

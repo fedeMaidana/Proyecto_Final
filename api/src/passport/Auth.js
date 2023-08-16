@@ -33,7 +33,19 @@ passport.use(
             where: { email: profile.emails[ 0 ].value }
         })
 
-        if( existingUser ) return done( null, existingUser ) // Si el mail ya está registrado inicia sesión con el usuario existente
+        if (existingUser) {
+          try {
+            const token = jwt.sign({ userId: existingUser.id }, process.env.SECRET_KEY, {
+              expiresIn: '10000h'
+            });
+        
+            existingUser.token = token;
+            
+            return done(null, existingUser);
+          } catch (jwtError) {
+            return done(jwtError, null);
+          }
+        }// Si el mail ya está registrado inicia sesión con el usuario existente
 
         //sino crea uno nuevo en la base
         const randomPassword = Math.random().toString( 36 ).slice( -10 ) // Genera una contraseña aleatoria
@@ -82,15 +94,13 @@ passport.use(
           }
         });
 
-        const data = {
-          userId: user[0].id,
-          userName: user[0].userName,
-          // Agrega otros datos del usuario que puedas necesitar en el cliente
-        };
+
         
-        const token = jwt.sign(data, process.env.SECRET_KEY, {
-          expiresIn: '7d', // Ejemplo: el token expira en 7 días
+        const token = jwt.sign({ userId: user[0].id }, process.env.SECRET_KEY, {
+          expiresIn: '10000h', // Ejemplo: el token expira en 1hora
         });
+
+        user[0].token = token;
 
         return done( null, { user: user[0], token })
 
@@ -100,3 +110,5 @@ passport.use(
     }
   )
 )
+
+module.exports = passport

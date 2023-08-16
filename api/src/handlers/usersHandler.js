@@ -27,10 +27,12 @@ const getUserIDHandler = async ( req, res ) => {
 }
 
 const registerHandler = async ( req, res ) => {
-    const { name, email, password, userName, lastName, birthDate, profileImage } = req.body
+    const { name, email, password, userName, lastName, birthDate } = req.body
+    const profileImage = req.file
+    console.log(profileImage);
 
     try{
-        const result = await register( name, email, password, userName, lastName, birthDate, profileImage )
+        const result = await register( name, email, password, userName, lastName, birthDate, profileImage  )
         await sendWelcomeEmail(email);
 
         res.status( 200 ).json( result )

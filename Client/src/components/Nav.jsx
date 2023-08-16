@@ -10,17 +10,20 @@ export function Nav() {
 
   useEffect(() => {
     const token = localStorage.getItem( 'token' )
-
+console.log(token);
     if( token ){
       const fetchUserDetails = async () => {
         try{
           const response = await axios.get( 'http://localhost:3001/user', {
             headers: {
-              token: `${ token }`
+              token: `${token}`
             }
           })
 
+          console.log(response);
+
           setUser( response?.data?.name )
+          
 
         }catch( error ){
           console.error( 'Error al obtener detalles del usuario:', error )
@@ -36,6 +39,7 @@ export function Nav() {
     setUser( undefined )
     setIsModalOpen( false )
   }
+
 
   return (
     <nav className="w-full h-[10vh] fixed flex justify-between items-center p-3 bg-white/[.3] backdrop-blur-sm border-b-[1px] z-50">

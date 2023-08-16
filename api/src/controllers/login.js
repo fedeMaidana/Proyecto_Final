@@ -24,7 +24,7 @@ const login = async (email, password) => {
     };
 
     const token = jwt.sign(data, process.env.SECRET_KEY, {
-      expiresIn: '10000',
+      expiresIn: '10000h',
     });
 
     return {

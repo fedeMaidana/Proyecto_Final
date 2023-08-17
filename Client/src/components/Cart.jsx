@@ -13,30 +13,15 @@ export function Cart() {
 
   const dispatch = useDispatch(); // Obtiene la función dispatch
 
-/*   const cartData = {
-    cartProducts: cartProducts,
-    cartTotal: cartTotal,
-    cartCount: cartCount,
-  }; */
-  
   //**********************************************  LOCAL STORAGE  ************************************************************************************** */
   // Cargar el carrito desde Local Storage al cargar el componente
-/*   useEffect(() => {
+  useEffect(() => {
     const savedCart = loadCartFromLocalStorage();
     //console.log(savedCart); //{cartProducts: Array(0), cartTotal: 0, cartCount: 0}
     if (savedCart) {
       dispatch(loadCart(savedCart)); // Cargar el carrito previamente guardado en el Local Storage
     }
-  }, [dispatch]); */
-  useEffect(() => {
-    const cartData = {
-      cartProducts: cartProducts,
-      cartTotal: cartTotal,
-      cartCount: cartCount,
-    };
-    saveCartToLocalStorage(cartData);
-  }, [cartProducts, cartTotal, cartCount]);
-
+  }, [dispatch]);
   
   // Guardar el carrito en Local Storage al cambiar
   useEffect(() => {
@@ -82,6 +67,30 @@ export function Cart() {
       setProductQuantities(updatedQuantities);
 
       dispatch(decrementProduct(product)); // Pasar el objeto de producto completo
+    }
+  };
+
+  const handleBuyButton = async () => {
+    var firstProduc = cartProducts[0];
+    const nameProduct = firstProduc.name;
+    const description = firstProduc.description;
+    try {
+        const response = await axios.post('http://localhost:3001/create-checkout-session', {
+            cardName: nameProduct,
+            cardDescription: description,
+        });
+
+        const { sessionUrl } = response.data; // Obtiene la URL de sesión
+
+        if (sessionUrl) {
+            // Redirige a la URL de sesión usando window.location
+            window.location.href = sessionUrl;
+        } else {
+            console.error('URL de sesión no disponible.');
+        }
+
+    } catch (error) {
+        console.error('Error al enviar datos al backend:', error);
     }
   };
 
@@ -165,6 +174,12 @@ export function Cart() {
                   onClick={clearCartButton}>
                     Empty cart
                   </button>
+                  <button 
+                    className='border-0 bg-green-500 text-white py-4 block w-full mt-2.5 rounded-bl-lg rounded-br-lg font-inherit cursor-pointer text-[1.5rem] transition-all duration-300 ease-in-out hover:bg-green-600' 
+                    onClick={handleBuyButton}
+                  >
+                    Buy
+                </button>
                 </>
               ) : (
                 <p className='p-5 text-center'>Cart is empty</p>

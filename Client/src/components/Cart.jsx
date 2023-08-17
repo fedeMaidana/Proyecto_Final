@@ -1,14 +1,52 @@
-import { useState, useEffect  } from 'react'
-import { useSelector, useDispatch} from 'react-redux'
-import { removeFromCart, clearCart, incrementProduct, decrementProduct, loadCart} from '../redux/actions'
-import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage' // Importa las funciones de localStorage
+import { useState, useEffect  } from 'react';
+import { useSelector, useDispatch} from 'react-redux'; 
+import { removeFromCart, clearCart, incrementProduct, decrementProduct, loadCart} from '../redux/actions';
+import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage'; // Importa las funciones de localStorage
+import axios from 'axios';
 
 export function Cart() {
-  const cartProducts = useSelector((state) => state.cartProducts) // estás asegurándote de que cartProducts tenga un valor (en este caso, un array vacío []) en caso de que sea undefined. Esto evitará que la función reduce genere errores debido a un valor no definido.
-  const cartTotal = useSelector((state) => state.cartTotal)
-  const cartCount = useSelector((state) => state.cartCount)
 
-  const dispatch = useDispatch() // Obtiene la función dispatch
+    
+  const cartProducts = useSelector((state) => state.cartProducts); // estás asegurándote de que cartProducts tenga un valor (en este caso, un array vacío []) en caso de que sea undefined. Esto evitará que la función reduce genere errores debido a un valor no definido.
+  const cartTotal = useSelector((state) => state.cartTotal);
+  const cartCount = useSelector((state) => state.cartCount);
+
+  const dispatch = useDispatch(); // Obtiene la función dispatch
+
+/*   const cartData = {
+    cartProducts: cartProducts,
+    cartTotal: cartTotal,
+    cartCount: cartCount,
+  }; */
+  
+  //**********************************************  LOCAL STORAGE  ************************************************************************************** */
+  // Cargar el carrito desde Local Storage al cargar el componente
+/*   useEffect(() => {
+    const savedCart = loadCartFromLocalStorage();
+    //console.log(savedCart); //{cartProducts: Array(0), cartTotal: 0, cartCount: 0}
+    if (savedCart) {
+      dispatch(loadCart(savedCart)); // Cargar el carrito previamente guardado en el Local Storage
+    }
+  }, [dispatch]); */
+  useEffect(() => {
+    const cartData = {
+      cartProducts: cartProducts,
+      cartTotal: cartTotal,
+      cartCount: cartCount,
+    };
+    saveCartToLocalStorage(cartData);
+  }, [cartProducts, cartTotal, cartCount]);
+
+  
+  // Guardar el carrito en Local Storage al cambiar
+  useEffect(() => {
+    saveCartToLocalStorage({
+      cartProducts: cartProducts,
+      cartTotal: cartTotal,
+      cartCount: cartCount,
+    });
+  }, [cartProducts, cartTotal, cartCount]);
+  //********************************************************************************************************************************* */
 
   // Estado local para almacenar la cantidad de cada producto
   const [productQuantities, setProductQuantities] = useState(
@@ -18,50 +56,34 @@ export function Cart() {
     }, {})
   );
 
-  // Cargar el carrito desde Local Storage al iniciar
-/*   useEffect(() => {
-    const savedCart = loadCartFromLocalStorage();
-    if (savedCart) {
-      dispatch(loadCart(savedCart));
-    }
-  }, []); */
-
   const onDeleteProduct = (productId) => {
-    const productToDelete = cartProducts.find((product) => product.id === productId)
+    const productToDelete = cartProducts.find((product) => product.id === productId);
     if (productToDelete) {
-      dispatch(removeFromCart(productId))
-    }
-  }
-
-  const clearCartButton = () => {
-    dispatch(clearCart())
-  }
-
-  const [active, setActive] = useState(false)
-
-
-  const handleIncrement = (product) => {
-    const updatedQuantities = { ...productQuantities }
-    updatedQuantities[product.id] += 1
-    setProductQuantities(updatedQuantities)
-
-    dispatch(incrementProduct(product)) // Pasar el objeto de producto completo
-  }
-
-  const handleDecrement = (product) => {
-    if (productQuantities[product.id] > 1) {
-      const updatedQuantities = { ...productQuantities }
-      updatedQuantities[product.id] -= 1
-      setProductQuantities(updatedQuantities)
-
-      dispatch(decrementProduct(product)) // Pasar el objeto de producto completo
+      dispatch(removeFromCart(productId));
     }
   };
+  const clearCartButton = () => {
+    dispatch(clearCart());
+  }
 
-  // Guardar el carrito en Local Storage al cambiar
-  useEffect(() => {
-    saveCartToLocalStorage(cartProducts)
-  }, [cartProducts])
+  const [active, setActive] = useState(false);
+
+  const handleIncrement = (product) => {
+    const updatedQuantities = { ...productQuantities };
+    updatedQuantities[product.id] += 1;
+    setProductQuantities(updatedQuantities);
+
+    dispatch(incrementProduct(product)); // Pasar el objeto de producto completo
+  };
+  const handleDecrement = (product) => {
+    if (productQuantities[product.id] > 1) {
+      const updatedQuantities = { ...productQuantities };
+      updatedQuantities[product.id] -= 1;
+      setProductQuantities(updatedQuantities);
+
+      dispatch(decrementProduct(product)); // Pasar el objeto de producto completo
+    }
+  };
 
 
     return(
@@ -83,7 +105,7 @@ export function Cart() {
             <div
               className={`absolute top-12 right-0 bg-white w-[30rem] z-10 shadow-md rounded ${active ? '' : 'hidden'}`}
             >
-              {cartProducts.length ? ( // existen productos ?
+              {cartProducts.length ? ( // existen productos ? 
                 <> {/* si hay productos entonces: */}
                   <div className='row-product '>
                     {cartProducts.map((product) => (
@@ -111,7 +133,7 @@ export function Cart() {
 
                         </div>
                         {/* Cruz de eliminar producto */}
-                        <svg
+                        <svg 
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'
                           viewBox='0 0 24 24'
@@ -149,5 +171,7 @@ export function Cart() {
               )}
             </div>
           </div>
-    )
+        
+    );
+
 }

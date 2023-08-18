@@ -1,11 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { setModal } from "../redux/actions"
 import { handleDescriptionChange } from "../handlers/handlers"
 import { IconCart, IconShare } from "../assets/icons/icons"
 import { handlerSaveDesign, handlerSendDesignDataBase } from "../handlers/handlers"
 import { v4 as uuidv4 } from 'uuid';
-import { addToCart } from "../redux/actions"
+import { addToCart, loadCart } from "../redux/actions"
+import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage'; // Importa las funciones de localStorage
 
 const enabledButtonClasses = "h-[40px] w-[40px] bg-white border rounded-full flex items-center justify-center cursor-pointer"
 const disabledButtonClasses = "h-[40px] w-[40px] bg-gray-300 border rounded-full flex items-center justify-center cursor-not-allowed"
@@ -22,10 +23,14 @@ export function ModalCustomize( { price } ){
     const title = useSelector( state => state.designTitle )
     const openModal = useSelector( state => state.openModal )
     const capturedImages = useSelector( state => state.capturedImages )
+    const products = useSelector(state => state.products)
+    const cartProducts = useSelector((state) => state.cartProducts); // estás asegurándote de que cartProducts tenga un valor (en este caso, un array vacío []) en caso de que sea undefined. Esto evitará que la función reduce genere errores debido a un valor no definido.
+    const cartTotal = useSelector((state) => state.cartTotal);
+    const cartCount = useSelector((state) => state.cartCount);
 
     let formdata = handlerSaveDesign(description, capturedImages, color, size, title, price, 1, 3)
 
-    const onAddProduct = (data) => {
+    const onAddProduct = (data, products) => {
         const newProduct = {
             id: uuidv4(),
             name: data.get('name'),
@@ -35,12 +40,40 @@ export function ModalCustomize( { price } ){
             color: data.get('color'),
             size: data.get('size'),
             category: data.get('category'),
-            images: capturedImages.map((image, index) => data.get(`image${index}`)),
+            images: products[products.length - 1].images[0]
         };
 
         setAllProducts([...allProducts, newProduct]);
         dispatch (addToCart(newProduct));
     }
+
+    const [cartData, setCartData] = useState({
+      cartProducts: [],
+      cartTotal: 0,
+      cartCount: 0,
+    });
+    useEffect(() => {
+      setCartData({
+        cartProducts: cartProducts,
+        cartTotal: cartTotal,
+        cartCount: cartCount,
+      });
+    }, [cartProducts, cartTotal, cartCount]);
+
+    useEffect(() => {
+        /*  console.log(`CartProducts del primer useEffect loadCartFromlocalStorage:  ${cartProducts}`); */
+         const savedCart = loadCartFromLocalStorage();
+         //console.log(savedCart); //{cartProducts: Array(0), cartTotal: 0, cartCount: 0}
+         if (savedCart) {
+           dispatch(loadCart(savedCart)); // Cargar el carrito previamente guardado en el Local Storage
+         }
+       }, [dispatch]);
+       
+       // Guardar el carrito en Local Storage al cambiar
+       useEffect(() => {
+         //console.log(`Guardando datos del carrito en Local Storage: ${JSON.stringify(cartData)}`);
+         saveCartToLocalStorage(cartData);
+       }, [cartData]);
 
     return(
         <>
@@ -79,7 +112,7 @@ export function ModalCustomize( { price } ){
                                         className={ isButtonsEnabled ? enabledButtonClasses : disabledButtonClasses }
                                         title="Agregar diseño al carrito"
                                         disabled={ !isButtonsEnabled }
-                                        onClick={ () => onAddProduct(formdata) }
+                                        onClick={ () => onAddProduct(formdata, products) }
                                     >
                                         <IconCart isButtonsEnabled={ isButtonsEnabled } />
                                     </button>

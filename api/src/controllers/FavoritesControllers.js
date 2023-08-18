@@ -3,6 +3,7 @@ const { Favorite, User, Product } = require('../db');
 const FavoriteControllers = {
     addFavorite: async (userId, productId) => {
       try {
+        console.log(userId, productId);
         if (!userId || !productId) {
           throw new Error("Faltan datos");
         }
@@ -18,18 +19,21 @@ const FavoriteControllers = {
         }
   
         const favorite = await Favorite.create({
-          userId,
-          productId,
+          UserId: userId, // Accede a la propiedad 'id' del objeto 'user'
+          ProductId: productId,
         });
   
         return { message: "Agregado a favoritos", favorite };
       } catch (error) {
+        console.error(error)
         throw new Error("No se pudo agregar a favoritos");
       }
     },
   
     deleteFavorite: async (favoriteId) => {
       try {
+
+        console.log(favoriteId)
         // Buscar el favorito por su ID en la base de datos
         const favorite = await Favorite.findByPk(favoriteId);
   
@@ -43,6 +47,7 @@ const FavoriteControllers = {
   
         return { message: 'Favorito eliminado con éxito' };
       } catch (error) {
+        console.error(error)
         throw new Error('No se pudo eliminar el favorito');
       }
     },
@@ -50,27 +55,24 @@ const FavoriteControllers = {
     getFavorites: async (userId) => {
       try {
         const user = await User.findByPk(userId);
+    
         if (!user) {
           throw new Error("Usuario no encontrado");
         }
-  
-        const favorites = await Favorite.findAll({
-          where: {
-            userId: user.id,
-          },
-          include: [
-            {
-              model: Product,
-              attributes: ['id', 'name', 'description', 'price', 'images', 'color', 'size', 'stock' ],
-            },
-          ],
+    
+        const favorites = await user.getFavoriteProducts({
+          attributes: ['id', 'name', 'description', 'price', 'images', 'color', 'size', 'stock'],
         });
-  
+    
+        console.log(favorites)
         return favorites;
       } catch (error) {
-        throw new Error("No se pudo obtener los favoritos");
+        console.error(error);
+        throw error;
       }
     },
+    
+    
   };
   
   module.exports = FavoriteControllers;

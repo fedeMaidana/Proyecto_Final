@@ -23,7 +23,14 @@ import {
     LOAD_CART,
     SEARCH_PRODUCT_FAILURE,
     CLEAR_SEARCH_PRODUCTS,
-    GET_USERS
+    GET_USERS,
+    GET_FAVORITES,
+    ADD_FAVORITE,
+    DELETE_FAVORITE,
+    ADD_COMMENT, 
+    GET_COMMENTS,
+     UPDATE_COMMENT, 
+     DELETE_COMMENT
 
 } from "./action-types"
 
@@ -55,6 +62,7 @@ export const deleteProducts = ( payload ) => {
 export const getProductDetail = ( id ) => {
     return async ( dispatch ) => {
         let info = await axios.get( `/products/${ id }` )
+        console.log(info.data )
         return dispatch( { type: GET_PRODUCT_DETAIL, payload: info.data } )
     }
 }
@@ -232,5 +240,98 @@ export const getUsers = () => {
         return dispatch( { type: GET_USERS, payload: data } )
     }
 }
+
+
+//Favorites
+export const getFavorites = (userId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/favorites/${userId}`);
+      dispatch({ type: GET_FAVORITES, payload: response.data });
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
+    }
+  };
+};
+
+export const addFavorite = (userId, productId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post('/favorites', { userId, productId });
+      dispatch({ type: ADD_FAVORITE, payload: response.data.favorite });
+    } catch (error) {
+      console.error('Error adding favorite:', error);
+    }
+  };
+};
+
+export const deleteFavorite = (favoriteId) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`/favorites/${favoriteId}`);
+      dispatch({ type: DELETE_FAVORITE, payload: favoriteId });
+    } catch (error) {
+      console.error('Error deleting favorite:', error);
+    }
+  };
+};
+
+
+//Comments
+
+export const addComment = (userId, productId, text) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post('/comments', { userId, productId, text });
+      dispatch({ type: ADD_COMMENT, payload: response.data.comment });
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+  };
+};
+
+export const getComments = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get('/comments/');
+      dispatch({ type: GET_COMMENTS, payload: response.data });
+    } catch (error) {
+      console.error('Error getting comments:', error);
+    }
+  };
+};
+
+export const getCommentsId = (productId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/comments/${productId}`);
+      dispatch({ type: GET_COMMENTS, payload: response.data });
+    } catch (error) {
+      console.error('Error getting comments:', error);
+    }
+  };
+};
+
+export const updateComment = (commentId, newText) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.put(`/comments/${commentId}`, { newText });
+      dispatch({ type: UPDATE_COMMENT, payload: response.data.comment });
+    } catch (error) {
+      console.error('Error updating comment:', error);
+    }
+  };
+};
+
+export const deleteComment = (commentId) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`/comments/${commentId}`);
+      dispatch({ type: DELETE_COMMENT, payload: commentId });
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+    }
+  };
+};
 
 

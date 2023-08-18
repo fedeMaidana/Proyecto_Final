@@ -4,6 +4,7 @@ const FavoriteHandlers ={
     handleAddFavorite: async (req, res) => {
         try {
           const { userId, productId } = req.body
+          console.log(req.body);
           const result = await FavoriteControllers.addFavorite(userId, productId);
           res.status(201).json(result);
         } catch (error) {
@@ -14,6 +15,7 @@ const FavoriteHandlers ={
       handleDeleteFavorite: async (req, res) => {
         try {
           const {favoriteId} = req.params
+          console.log(favoriteId)
           const result = await FavoriteControllers.deleteFavorite(favoriteId);
           res.status(200).json(result);
         } catch (error) {
@@ -24,6 +26,7 @@ const FavoriteHandlers ={
       handleGetFavorites: async (req, res) => {
         try {
           const {userId} = req.params;
+          console.log(userId);
           const favorites = await FavoriteControllers.getFavorites(userId);
           res.status(200).json(favorites);
         } catch (error) {

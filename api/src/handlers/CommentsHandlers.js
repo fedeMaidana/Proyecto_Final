@@ -14,7 +14,7 @@ const commentsHandlers ={
       handleGetCommentsByProduct: async (req, res) => {
         try {
           const {productId} = req.params;
-          const comments = await commentsControllers.getCommentsByProduct(productId);
+          const comments = productId ? await commentsControllers.getCommentsByProduct(productId): await commentsControllers.getComments() ;
           res.status(200).json(comments);
         } catch (error) {
           res.status(500).json({ error: error.message });

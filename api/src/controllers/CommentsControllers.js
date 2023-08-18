@@ -15,6 +15,16 @@ const commentsControllers = {
     }
   },
 
+  getComments: async () => {
+    try {
+      const comments = await Comment.findAll();
+
+      return comments;
+    } catch (error) {
+      throw new Error("No se pudieron obtener los comentarios");
+    }
+  },
+
   getCommentsByProduct: async (productId) => {
     try {
       const comments = await Comment.findAll({
@@ -43,6 +53,7 @@ const commentsControllers = {
     }
   },
   deleteComment: async (commentId) => {
+    
     try {
       const comment = await Comment.findByPk(commentId);
       if (!comment) {
@@ -53,6 +64,7 @@ const commentsControllers = {
 
       return { message: "Comentario eliminado con éxito" };
     } catch (error) {
+      console.error(error)
       throw new Error("No se pudo eliminar el comentario");
     }
   },

@@ -36,8 +36,8 @@ Category.hasMany( Product, { foreignKey: "categoryId" } );
 User.hasMany( Product, { foreignKey: "userId",  as: "CreatedProducts"  } );
 Product.belongsTo( User, { foreignKey: "userId", as: "CreatedProducts"  } );
 
-User.belongsToMany(Product, {through: Favorite, timestamps: false, as: "FavoriteProducts" });
-Product.belongsToMany(User, {through: Favorite,timestamps: false, as: "FavoriteProducts" });
+User.belongsToMany(Product, { through: Favorite,as: "FavoriteProducts", timestamps: false });
+Product.belongsToMany(User, { through: Favorite,as: "FavoriteProducts", timestamps: false });
 
 
 User.hasMany(Comment, { foreignKey: 'userId' });
@@ -45,6 +45,15 @@ Comment.belongsTo(User, { foreignKey: 'userId' });
 
 Product.hasMany(Comment, { foreignKey: 'productId' });
 Comment.belongsTo(Product, { foreignKey: 'productId' });
+// Al final de db.js
+(async () => {
+  try {
+      await sequelize.sync(); // Sincroniza todos los modelos con la base de datos
+      console.log('Modelos sincronizados correctamente.');
+  } catch (error) {
+      console.error('Error al sincronizar modelos:', error);
+  }
+})();
 
 
 module.exports = { ...sequelize.models, conn: sequelize }

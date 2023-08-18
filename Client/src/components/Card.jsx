@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import FavoriteButton from './Favorite';
+import AddComment from './AddComments'
 
 export const Card = ( { name, nameProduct, description, images, price, id } ) => {
     const [currentIndex, setCurrentIndex] = useState( 0 )
+    const [userId, setUserId] = useState(null); // Estado local para almacenar userId
+
+    useEffect(() => {
+      const userId = localStorage.getItem('userId'); // Obtener userId de localStorage
+      setUserId(userId);
+    }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -58,13 +66,23 @@ export const Card = ( { name, nameProduct, description, images, price, id } ) =>
                 ))}
             </div>
 
+
             <div className="flex flex-col items-center justify-around row-span-3">
                 <h3 className="text-[2rem] font-semibold">Sobre el producto</h3>
                 <p className="text-[1.5rem]">{description}</p>
+                <div>
+            <AddComment userId={userId} productId={id}/>
+            </div>
             </div>
 
             <button onClick={handleBuyButton}>Comprar</button>
+            <div>
+            <FavoriteButton userId={userId} productId={id}/>
+            </div>
             <Link to={`detail/${id}`}>Detalles</Link>
+
+            
+            
         </div>
     );
 };

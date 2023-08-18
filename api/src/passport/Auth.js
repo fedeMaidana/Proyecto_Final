@@ -94,15 +94,29 @@ passport.use(
           }
         });
 
+        const userResponse = {
+          id: user[0].id,
+          name: user[0].name,
+          userName: user[0].userName,
+          lastName: user[0].lastName,
+          email: user[0].email,
+          birthDate: user[0].birthDate,
+          profileImage: user[0].profileImage,
+          token: user[0].token
+        };
+        
+
 
         
-        const token = jwt.sign({ userId: user[0].id }, process.env.SECRET_KEY, {
+        const token = jwt.sign({ userId: userResponse.id }, process.env.SECRET_KEY, {
           expiresIn: '10000h', // Ejemplo: el token expira en 1hora
         });
 
-        user[0].token = token;
+        console.log(userResponse.id);
 
-        return done( null, { user: user[0], token })
+        userResponse.token = token;
+
+        return done( null,  userResponse)
 
       }catch( error ){
         return done( error, null )

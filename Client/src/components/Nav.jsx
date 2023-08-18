@@ -9,6 +9,8 @@ export function Nav() {
   const [ user, setUser ] = useState( undefined )
   const [ isModalOpen, setIsModalOpen ] = useState( false )
   const cookies = new Cookies();
+  const [userId, setUserId] = useState(null);
+
   useEffect(() => {
     const token = localStorage.getItem( 'token' )
     const googleToken = cookies.get('googleToken');
@@ -29,6 +31,10 @@ export function Nav() {
             }
           })
 
+          const userId = response?.data.id;
+          setUserId(userId); // Establecer userId en el estado
+          localStorage.setItem('userId', userId);
+
           setUser( response?.data?.name )
 
         }catch( error ){
@@ -48,7 +54,10 @@ export function Nav() {
               googleToken: googleToken,
             },
           });
-          const { name } = responseGoogle.data;
+          const { name, id } = responseGoogle.data;
+          console.log(responseGoogle.data);
+          setUserId(id); // Establecer userId en el estado
+          localStorage.setItem('userId', id);
 
           // Luego, puedes actualizar el estado o la variable 'user' con el nombre del usuario
           setUser(name);

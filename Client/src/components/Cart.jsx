@@ -5,7 +5,6 @@ import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunction
 import axios from 'axios';
 
 export function Cart() {
-
     
   const cartProducts = useSelector((state) => state.cartProducts); // estás asegurándote de que cartProducts tenga un valor (en este caso, un array vacío []) en caso de que sea undefined. Esto evitará que la función reduce genere errores debido a un valor no definido.
   const cartTotal = useSelector((state) => state.cartTotal);
@@ -13,9 +12,23 @@ export function Cart() {
 
   const dispatch = useDispatch(); // Obtiene la función dispatch
 
+  const [cartData, setCartData] = useState({
+    cartProducts: [],
+    cartTotal: 0,
+    cartCount: 0,
+  });
+  useEffect(() => {
+    setCartData({
+      cartProducts: cartProducts,
+      cartTotal: cartTotal,
+      cartCount: cartCount,
+    });
+  }, [cartProducts, cartTotal, cartCount]);
   //**********************************************  LOCAL STORAGE  ************************************************************************************** */
   // Cargar el carrito desde Local Storage al cargar el componente
+
   useEffect(() => {
+    //console.log(`CartProducts del primer useEffect loadCartFromlocalStorage:  ${cartProducts}`); */
     const savedCart = loadCartFromLocalStorage();
     //console.log(savedCart); //{cartProducts: Array(0), cartTotal: 0, cartCount: 0}
     if (savedCart) {
@@ -25,12 +38,10 @@ export function Cart() {
   
   // Guardar el carrito en Local Storage al cambiar
   useEffect(() => {
-    saveCartToLocalStorage({
-      cartProducts: cartProducts,
-      cartTotal: cartTotal,
-      cartCount: cartCount,
-    });
-  }, [cartProducts, cartTotal, cartCount]);
+    //console.log(`Guardando datos del carrito en Local Storage: ${JSON.stringify(cartData)}`);
+    saveCartToLocalStorage(cartData);
+  }, [cartData]);
+
   //********************************************************************************************************************************* */
 
   // Estado local para almacenar la cantidad de cada producto

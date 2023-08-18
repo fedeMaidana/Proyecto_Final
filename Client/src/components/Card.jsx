@@ -70,15 +70,16 @@ export const Card = ( { name, nameProduct, description, images, price, id } ) =>
             <div className="flex flex-col items-center justify-around row-span-3">
                 <h3 className="text-[2rem] font-semibold">Sobre el producto</h3>
                 <p className="text-[1.5rem]">{description}</p>
-                <div>
+                <div className="flex items-center justify-center space-x-4">
+         
+            <FavoriteButton userId={userId} productId={id}/>
+            
             <AddComment userId={userId} productId={id}/>
             </div>
             </div>
 
             <button onClick={handleBuyButton}>Comprar</button>
-            <div>
-            <FavoriteButton userId={userId} productId={id}/>
-            </div>
+
             <Link to={`detail/${id}`}>Detalles</Link>
 
             

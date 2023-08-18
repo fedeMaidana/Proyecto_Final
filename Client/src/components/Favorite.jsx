@@ -6,16 +6,25 @@ import { checkIsFavorite } from '../auxFunctions/isFavorite';
 
 const FavoriteButton = ({ productId, userId }) => {
   const favorites = useSelector(state => state.favorites);
+  const allUsers = useSelector(state => state.allUsers); //Me traigo para el counter de fav
   const dispatch = useDispatch();
   useEffect(() => {
    const userId = localStorage.getItem('userId');
      dispatch(getFavorites(userId));
   }, []);
-  console.log(productId);
+  
   const isFavorite = checkIsFavorite(productId, favorites);
 
 
-  console.log(isFavorite);
+  //contador de favoritos
+  const productFavoriteCount = allUsers.reduce((count, user) => {
+    return (
+      count +
+      user.favoriteProducts.filter(
+        favorite => favorite.Favorite.ProductId === productId
+      ).length
+    );
+  }, 0);
 
 
   const handleFavoriteToggle = async () => {
@@ -37,10 +46,17 @@ const FavoriteButton = ({ productId, userId }) => {
     <div>
       <button
         onClick={handleFavoriteToggle}
-        className={`p-2 border ${isFavorite ? 'bg-red-500 text-white' : 'bg-white text-gray-800'} rounded-lg transition-all hover:bg-opacity-80`}
+        className={`p-2 border ${
+          isFavorite ? 'bg-red-500 text-white' : 'bg-white text-gray-800'
+        } rounded-lg transition-all hover:bg-opacity-80`}
       >
-        {isFavorite ? <MdFavorite className="text-xl" type='button'/> : <MdFavoriteBorder className="text-xl" type='button'/>}
+        {isFavorite ? (
+          <MdFavorite className="text-xl" type="button" />
+        ) : (
+          <MdFavoriteBorder className="text-xl" type="button" />
+        )}
       </button>
+        <span className="ml-1">{productFavoriteCount}</span>
     </div>
   );
 };

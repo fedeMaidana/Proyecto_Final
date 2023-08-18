@@ -10,7 +10,7 @@ commentsRouter.post( '/', commentsHandlers.handleAddComment )
 
 commentsRouter.delete( '/:commentId', commentsHandlers.handleDeleteComment)
 
-commentsRouter.put( '/:id', commentsHandlers.handleUpdateComment)
+commentsRouter.put( '/:commentId', commentsHandlers.handleUpdateComment)
 
 
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addComment, getComments, deleteComment, updateComment  } from '../redux/actions';
 import { AiOutlineComment } from 'react-icons/ai';
-import { BiCommentX } from 'react-icons/bi';
+import { BiCommentX, BiSend } from 'react-icons/bi';
 
 const AddComment = ({ userId, productId }) => {
   const [text, setText] = useState('');
@@ -11,7 +11,7 @@ const AddComment = ({ userId, productId }) => {
   const [newEditText, setNewEditText] = useState(''); // Nuevo estado
   const dispatch = useDispatch();
   const allComments = useSelector((state) => state.comments);
-  const allUsers = useSelector((state) => state.users); // Agrega esta línea
+  const allUsers = useSelector((state) => state.users); //Me traigo para agregar el nombre
   
   // Filtrar los comentarios basados en el productId
   const comments = allComments.filter((comment) => comment.productId === productId);
@@ -38,7 +38,7 @@ const AddComment = ({ userId, productId }) => {
         className="text-gray-500 hover:text-gray-700"
         onClick={() => setIsModalOpen(true)}
       >
-        <AiOutlineComment className="w-6 h-6 inline-block" />
+        <AiOutlineComment className="w-6 h-6 inline-block" />Comentar
       </button>
 
       {/* Modal */}
@@ -81,20 +81,48 @@ const AddComment = ({ userId, productId }) => {
                 </li>
               ))}
             </ul>
-            <form onSubmit={handleSubmit}>
-              <textarea
-                className="w-full p-2 border rounded-md mb-2"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Write a comment..."
-              />
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                type="submit"
-              >
-                Submit
-              </button>
-            </form>
+            {editingComment !== null && (
+  <div className="mb-2">
+    <input
+      type="text"
+      className="w-full p-2 border rounded-md"
+      value={newEditText}
+      onChange={(e) => setNewEditText(e.target.value)}
+    />
+    <button
+      className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+      onClick={() => {
+        dispatch(updateComment(editingComment, newEditText));
+        setEditingComment(null);
+        setNewEditText('');
+      }}
+    >
+      Save
+    </button>
+    <button
+      className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ml-2"
+      onClick={() => setEditingComment(null)}
+    >
+      Cancel
+    </button>
+  </div>
+)}
+{editingComment === null && (
+  <form onSubmit={handleSubmit}>
+    <textarea
+      className="w-full p-2 border rounded-md mb-2"
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+      placeholder="Write a comment..."
+    />
+    <button
+      className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+      type="submit"
+    >
+      <BiSend className="w-6 h-6 inline-block"/>Enviar
+    </button>
+  </form>
+)}
           </div>
         </div>
       )}

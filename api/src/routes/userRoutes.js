@@ -1,5 +1,5 @@
 const { Router } = require( 'express' )
-const { getUsersHandler, registerHandler, getUserIDHandler, loginHandler, deleteHandler } = require( '../handlers/usersHandler' )
+const { registerHandler, getUserIDHandler, loginHandler } = require( '../handlers/usersHandler' )
 const authMiddleware = require( '../middleware/authMiddleware' )
 require('../passport/Auth.js')
 const passport = require('passport');
@@ -7,11 +7,12 @@ const passport = require('passport');
 
 const userRoutes = Router()
 
-userRoutes.get( '/users', getUsersHandler )
+
 userRoutes.get( '/user', authMiddleware, getUserIDHandler )
 userRoutes.post( '/register', registerHandler )
 userRoutes.post( '/login', loginHandler )
-userRoutes.put( '/deleteuser/:id', deleteHandler )
+
+
 userRoutes.get('/login/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // Route for handling the Google callback after authentication

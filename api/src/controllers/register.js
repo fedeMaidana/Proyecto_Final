@@ -2,7 +2,7 @@ const { User } = require( '../db' )
 const bcrypt = require( 'bcrypt' )
 
 
-const register = async ( name, email, password, userName, lastName, birthDate, profileImage ) => {
+const register = async ( name, email, password, userName, lastName, birthDate, profileImage, role ) => {
   
   
   const user = await User.findOne( { where: { email } } )
@@ -16,7 +16,7 @@ const register = async ( name, email, password, userName, lastName, birthDate, p
   else{
     const passwordHash = await bcrypt.hash( password, 10 )
 
-    const newUser = await User.create( { name, email, userName, lastName, birthDate, profileImage, password: passwordHash } )
+    const newUser = await User.create( { name, email, userName, lastName, birthDate, profileImage, role, password: passwordHash } )
 
     const responseUser = {
       id: newUser.id,
@@ -27,6 +27,7 @@ const register = async ( name, email, password, userName, lastName, birthDate, p
       birthDate: newUser.birthDate,
       profileImage: newUser.profileImage,
       estado: newUser.estado,
+      role: newUser.role
     }
 
     return { message: 'Usuario creado correctamente!', valid: true, user: responseUser }

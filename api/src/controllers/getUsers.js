@@ -3,7 +3,7 @@ const { Product } = require( '../db' )
 
 const getUsers = async () => {
     const dataBaseUsers = await User.findAll({
-        where: { estado: 1 },
+        where: { role: 'user' },
         include: Product
     })
 

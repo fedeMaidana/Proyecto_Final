@@ -26,6 +26,12 @@ export const IconNextArrow = () => (
     </svg>
 )
 
+export const IconProfileArrow = ( { className } ) => (
+    <svg className={ className } width="10" height="10" viewBox="0 0 12 22" fill="none">
+        <path d="M11 21L1 11L11 1" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
+    </svg>
+)
+
 export const IconCart = ( { isButtonsEnabled } ) => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
         <g strokeWidth="0"/>

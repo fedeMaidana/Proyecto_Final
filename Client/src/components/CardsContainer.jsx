@@ -18,7 +18,7 @@ export const CardsContainer = () => {
     return(
         <>
             {allUsers?.map(user => (
-                user.Products?.map(product => (
+                user.CreatedProducts?.map(product => (
                     <Card
                         key={ product.id }
                         id= { product.id }

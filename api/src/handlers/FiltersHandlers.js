@@ -6,8 +6,9 @@ const FilterHandlers = async (req, res) => {
   
     try {
       const allUsers = await User.findAll({
+        attributes: { exclude: ['password'] },
         include: {
-          model: Product,
+          model: Product, as: 'CreatedProducts' ,
           include: {
             model: Category,
             attributes: ['name'],
@@ -17,7 +18,7 @@ const FilterHandlers = async (req, res) => {
   
       const filteredUsers = allUsers.map((user) => ({
         ...user.toJSON(),
-        Products: applyFiltersToProducts(user.Products, {
+        Products: applyFiltersToProducts(user.CreatedProducts, {
           category,
           minPrice: min_price,
           maxPrice: max_price,
@@ -26,7 +27,7 @@ const FilterHandlers = async (req, res) => {
   
       if (sortOption) {
         filteredUsers.forEach((user) => {
-          user.Products = applySortingToProducts(user.Products, sortOption);
+          user.CreatedProducts = applySortingToProducts(user.CreatedProducts, sortOption);
         });
       }
   

@@ -48,6 +48,6 @@ module.exports = ( sequilize ) => {
         allowNull: false,
         defaultValue: 1
       }
-    }, { timestamps: false }
-  )
+    }, { timestamps: false}
+)
 }

@@ -6,7 +6,10 @@ import { Nav } from '../components/Nav.jsx'
 import { Customize } from '../views/Customize.jsx'
 import { Register } from '../views/Register.jsx'
 import { Community } from '../views/Community'
+
 import {ProfilePage} from '../views/Perfil'
+
+
 
 import axios from "axios"
 axios.defaults.baseURL = 'http://localhost:3001/'
@@ -28,7 +31,10 @@ export function App() {
         <Route path='/login' element={ <Login/> } />
         <Route path='/register' element={ <Register/> } />
         <Route path="/community" element={<Community />} />
+
         <Route path='/my-profile' element={<ProfilePage />} />
+=======
+    
       </Routes>
     </>
   )

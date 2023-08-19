@@ -3,24 +3,35 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import logo from '../assets/images/DiseñoBase_de_logoCustomCraft_black.png'
 import { Cart } from './Cart'
+import Cookies from 'universal-cookie';
 
 export function Nav() {
   const [ user, setUser ] = useState( undefined )
   const [ isModalOpen, setIsModalOpen ] = useState( false )
+  const cookies = new Cookies();
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem( 'token' )
-console.log(token);
+    const googleToken = cookies.get('googleToken');
+    console.log('Google Token:', googleToken);
+
+    console.log('Local Token:', token);
+    console.log('Google Token inside useEffect:', googleToken);
     if( token ){
       const fetchUserDetails = async () => {
         try{
           const response = await axios.get( 'http://localhost:3001/user', {
             headers: {
-              token: `${token}`
+              token: `${ token }`
+              
             }
           })
 
-          console.log(response);
+          const userId = response?.data.id;
+          setUserId(userId); // Establecer userId en el estado
+          localStorage.setItem('userId', userId);
+
 
           setUser( response?.data?.name )
           
@@ -32,13 +43,39 @@ console.log(token);
 
       fetchUserDetails()
     }
+
+    if (googleToken) {
+      // Haz una petición para obtener los detalles del usuario usando el token de Google
+      const fetchGoogleUserDetails = async () => {
+        try {
+          const responseGoogle = await axios.get('http://localhost:3001/user/google', {
+            headers: {
+              googleToken: googleToken,
+            },
+          });
+          const { name, id } = responseGoogle.data;
+          console.log(responseGoogle.data);
+          setUserId(id); // Establecer userId en el estado
+          localStorage.setItem('userId', id);
+
+          // Luego, puedes actualizar el estado o la variable 'user' con el nombre del usuario
+          setUser(name);
+        } catch (error) {
+          console.error('Error al obtener detalles del usuario de Google:', error);
+        }
+      };
+
+      fetchGoogleUserDetails();
+    }
   }, [] )
+  
 
   const handleLogout = () => {
     localStorage.removeItem( 'token' )
     setUser( undefined )
     setIsModalOpen( false )
   }
+  
 
 
   return (

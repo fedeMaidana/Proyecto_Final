@@ -5,7 +5,10 @@ const filterRouter = require( './filterRutes' )
 const cartRouter = require( './CartRutes.js' )
 const categoryRouter = require( './categoryRutes.js' )
 const paymentRouter = require('./paymentRoutes')
-const {adminRoutes} = require('./adminRoutes')
+const { adminRoutes } = require('./adminRoutes')
+const favoriteRouter = require('./FavoritesRutes')
+const commentsRouter = require('./CommentsRoutes')
+
 
 
 const mainRouter = Router()
@@ -30,5 +33,9 @@ mainRouter.use('/filter', filterRouter)
 
 
 mainRouter.use(paymentRouter)
+
+mainRouter.use('/favorites', favoriteRouter)
+
+mainRouter.use('/comments', commentsRouter)
 
 module.exports = mainRouter

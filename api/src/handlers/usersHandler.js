@@ -5,10 +5,17 @@ const { login } = require( '../controllers/login' )
 const { deleteUser } = require( '../controllers/deleteUser' )
 const { sendWelcomeEmail } = require('../controllers/emailService');
 
-const getUsersHandler = async ( _req, res ) => {
-    const users = await getUsers()
+const getUsersHandler = async ( req, res ) => {
+    try {
+        
+        const {name} = req.query;
 
-    res.status( 200 ).send( users )
+        const users = await getUsers(name);
+    
+        res.status( 200 ).send( users )
+    } catch (error) {
+        res.status( 500 ).json( { error: 'server error' } )
+    }
 }
 
 const getUserIDHandler = async ( req, res ) => {
@@ -22,10 +29,14 @@ const getUserIDHandler = async ( req, res ) => {
 }
 
 const registerHandler = async ( req, res ) => {
-    const { name, email, password, userName, lastName, birthDate, profileImage, role } = req.body
+
+    const { name, email, password, userName, lastName, birthDate, role } = req.body
+    const profileImage = req.file
+    console.log(profileImage);
 
     try{
         const result = await register( name, email, password, userName, lastName, birthDate, profileImage, role )
+
         await sendWelcomeEmail(email);
 
         res.status( 200 ).json( result )

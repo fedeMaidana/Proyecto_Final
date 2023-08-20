@@ -1,18 +1,48 @@
-const { User } = require( '../db' )
-const { Product } = require( '../db' )
+const { User, Product, Favorite  } = require( '../db' )
+const { Op } = require('sequelize');
 
-const getUsers = async () => {
-    const dataBaseUsers = await User.findAll({
-        where: { role: 'user' },
-        include: Product
-    })
+const getUsers = async (name) => {
 
-    const usersWithoutPassword = dataBaseUsers.map( user => {
-        const { password, ...userWithoutPassword } = user.toJSON()
-        return userWithoutPassword
-    })
+    try {
 
-    return [ ...usersWithoutPassword ]
-}
+        const whereCondition = name ? {
+            role: 'user', 
+            name: {
+                [Op.iLike]: `%${name.toLowerCase()}%`
+            }
+        } 
+        : { role: 'user' };
+
+
+        const dataBaseUsers = await User.findAll({
+            where: whereCondition,
+            include:
+                { model: Product, as: 'CreatedProducts' },
+                
+            
+        });
+
+        const usersWithFavorites = await Promise.all(dataBaseUsers.map(async user => {
+            const { password, ...userWithoutPassword } = user.toJSON();
+
+            const favorites = await user.getFavoriteProducts({
+                attributes: ['id', 'name', 'description', 'price', 'images', 'color', 'size', 'stock'],
+            });
+
+            return {
+                ...userWithoutPassword,
+                favoriteProducts: favorites
+            };
+        }));
+
+        console.log(usersWithFavorites);
+        return usersWithFavorites;
+    } catch (error) {
+        console.error("Error al obtener usuarios:", error);
+        throw error;
+    }
+};
+
+
 
 module.exports = { getUsers }

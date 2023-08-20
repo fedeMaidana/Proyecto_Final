@@ -55,8 +55,15 @@ export const Login = () => {
     }, [access, navigate]);
 
     const handleGoogleLogin = () => {
-        window.location.href = 'http://localhost:3001/login/auth/google'; // Cambia la URL según tu configuración
+      try {
+        // Redirige al usuario a la URL de inicio de sesión de Google
+        window.location.href = 'http://localhost:3001/login/auth/google';
+      } catch (error) {
+        console.error('Error during Google login:', error);
       }
+      }
+      
+      
 
     return (
       <>

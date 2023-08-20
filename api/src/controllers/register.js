@@ -1,5 +1,35 @@
 const { User } = require( '../db' )
 const bcrypt = require( 'bcrypt' )
+const path = require('path');
+const multer = require('multer');
+
+const uploadDirectory = path.join(__dirname, '../upload'); // Ruta a la carpeta "upload"
+
+// Configuración de multer
+const storage = multer.diskStorage({
+  destination: uploadDirectory,
+  filename: (req, file, cb) => {
+    const originalFileName = path.parse(file.originalname).name; // Obtener el nombre original del archivo
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const fileExtension = path.extname(file.originalname); // Obtener la extensión del archivo original
+    const newFilename = `${originalFileName}_${uniqueSuffix}${fileExtension}`; // Combinar todo
+    cb(null, newFilename);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    const allowedExtensions = ['.png', '.jpg', '.webp'];
+    const fileExtension = path.extname(file.originalname).toLowerCase();
+  
+    if (allowedExtensions.includes(fileExtension)) {
+      cb(null, true); // Aceptar el archivo
+    } else {
+      cb(new Error('Tipo de archivo no válido'));
+    }
+  },
+});
 
 
 const register = async ( name, email, password, userName, lastName, birthDate, profileImage, role ) => {
@@ -15,8 +45,13 @@ const register = async ( name, email, password, userName, lastName, birthDate, p
 
   else{
     const passwordHash = await bcrypt.hash( password, 10 )
+    const baseUrl = 'http://localhost:3001'; // Cambiar esto al hacer deploy
+    const imageUrl = `/upload/${profileImage.filename}`; 
+    const fullImageUrl = baseUrl + imageUrl
 
-    const newUser = await User.create( { name, email, userName, lastName, birthDate, profileImage, role, password: passwordHash } )
+    
+    const newUser = await User.create( { name, email, userName, lastName, birthDate, profileImage: fullImageUrl, password: passwordHash, role } )
+
 
     const responseUser = {
       id: newUser.id,
@@ -34,4 +69,4 @@ const register = async ( name, email, password, userName, lastName, birthDate, p
   }
 }
 
-module.exports = { register }
+module.exports = { register, upload }

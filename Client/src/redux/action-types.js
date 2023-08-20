@@ -23,3 +23,11 @@ export const DECREMENT_PRODUCT = 'DECREMENT_PRODUCT';
 export const LOAD_CART = 'LOAD_CART';
 export const GET_USERS = 'GET_USERS'
 
+export const GET_FAVORITES = 'GET_FAVORITES';
+export const ADD_FAVORITE = 'ADD_FAVORITE';
+export const DELETE_FAVORITE = 'DELETE_FAVORITE';
+
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const GET_COMMENTS = 'GET_COMMENTS';
+export const UPDATE_COMMENT = 'UPDATE_COMMENT';
+export const DELETE_COMMENT = 'DELETE_COMMENT';

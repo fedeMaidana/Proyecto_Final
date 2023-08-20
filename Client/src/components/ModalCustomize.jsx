@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { setModal } from "../redux/actions"
+import { setModal, getUsers, getProducts } from "../redux/actions"
 import { handleDescriptionChange } from "../handlers/handlers"
 import { IconCart, IconShare } from "../assets/icons/icons"
 import { handlerSaveDesign, handlerSendDesignDataBase } from "../handlers/handlers"
@@ -31,6 +31,7 @@ export function ModalCustomize( { price } ){
     let formdata = handlerSaveDesign(description, capturedImages, color, size, title, price, 1, 3)
 
     const onAddProduct = (data, products) => {
+        //console.log(products);
         const newProduct = {
             id: uuidv4(),
             name: data.get('name'),
@@ -52,6 +53,10 @@ export function ModalCustomize( { price } ){
       cartTotal: 0,
       cartCount: 0,
     });
+    useEffect( () => {
+        dispatch( getUsers() )
+        dispatch( getProducts() )
+    }, [ dispatch ] )
     useEffect(() => {
       setCartData({
         cartProducts: cartProducts,

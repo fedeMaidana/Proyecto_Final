@@ -96,167 +96,132 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, capturedImages: [...state.capturedImages, payload] };
 
     case CLEAR_IMAGES:
-      return { ...state, capturedImages: [] };
+      return { ...state, capturedImages: [] }
 
     case SEARCH_PRODUCT:
       if (typeof payload === "object" && payload.message) {
         // Si 'payload' es un objeto con un mensaje de error, actualiza el estado 'error'
-        return {
-          ...state,
-          searchProducts: [],
-          error: payload.message,
-        };
+        return { ...state, searchProducts: [], error: payload.message }
       } else {
-        return {
-          ...state,
-          searchProducts: payload,
-          error: null,
-        };
+        return { ...state, searchProducts: payload, error: null }
       }
 
     case SEARCH_PRODUCT_FAILURE:
-      return {
-        ...state,
-        error: { message: payload, statusCode: null },
-      };
+      return{ ...state, error: { message: payload, statusCode: null } }
+
     case CLEAR_SEARCH_PRODUCTS:
-      return {
-        ...state,
-        searchProducts: [],
-      };
+      return{ ...state, searchProducts: [] }
 
     case GET_USERS:
-      return { ...state, users: payload, allUsers: payload };
+      return { ...state, users: payload, allUsers: payload }
 
     case ADD_TO_CART:
-      const newProduct = payload;
-      const existingProductIndex = state.cartProducts.findIndex(
-        (product) => product.id === newProduct.id
-      );
+      const newProduct = payload
+      const existingProductIndex = state.cartProducts.findIndex( product => product.id === newProduct.id )
 
-      if (existingProductIndex !== -1) {
+      if( existingProductIndex !== -1 ){
         // Si el producto ya está en el carrito, actualiza su cantidad
-        const updatedProducts = [...state.cartProducts];
-        updatedProducts[existingProductIndex].quantity += 1;
+        const updatedProducts = [ ...state.cartProducts ]
+        updatedProducts[ existingProductIndex ].quantity += 1
 
         return {
           ...state,
           cartProducts: updatedProducts,
-          cartTotal: parseFloat(state.cartTotal) + parseFloat(newProduct.price),
-          cartCount: state.cartCount + 1,
-        };
-      } else {
+          cartTotal: parseFloat( state.cartTotal ) + parseFloat( newProduct.price ),
+          cartCount: state.cartCount + 1
+        }
+      }else{
         // Si el producto no está en el carrito, agrégalo
-        newProduct.quantity = 1;
+        newProduct.quantity = 1
 
         return {
           ...state,
-          cartProducts: [...state.cartProducts, newProduct],
-          cartTotal: parseFloat(state.cartTotal) + parseFloat(newProduct.price),
-          cartCount: state.cartCount + 1,
-        };
+          cartProducts: [ ...state.cartProducts, newProduct ],
+          cartTotal: parseFloat( state.cartTotal ) + parseFloat( newProduct.price ),
+          cartCount: state.cartCount + 1
+        }
       }
 
     case REMOVE_FROM_CART:
-      const productIdToRemove = payload;
-      const productToRemove = state.cartProducts.find(
-        (product) => product.id === productIdToRemove
-      );
+      const productIdToRemove = payload
+      const productToRemove = state.cartProducts.find( product => product.id === productIdToRemove )
 
-      if (productToRemove) {
-        const updatedProducts = state.cartProducts.filter(
-          (product) => product.id !== productIdToRemove
-        );
+      if( productToRemove ){
+        const updatedProducts = state.cartProducts.filter( product => product.id !== productIdToRemove )
 
         return {
           ...state,
           cartProducts: updatedProducts,
-          cartTotal:
-            state.cartTotal - productToRemove.price * productToRemove.quantity,
-          cartCount: state.cartCount - productToRemove.quantity,
-        };
+          cartTotal: state.cartTotal - productToRemove.price * productToRemove.quantity,
+          cartCount: state.cartCount - productToRemove.quantity
+        }
       } else {
-        return state;
+        return state
       }
 
     case CLEAR_CART:
-      return {
-        ...state,
-        cartProducts: [],
-        cartTotal: 0,
-        cartCount: 0,
-      };
-    case INCREMENT_PRODUCT:
-      const incrementedProducts = state.cartProducts.map((product) =>
-        product.id === payload.product.id
-          ? { ...product, quantity: product.quantity + 1 }
-          : product
-      );
+      return { ...state, cartProducts: [], cartTotal: 0, cartCount: 0 }
 
-      return {
+    case INCREMENT_PRODUCT:
+      const incrementedProducts = state.cartProducts.map( product =>
+        product.id === payload.product.id
+        ? { ...product, quantity: product.quantity + 1 }
+        : product
+      )
+
+      return{
         ...state,
         cartProducts: incrementedProducts,
-        cartTotal:
-          parseFloat(state.cartTotal) + parseFloat(payload.product.price),
-        cartCount: state.cartCount + 1,
-      };
-    case DECREMENT_PRODUCT:
-      const decrementedProducts = state.cartProducts.map((product) =>
-        product.id === payload.product.id && product.quantity > 1
-          ? { ...product, quantity: product.quantity - 1 }
-          : product
-      );
+        cartTotal: parseFloat( state.cartTotal ) + parseFloat( payload.product.price ),
+        cartCount: state.cartCount + 1
+      }
 
-      return {
+    case DECREMENT_PRODUCT:
+      const decrementedProducts = state.cartProducts.map( product =>
+        product.id === payload.product.id && product.quantity > 1
+        ? { ...product, quantity: product.quantity - 1 }
+        : product
+      )
+
+      return{
         ...state,
         cartProducts: decrementedProducts,
-        cartTotal:
-          parseFloat(state.cartTotal) - parseFloat(payload.product.price),
+        cartTotal: parseFloat( state.cartTotal ) - parseFloat( payload.product.price ),
         cartCount: state.cartCount - 1,
-      };
+      }
+
     case LOAD_CART:
-      return {
+      return{
         ...state,
         cartProducts: payload.cartProducts,
         cartTotal: payload.cartTotal,
         cartCount: payload.cartCount,
-      };
-//FAVORITES
+      }
+
     case GET_FAVORITES:
-      return { ...state, favorites: payload };
+      return { ...state, favorites: payload }
+
     case ADD_FAVORITE:
-      return { ...state, favorites: [...state.favorites, payload] };
+      return { ...state, favorites: [ ...state.favorites, payload ] }
+
     case DELETE_FAVORITE:
-      return {
-        ...state,
-        favorites: state.favorites.filter(
-          (favorite) => favorite.id !== payload
-        ),
-      };
-//COMMENTS
+      return { ...state, favorites: state.favorites.filter( favorite => favorite.id !== payload ) }
+
     case ADD_COMMENT:
-      return { ...state, comments: [...state.comments, payload] };
+      return { ...state, comments: [ ...state.comments, payload ] }
 
     case GET_COMMENTS:
-      return { ...state, comments: payload };
+      return { ...state, comments: payload }
 
     case UPDATE_COMMENT:
-      return {
-        ...state,
-        comments: state.comments.map((comment) =>
-          comment.id === payload.id ? payload : comment
-        ),
-      };
+      return { ...state, comments: state.comments.map( comment => comment.id === payload.id ? payload : comment ) }
 
     case DELETE_COMMENT:
-      return {
-        ...state,
-        comments: state.comments.filter((comment) => comment.id !== payload),
-      };
+      return { ...state, comments: state.comments.filter( comment => comment.id !== payload ) }
 
     default:
-      return { ...state };
+        return { ...state }
   }
-};
+}
 
-export default reducer;
+export default reducer

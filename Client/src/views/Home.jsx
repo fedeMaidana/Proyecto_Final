@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom"
+import {useEffect} from 'react'
 import shirt from "../assets/images/shirt.png"
 import jeans from "../assets/images/jeans.png"
 import hoodie from "../assets/images/hoodie.png"

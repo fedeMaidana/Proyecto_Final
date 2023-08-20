@@ -5,16 +5,25 @@ import axios from 'axios'
 import logo from '../assets/images/DiseñoBase_de_logoCustomCraft_black.png'
 import { Cart } from './Cart'
 import { IconProfileArrow, IconShoppingCart } from '../assets/icons/icons'
+import Cookies from 'universal-cookie';
 
 export function Nav() {
   const cartCount = useSelector( state => state.cartCount )
 
+  const cookies = new Cookies()
+
   const [ user, setUser ] = useState( undefined )
   const [ ModalProfile, setModalProfile ] = useState( false )
   const [ ModalCart, setModalCart ] = useState( false )
+  const [ userId, setUserId ] = useState( null )
 
   useEffect(() => {
     const token = localStorage.getItem( 'token' )
+    const googleToken = cookies.get('googleToken');
+    console.log('Google Token:', googleToken);
+
+    console.log( 'Local Token:', token )
+    console.log( 'Google Token inside useEffect:', googleToken )
 
     if( token ){
       const fetchUserDetails = async () => {
@@ -25,6 +34,10 @@ export function Nav() {
             }
           })
 
+          const userId = response?.data.id;
+          setUserId( userId )
+          localStorage.setItem( 'userId', userId )
+
           setUser( response?.data?.name )
 
         }catch( error ){
@@ -34,7 +47,32 @@ export function Nav() {
 
       fetchUserDetails()
     }
-  }, [] )
+
+    if( googleToken ){
+      const fetchGoogleUserDetails = async () => {
+        try {
+          const responseGoogle = await axios.get('http://localhost:3001/user/google', {
+            headers: {
+              googleToken: googleToken,
+            }
+          })
+
+          const { name, id } = responseGoogle.data
+
+          console.log( responseGoogle.data )
+
+          setUserId( id )
+          localStorage.setItem( 'userId', id )
+
+          setUser( name )
+        }catch( error ){
+          console.error('Error al obtener detalles del usuario de Google:', error);
+        }
+      }
+
+      fetchGoogleUserDetails()
+    }
+  }, [])
 
   const handleCartClick = () => {
     setModalCart( prevState => !prevState )

@@ -2,6 +2,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const { User } = require('../db');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const URL = 'http://localhost:3001';
 
 
@@ -32,23 +33,90 @@ passport.use(
             where: { email: profile.emails[ 0 ].value }
         })
 
-        if( existingUser ) return done( null, existingUser ) // Si el mail ya está registrado inicia sesión con el usuario existente
+        if (existingUser) {
+          try {
+            const token = jwt.sign({ userId: existingUser.id }, process.env.SECRET_KEY, {
+              expiresIn: '10000h'
+            });
+        
+            existingUser.token = token;
+            
+            return done(null, existingUser);
+          } catch (jwtError) {
+            return done(jwtError, null);
+          }
+        }// Si el mail ya está registrado inicia sesión con el usuario existente
 
         //sino crea uno nuevo en la base
         const randomPassword = Math.random().toString( 36 ).slice( -10 ) // Genera una contraseña aleatoria
         const salt = bcrypt.genSaltSync( 10 )
         const hashedPassword = bcrypt.hashSync( randomPassword, salt )
 
-        const user = await User.findOrCreate({
-          where: { email: profile.emails[ 0 ].value },
-          defaults: {
-            name: profile.displayName,
-            email: profile.emails[ 0 ].value,
-            password: hashedPassword,
-          }
-        })
+        let fullName = profile.displayName;
+        const spaceIndex1 = fullName.indexOf(' ');
+        const spaceIndex2 = fullName.lastIndexOf(' ');
 
-        return done( null, user[ 0 ] )
+        let firstName = fullName;
+        let middleName = '';
+        let lastName = '';
+
+        if (spaceIndex1 !== -1 && spaceIndex1 !== spaceIndex2) {
+          firstName = fullName.substring(0, spaceIndex1);
+          middleName = fullName.substring(spaceIndex1 + 1, spaceIndex2);
+          lastName = fullName.substring(spaceIndex2 + 1);
+        } else if (spaceIndex1 !== -1) {
+          firstName = fullName.substring(0, spaceIndex1);
+          lastName = fullName.substring(spaceIndex1 + 1);
+        }
+
+        const birthDate = profile.birthday ? new Date(profile.birthday) : new Date();
+        // Generar un nombre de usuario único basado en el nombre y apellido
+        const baseUsername = `${firstName.toLowerCase()}${lastName.toLowerCase()}`;
+        let username = baseUsername;
+        let counter = 1;
+
+        // Verificar si el nombre de usuario ya existe en la base de datos y agregar un número si es necesario
+        while (await User.findOne({ where: { userName: username } })) {
+          username = `${baseUsername}${counter}`;
+          counter++;
+        }
+
+        const user = await User.findOrCreate({
+          where: { email: profile.emails[0].value },
+          defaults: {
+            name: firstName + (middleName ? ' ' + middleName : ''),
+            userName: username, // Almacena el nombre de usuario
+            lastName: lastName || null,
+            email: profile.emails[0].value,
+            password: hashedPassword,
+            birthDate: birthDate,
+            profileImage: profile.photos[0].value,
+          }
+        });
+
+        const userResponse = {
+          id: user[0].id,
+          name: user[0].name,
+          userName: user[0].userName,
+          lastName: user[0].lastName,
+          email: user[0].email,
+          birthDate: user[0].birthDate,
+          profileImage: user[0].profileImage,
+          token: user[0].token
+        };
+        
+
+
+        
+        const token = jwt.sign({ userId: userResponse.id }, process.env.SECRET_KEY, {
+          expiresIn: '10000h', // Ejemplo: el token expira en 1hora
+        });
+
+        console.log(userResponse.id);
+
+        userResponse.token = token;
+
+        return done( null,  userResponse)
 
       }catch( error ){
         return done( error, null )
@@ -56,3 +124,5 @@ passport.use(
     }
   )
 )
+
+module.exports = passport

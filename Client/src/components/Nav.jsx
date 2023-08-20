@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import logo from '../assets/images/DiseñoBase_de_logoCustomCraft_black.png'
 import { Cart } from './Cart'
-import { IconProfileArrow } from '../assets/icons/icons'
+import { IconProfileArrow, IconShoppingCart } from '../assets/icons/icons'
 
 export function Nav() {
+  const cartCount = useSelector( state => state.cartCount )
+
   const [ user, setUser ] = useState( undefined )
-  const [ isModalOpen, setIsModalOpen ] = useState( false )
+  const [ ModalProfile, setModalProfile ] = useState( false )
+  const [ ModalCart, setModalCart ] = useState( false )
 
   useEffect(() => {
     const token = localStorage.getItem( 'token' )
@@ -32,10 +36,20 @@ export function Nav() {
     }
   }, [] )
 
+  const handleCartClick = () => {
+    setModalCart( prevState => !prevState )
+    setModalProfile( false )
+  }
+
+  const handleProfileClick = () => {
+    setModalProfile( prevState => !prevState )
+    setModalCart( false )
+  }
+
   const handleLogout = () => {
     localStorage.removeItem( 'token' )
     setUser( undefined )
-    setIsModalOpen( false )
+    setModalProfile( false )
   }
 
   return (
@@ -68,10 +82,17 @@ export function Nav() {
           { user !== undefined
             ?(
               <ul className='w-[110px] md:w-[150px] lg:w-[150px] flex justify-around items-center'>
-                <Cart />
-                <li className="relative flex items-center gap-[10px] cursor-pointer" onClick={ () => setIsModalOpen( prevState => !prevState ) } >
+                {/* <Cart /> */}
+                <div className='cursor-pointer' onClick={ handleCartClick }>
+                  <IconShoppingCart/>
+
+                  <div className='absolute top-[42px] right-[83px] md:top-[35px] md:right-[113px] lg:top-[35px] lg:right-[113px] bg-black text-white w-6 h-6 flex justify-center items-center rounded-full'>
+                    <span className='text-xs select-none' id='contador-productos'>{ cartCount }</span>
+                  </div>
+                </div>
+                <li className="relative flex items-center gap-[10px] cursor-pointer" onClick={ handleProfileClick } >
                   <span className='select-none w-[40px] h-[40px] flex bg-[#555555] rounded-full'></span>
-                  <IconProfileArrow className={ `transform ${isModalOpen === false ? 'rotate-[270deg]' : 'rotate-90'}` } />
+                  <IconProfileArrow className={ `transform ${ModalProfile === false ? 'rotate-[270deg]' : 'rotate-90'}` } />
                 </li>
               </ul>
             ):(
@@ -84,7 +105,11 @@ export function Nav() {
         </div>
       </nav>
 
-      {isModalOpen && (
+      {ModalCart && (
+        <Cart />
+      )}
+
+      {ModalProfile && (
         <div className="w-[200px] z-10 flex flex-col items-baseline fixed top-[68px] right-[0] bg-white/[.3] backdrop-blur-[5px] border-l-[1px] border-b-[1px] border-r-[1px] rounded-bl-[10px] rounded-br-[10px]">
           <div className='w-full p-5 border-b-[1px]'>
             <p className='select-none text-[1.6rem] font-semibold'>Hola { user }</p>

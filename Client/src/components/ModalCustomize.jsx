@@ -1,11 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { setModal } from "../redux/actions"
+import { setModal, getUsers, getProducts } from "../redux/actions"
 import { handleDescriptionChange } from "../handlers/handlers"
 import { IconCart, IconShare } from "../assets/icons/icons"
 import { handlerSaveDesign, handlerSendDesignDataBase } from "../handlers/handlers"
-import { v4 as uuidv4 } from 'uuid';
-import { addToCart } from "../redux/actions"
+import { v4 as uuidv4 } from 'uuid'
+import { addToCart, loadCart } from "../redux/actions"
+import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage'
 
 const enabledButtonClasses = "h-[40px] w-[40px] bg-white border rounded-full flex items-center justify-center cursor-pointer"
 const disabledButtonClasses = "h-[40px] w-[40px] bg-gray-300 border rounded-full flex items-center justify-center cursor-not-allowed"
@@ -14,7 +15,8 @@ export function ModalCustomize( { price } ){
     const dispatch = useDispatch()
 
     const [ isButtonsEnabled, setButtonsEnabled ] = useState( false )
-    const [allProducts, setAllProducts] = useState([]);
+    const [ allProducts, setAllProducts ] = useState( [] )
+    const [ cartData, setCartData ] = useState( { cartProducts: [], cartTotal: 0, cartCount: 0 } )
 
     const description = useSelector( state => state.designDescription )
     const color = useSelector( state => state.clothingColor )
@@ -22,10 +24,14 @@ export function ModalCustomize( { price } ){
     const title = useSelector( state => state.designTitle )
     const openModal = useSelector( state => state.openModal )
     const capturedImages = useSelector( state => state.capturedImages )
+    const products = useSelector( state => state.products )
+    const cartProducts = useSelector( state => state.cartProducts )
+    const cartTotal = useSelector( state => state.cartTotal )
+    const cartCount = useSelector( state => state.cartCount )
 
-    let formdata = handlerSaveDesign(description, capturedImages, color, size, title, price, 1, 3)
+    let formdata = handlerSaveDesign( description, capturedImages, color, size, title, price, 1, 3 )
 
-    const onAddProduct = (data) => {
+    const onAddProduct = ( data, products ) => {
         const newProduct = {
             id: uuidv4(),
             name: data.get('name'),
@@ -35,12 +41,36 @@ export function ModalCustomize( { price } ){
             color: data.get('color'),
             size: data.get('size'),
             category: data.get('category'),
-            images: capturedImages.map((image, index) => data.get(`image${index}`)),
-        };
+            images: products[ products.length - 1 ].images[ 0 ]
+        }
 
-        setAllProducts([...allProducts, newProduct]);
-        dispatch (addToCart(newProduct));
+        setAllProducts( [ ...allProducts, newProduct ] )
+        dispatch( addToCart( newProduct ) )
     }
+
+    useEffect(() => {
+        dispatch( getUsers() )
+        dispatch( getProducts() )
+    }, [ dispatch ])
+
+    useEffect(() => {
+        setCartData({
+            cartProducts: cartProducts,
+            cartTotal: cartTotal,
+            cartCount: cartCount,
+        })
+    }, [ cartProducts, cartTotal, cartCount ])
+
+    useEffect(() => {
+        const savedCart = loadCartFromLocalStorage()
+
+        if( savedCart ) dispatch( loadCart( savedCart ) )
+
+    }, [ dispatch ])
+
+    useEffect(() => {
+        saveCartToLocalStorage( cartData )
+    }, [ cartData ])
 
     return(
         <>
@@ -79,7 +109,7 @@ export function ModalCustomize( { price } ){
                                         className={ isButtonsEnabled ? enabledButtonClasses : disabledButtonClasses }
                                         title="Agregar diseño al carrito"
                                         disabled={ !isButtonsEnabled }
-                                        onClick={ () => onAddProduct(formdata) }
+                                        onClick={ () => onAddProduct(formdata, products) }
                                     >
                                         <IconCart isButtonsEnabled={ isButtonsEnabled } />
                                     </button>

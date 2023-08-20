@@ -7,38 +7,25 @@ import circle from '../assets/images/circleBlue_33a1fd.png'
 export const Intro = () => {
     return(
         <>
-            <section className="bg-principal-black text-white py-20 h-screen w-screen flex justify-center items-center">
-                <div className="container mx-auto flex flex-col md:flex-row items-center my-12 md:my-24">
-                    <div className="flex flex-col w-full lg:w-1/3 justify-center items-start p-8">
-                        <h1
-                            className="
-                                text-3xl
-                                md:text-8xl
-                                p-2
-                                text-principal-white
-                                tracking-loose
-                                font-medium
-                                tracking-wide
-                                mb-[4rem]
-                            "
-                        >
-                            Custom Craft
-                        </h1>
-                        <h2
-                            className="text-1xl md:text-3xl leading-relaxed md:leading-snug mb-[10rem]"
-                        >
-                            Make your ideas come true, design your own style
-                        </h2>
+            <main className="h-full flex justify-center items-center p-10">
+                <div className="w-full h-full flex flex-col md:flex-row lg:flex-row items-center justify-evenly md:items-center md:justify-between lg:items-center lg:justify-between">
+                    <div className="w-[420px] h-[200px] flex flex-col items-center md:items-baseline lg:items-baseline justify-between">
+                        <span>
+                            <h1 className="text-center md:text-left lg:text-left text-[5rem] font-bold">Custom Craft</h1>
+                            <h2 className="text-center md:text-left lg:text-left text-[1.8rem] font-semibold text-[#92989f]">Haz realidad tus ideas.</h2>
+                        </span>
                         <NavLink
                             to="/home"
                             className="
+                                w-[200px]
+                                text-center
                                 bg-transparent
-                                md:text-3xl
                                 hover:bg-[#33a1fd]
-                                text-principal-white hover:text-principal-white
-                                rounded
-                                shadow
-                                hover:shadow-lg
+                                text-[#33a1fd]
+                                text-[2rem]
+                                font-semibold
+                                hover:text-principal-white
+                                rounded-[10px]
                                 py-5
                                 px-10
                                 border-2
@@ -46,41 +33,28 @@ export const Intro = () => {
                                 hover:border-transparent
                             "
                         >
-                            Explore Now
+                            Explorar Ahora
                         </NavLink>
                     </div>
 
-                    <div className="p-8 mt-12 mb-6 md:mb-0 md:mt-0 ml-0 md:ml-12 lg:w-2/3 justify-center">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 ">
-                            <div className="relative h-[26rem] ">
-                                <img
-                                    className="w-full md:absolute md:inset-0 md:w-[22rem] md:mx-auto z-10"
-                                    src={ jacket }
-                                    alt="Jacket"
-                                />
-                                <img className="w-[22rem] absolute inset-0 z-0" src={ circle } alt="Circle" />
-                            </div>
+                    <div className="w-auto h-auto flex flex-col flex-wrap justify-center gap-[10px]">
+                        <div className="relative md:transform md:translate-x-[-300px] lg:transform lg:translate-x-[-300px]">
+                            <img className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] lg:w-[200px] lg:h-[200px]" src={ circle } alt="Circle" />
+                            <img className="absolute top-0 w-[150px] h-[150px] md:w-[200px] md:h-[200px] lg:w-[200px] lg:h-[200px]" src={ jacket } alt="Jacket" />
+                        </div>
 
-                            <div className="relative h-[26rem] mb-11">
-                                <img
-                                    className="w-full md:absolute md:w-[26rem] md:mx-auto z-10 bottom-12"
-                                    src={ shirt } alt="Shirt"
-                                />
-                                <img className="w-[26rem] absolute bottom-12 z-0" src={ circle } alt="Circle"/>
-                            </div>
+                        <div className="relative">
+                            <img className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] lg:w-[200px] lg:h-[200px]" src={ circle } alt="Circle" />
+                            <img className="absolute top-0 w-[150px] h-[150px] md:w-[200px] md:h-[200px] lg:w-[200px] lg:h-[200px]" src={ shirt } alt="Shirt" />
+                        </div>
 
-                            <div className="relative h-[26rem]">
-                                <img
-                                    className="w-full md:absolute md:inset-0 md:w-[22rem] md:mx-auto z-10"
-                                    src={ shirt02 }
-                                    alt="Shirt 02"
-                                />
-                                <img className="w-[22rem] absolute inset-0 z-0" src={ circle } alt="Circle"/>
-                            </div>
+                        <div className="relative md:transform md:translate-x-[-300px] lg:transform lg:translate-x-[-300px]">
+                            <img className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] lg:w-[200px] lg:h-[200px]" src={ circle } alt="Circle" />
+                            <img className="absolute top-0 w-[150px] h-[150px] md:w-[200px] md:h-[200px] lg:w-[200px] lg:h-[200px]" src={ shirt02 } alt="Shirt 02" />
                         </div>
                     </div>
                 </div>
-            </section>
+            </main>
         </>
     )
 }

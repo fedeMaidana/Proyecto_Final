@@ -19,7 +19,7 @@ const getUsers = async () => {
 
             return {
                 ...userWithoutPassword,
-                favoriteProducts: favorites
+                FavoriteProducts: favorites
             };
         }));
 

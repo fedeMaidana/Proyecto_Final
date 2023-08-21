@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addComment, getComments, deleteComment, updateComment  } from '../redux/actions';
 import { AiOutlineComment } from 'react-icons/ai';
@@ -14,12 +14,12 @@ const AddComment = ({ userId, productId }) => {
   const allUsers = useSelector((state) => state.users); //Me traigo para agregar el nombre
   
   // Filtrar los comentarios basados en el productId
+  useEffect(() => {
+    dispatch(getComments());
+  }, []);
   const comments = allComments.filter((comment) => comment.productId === productId);
   const parsedUserId = parseInt(userId, 10);
 
-//   useEffect(() => {
-//     dispatch(getComments(productId));
-//   }, [dispatch, productId]);
 
 
   const handleSubmit = (e) => {

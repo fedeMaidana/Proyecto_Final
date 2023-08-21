@@ -8,8 +8,15 @@ import jacket from "../assets/images/jacket.png"
 import tshirt from "../assets/images/tshirt.png"
 import pattern from "../assets/images/pattern.png"
 import { CardHome } from "../components/CardHome"
+import {  getComments, getUsers} from '../redux/actions';
+import { useDispatch} from 'react-redux';
 
 export const Home = () => {
+    const dispatch =useDispatch();
+    useEffect(() => {
+      dispatch(getComments());
+      dispatch(getUsers());
+    }, [dispatch]);
     return(
             <div className="w-[100%] h-[90%] bg-[#f6f5f7] transform translate-y-[10vh] px-[50px] flex flex-col justify-evenly">
                 {/* <img className="absolute w-[20rem] right-[0rem] top-[5rem] hidden lg:block" src={pattern} alt="pattern top" />

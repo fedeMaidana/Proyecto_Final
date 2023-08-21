@@ -12,12 +12,22 @@ const cartHandler = {
 
   addToCart: async ( req, res ) => {
     try{
-        const { id } = req.user
-        const cartId = req.params.cartId
-        const { productId, quantity } = req.body
-        const addedProduct = await cartController.addToCart( id, cartId, productId, quantity )
+        const {   cartId, product} = req.body
+        const cart = await cartController.addToCartControllers( {   cartId, product})
 
-        res.status( 201 ).json( addedProduct )
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+  createCart: async ( req, res ) => {
+    try{
+        const { product, userId } = req.body
+        console.log('este es id:',userId)
+        const cart = await cartController.createCartControllers({ product, userId })
+
+        res.status( 201 ).json( cart)
     }catch( error ){
       res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
     }

@@ -107,7 +107,7 @@ export function Nav() {
         { user !== undefined
           ?(
             <ul className='w-[55%] flex justify-around items-center'>
-              <Cart />
+              <Cart userId={userId}/>
               <li className="relative flex items-center gap-[10px] cursor-pointer" onClick={ () => setIsModalOpen( prevState => !prevState ) } >
                 <p className='text-[1.5rem]' >{ user }</p>
                 <span className='w-[40px] h-[40px] flex bg-black rounded-full'></span>

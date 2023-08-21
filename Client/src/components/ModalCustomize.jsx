@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { setModal } from "../redux/actions"
+import { getProducts, getUsers, setModal, createOrAddToCartbackend } from "../redux/actions"
 import { handleDescriptionChange } from "../handlers/handlers"
 import { IconCart, IconShare } from "../assets/icons/icons"
 import { handlerSaveDesign, handlerSendDesignDataBase } from "../handlers/handlers"
@@ -16,7 +16,6 @@ export function ModalCustomize( { price } ){
 
     const [ isButtonsEnabled, setButtonsEnabled ] = useState( false )
     const [allProducts, setAllProducts] = useState([]);
-
     const description = useSelector( state => state.designDescription )
     const color = useSelector( state => state.clothingColor )
     const size = useSelector( state => state.clothingSize )
@@ -24,15 +23,48 @@ export function ModalCustomize( { price } ){
     const openModal = useSelector( state => state.openModal )
     const capturedImages = useSelector( state => state.capturedImages )
     const products = useSelector(state => state.products)
+    const allUsers = useSelector(state => state.allUsers)
+    console.log(allUsers)
     const cartProducts = useSelector((state) => state.cartProducts); // estás asegurándote de que cartProducts tenga un valor (en este caso, un array vacío []) en caso de que sea undefined. Esto evitará que la función reduce genere errores debido a un valor no definido.
     const cartTotal = useSelector((state) => state.cartTotal);
     const cartCount = useSelector((state) => state.cartCount);
+    
+    
+    //accediendo al Local Storage
+        const userId = localStorage.getItem('userId'); 
+        
 
-    let formdata = handlerSaveDesign(description, capturedImages, color, size, title, price, 1, 3)
+
+      
+      const parsedUserId = parseInt(userId, 10);
+      const connectedUser = allUsers.find(user => user.id === parsedUserId);
+      
+
+    let lastCreatedProductId;
+if (connectedUser && Array.isArray(connectedUser.CreatedProducts)) {
+    const createdProducts = connectedUser.CreatedProducts;
+
+    if (createdProducts.length > 0) {
+        lastCreatedProductId = createdProducts.slice(-1)[0].id;
+    } else {
+        console.log("El usuario ha creado 0 productos.");
+    }
+} else {
+    console.log("El usuario no tiene permiso para crear productos o no se pudo encontrar el usuario.");
+}
+console.log("ID del último producto creado:", lastCreatedProductId);
+
+
+    useEffect(() => {
+dispatch(getProducts())
+        }, []);
+
+    let formdata = handlerSaveDesign(description, capturedImages, color, size, title, price,1, userId)
 
     const onAddProduct = (data, products) => {
         const newProduct = {
-            id: uuidv4(),
+            productId: uuidv4(),
+            id: lastCreatedProductId,
             name: data.get('name'),
             price: data.get('price'),
             description: data.get('description'),
@@ -42,9 +74,17 @@ export function ModalCustomize( { price } ){
             category: data.get('category'),
             images: products[products.length - 1].images[0]
         };
-
+        const cartId = localStorage.getItem('cartId'); 
         setAllProducts([...allProducts, newProduct]);
         dispatch (addToCart(newProduct));
+        console.log(cartId)
+        console.log('us',parsedUserId)
+        if(parsedUserId || cartId === null ){
+            dispatch(createOrAddToCartbackend(parsedUserId, cartId, newProduct));
+        }else{
+            dispatch(createOrAddToCartbackend(parsedUserId, cartId, newProduct));
+        }
+    
     }
 
     const [cartData, setCartData] = useState({
@@ -71,6 +111,7 @@ export function ModalCustomize( { price } ){
        
        // Guardar el carrito en Local Storage al cambiar
        useEffect(() => {
+        dispatch(getUsers())
          //console.log(`Guardando datos del carrito en Local Storage: ${JSON.stringify(cartData)}`);
          saveCartToLocalStorage(cartData);
        }, [cartData]);
@@ -102,7 +143,7 @@ export function ModalCustomize( { price } ){
                             <div className="w-full flex justify-center gap-[30px]">
                                 <button
                                     className="w-[25%] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full"
-                                    onClick={ () => handlerSendDesignDataBase(setButtonsEnabled, formdata) }
+                                    onClick={ () => handlerSendDesignDataBase(setButtonsEnabled, formdata, dispatch) }
                                 >
                                     Guardar diseño
                                 </button>

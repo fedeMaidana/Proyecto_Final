@@ -1,6 +1,8 @@
 import axios from "axios"
 import html2canvas from 'html2canvas'
-import { setColor, setSize, setTitle, setDescription, addImage, setModal } from "../redux/actions"
+import { setColor, setSize, setTitle, setDescription, addImage, setModal, getUsers } from "../redux/actions"
+
+
 
 export const handleColor = ( color, dispatch ) => {
     dispatch( setColor( color ) )
@@ -45,7 +47,7 @@ export const handleModal = async ( dispatch ) => {
 
 export const handlerSaveDesign = (description, images, color, size, title, price, stateShare, userId ) => {
     const formData = new FormData()
-    formData.append( 'idUser', 1 )
+    formData.append( 'idUser', userId )
     formData.append( 'description', description )
     formData.append( 'color', color )
     formData.append( 'size', size )
@@ -62,12 +64,13 @@ export const handlerSaveDesign = (description, images, color, size, title, price
     return formData
 }
 
-export const handlerSendDesignDataBase = async (setButtonsEnabled, formData) => {
+export const handlerSendDesignDataBase = async (setButtonsEnabled, formData, dispatch) => {
     await axios.post( '/products', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
     })
 
+    dispatch(getUsers())
     setButtonsEnabled( true )
 }

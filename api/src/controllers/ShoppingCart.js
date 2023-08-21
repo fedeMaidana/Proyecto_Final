@@ -10,30 +10,53 @@ const cartController = {
     }
   },
 
-  addToCart: async ( id, cartId, productId, quantity ) => {
-    try{
-      if( !id ) throw new Error( 'Usuario no autenticado. Debes iniciar sesión.' )
+  addToCartControllers: async ( {cartId, product}) => {
+    console.log(product)
+    console.log(cartId)
+    try {
+      const cart = await Shopping_cart.findByPk(cartId);
+      if (!cart) {
+        return res.status(404).json({ error: 'Carrito no encontrado.' });
+      }
+  
+      // Actualiza los campos correspondientes en el carrito
 
-      const cart = await Shopping_cart.findByPk( cartId )
+      console.log('Cart before adding product:', cart);
 
-      if( !cart ) throw new Error( 'Carrito de compras no encontrado' )
-
-      const product = await Product.findByPk( productId )
-
-      if( !product ) throw new Error( 'Producto no encontrado' )
-
-      const isStockAvailable = await cart.checkProductStock( productId, quantity )
-
-      if( !isStockAvailable ) throw new Error( 'Stock insuficiente' )
-
-      await cart.addProduct( product, { through: { quantity: quantity } } )
-
-      return { message: 'Producto agregado al carrito con éxito' }
-
-    }catch( error ){
-      throw new Error( 'Error al agregar el producto al carrito' )
+      cart.name.push(product.name);
+      await cart.save();
+  
+      console.log('Cart after adding product:', cart);
+      await cart.addProduct(product.id);
+  
+      return cart;
+    } catch (error) {
+      console.error(error)
+      throw new Error('Error al agregar el producto al carrito');
     }
   },
+
+  createCartControllers: async ( { product, userId }) => {
+    console.log('user',product)
+    try {
+      const cart = await Shopping_cart.create({
+        name: [product.name],
+        estado_pedido: 'En Proceso',
+        userId:userId
+      });
+
+      await cart.addProduct(product.id);
+  
+      return cart;
+    } catch (error) {
+      console.error(error)
+      throw new Error('Error al agregar el producto al carrito');
+    }
+  },
+
+
+
+  
 
   removeFromCart: async ( id ) => {
     try{

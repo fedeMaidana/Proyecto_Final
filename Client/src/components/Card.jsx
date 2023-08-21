@@ -3,10 +3,16 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import FavoriteButton from './Favorite';
 import AddComment from './AddComments'
+import { getComments} from '../redux/actions';
+import { useDispatch} from 'react-redux';
 
 export const Card = ( { name, nameProduct, description, images, price, id } ) => {
     const [currentIndex, setCurrentIndex] = useState( 0 )
     const [userId, setUserId] = useState(null); // Estado local para almacenar userId
+    // const dispatch = useDispatch();
+    // useEffect(() => {
+    //     dispatch(getComments());
+    //   }, []);
 
     useEffect(() => {
       const userId = localStorage.getItem('userId'); // Obtener userId de localStorage

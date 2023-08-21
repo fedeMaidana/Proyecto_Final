@@ -30,6 +30,7 @@ import {
   GET_COMMENTS,
   UPDATE_COMMENT,
   DELETE_COMMENT,
+  UPDATE_CART_ID
 } from "./action-types";
 
 const initialState = {
@@ -52,6 +53,7 @@ const initialState = {
   users: [],
   allUsers: [],
   favorites: [],
+  cartId: localStorage.getItem('cartId') || null,
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -252,6 +254,14 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         comments: state.comments.filter((comment) => comment.id !== payload),
+      };
+
+    //cartId
+    case UPDATE_CART_ID:
+      localStorage.setItem('cartId', payload);
+      return {
+        ...state,
+        cartId: payload,
       };
 
     default:

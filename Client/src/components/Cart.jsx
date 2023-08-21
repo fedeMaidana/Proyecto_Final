@@ -4,13 +4,16 @@ import { removeFromCart, clearCart, incrementProduct, decrementProduct, loadCart
 import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage'; // Importa las funciones de localStorage
 import axios from 'axios';
 
-export function Cart() {
-    
+export function Cart({userId}) {
   const cartProducts = useSelector((state) => state.cartProducts); // estás asegurándote de que cartProducts tenga un valor (en este caso, un array vacío []) en caso de que sea undefined. Esto evitará que la función reduce genere errores debido a un valor no definido.
   const cartTotal = useSelector((state) => state.cartTotal);
   const cartCount = useSelector((state) => state.cartCount);
 
   const dispatch = useDispatch(); // Obtiene la función dispatch
+
+  
+    
+  
 
   const [cartData, setCartData] = useState({
     cartProducts: [],
@@ -47,13 +50,13 @@ export function Cart() {
   // Estado local para almacenar la cantidad de cada producto
   const [productQuantities, setProductQuantities] = useState(
     cartProducts.reduce((quantities, product) => {
-      quantities[product.id] = product.quantity;
+      quantities[product.productId] = product.quantity;
       return quantities;
     }, {})
   );
 
   const onDeleteProduct = (productId) => {
-    const productToDelete = cartProducts.find((product) => product.id === productId);
+    const productToDelete = cartProducts.find((product) => product.productId === productId);
     if (productToDelete) {
       dispatch(removeFromCart(productId));
     }
@@ -64,17 +67,27 @@ export function Cart() {
 
   const [active, setActive] = useState(false);
 
-  const handleIncrement = (product) => {
+  const handleIncrement = async (product) => {
     const updatedQuantities = { ...productQuantities };
-    updatedQuantities[product.id] += 1;
+    updatedQuantities[product.productId] += 1;
     setProductQuantities(updatedQuantities);
+    
 
     dispatch(incrementProduct(product)); // Pasar el objeto de producto completo
+    try {
+      dispatch(incrementProduct(product));
+
+
+      // Maneja la respuesta exitosa si es necesario
+    } catch (error) {
+      // Maneja el error de la solicitud
+      console.error('Error al incrementar el producto en el carrito:', error);
+    }
   };
   const handleDecrement = (product) => {
-    if (productQuantities[product.id] > 1) {
+    if (productQuantities[product.productId] > 1) {
       const updatedQuantities = { ...productQuantities };
-      updatedQuantities[product.id] -= 1;
+      updatedQuantities[product.productId] -= 1;
       setProductQuantities(updatedQuantities);
 
       dispatch(decrementProduct(product)); // Pasar el objeto de producto completo
@@ -82,19 +95,17 @@ export function Cart() {
   };
 
   const handleBuyButton = async () => {
-    var firstProduc = cartProducts[0];
-    const nameProduct = firstProduc.name;
-    const description = firstProduc.description;
+    console.log('ver',cartProducts)
     try {
+      const cartId = localStorage.getItem('cartId'); 
         const response = await axios.post('http://localhost:3001/create-checkout-session', {
-            cardName: nameProduct,
-            cardDescription: description,
+            products: cartProducts,
+            cartId: cartId,
         });
 
-        const { sessionUrl } = response.data; // Obtiene la URL de sesión
+        const { sessionUrl } = response.data;
 
         if (sessionUrl) {
-            // Redirige a la URL de sesión usando window.location
             window.location.href = sessionUrl;
         } else {
             console.error('URL de sesión no disponible.');
@@ -129,11 +140,10 @@ export function Cart() {
                 <> {/* si hay productos entonces: */}
                   <div className='row-product '>
                     {cartProducts.map((product) => (
-                      <div className='flex items-center justify-between p-8 border-b' key={product.id}>
+                      <div className='flex items-center justify-between p-8 border-b' key={product.productId}>
                         <div className='flex items-center justify-between flex-8'>
 
                           {/* {product.name} - {product.price} x{' '} */}
-
                           <p className='text-[1.5rem] mr-3'>
                             {product.name}
                           </p>
@@ -145,7 +155,7 @@ export function Cart() {
 
                           <button className='mr-6 text-[1.5rem] bg-secondary-blue2 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded-full' onClick={() => handleDecrement(product)}>-</button>
                           <span className='font-normal text-[1.5rem] mr-6'>
-                            {productQuantities[product.id]}
+                            {productQuantities[product.productId]}
                           </span>
                           <button className='text-[1.5rem] bg-secondary-blue2 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded-full' onClick={() => handleIncrement(product)}>+</button>
 
@@ -160,7 +170,7 @@ export function Cart() {
                           strokeWidth='1.5'
                           stroke='currentColor'
                           className='w-6 h-6 cursor-pointer'
-                          onClick={() => onDeleteProduct(product.id)}
+                          onClick={() => onDeleteProduct(product.productId)}
                         >
                           <path
                             strokeLinecap='round'

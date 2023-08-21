@@ -1,17 +1,22 @@
 const { Router } = require('express');
 const passport = require('../passport/Auth.js'); // Importa la instancia de Passport que configuraste en Auth.js
-const { getUsersHandler, registerHandler, getUserIDHandler, loginHandler, deleteHandler } = require('../handlers/usersHandler');
+
+
+const { registerHandler, getUserIDHandler, loginHandler,updateHandler } = require('../handlers/usersHandler');
+
 const authMiddleware = require('../middleware/authMiddleware');
 const getUserDetails = require('../handlers/loginGoogle.js')
 const { upload } = require( '../controllers/register.js' )
 
 const userRoutes = Router();
 
-userRoutes.get('/users', getUsersHandler);
+
 userRoutes.get('/user', authMiddleware, getUserIDHandler);
 userRoutes.post('/register',upload.single('profileImage'), registerHandler);
 userRoutes.post('/login', loginHandler);
-userRoutes.put('/deleteuser/:id', deleteHandler);
+userRoutes.put('/updateuser/:id', updateHandler)
+
+
 
 
 userRoutes.get('/user/google', authMiddleware, getUserDetails);

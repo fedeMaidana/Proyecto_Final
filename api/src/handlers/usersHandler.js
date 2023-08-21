@@ -4,11 +4,14 @@ const { register } = require( '../controllers/register' )
 const { login } = require( '../controllers/login' )
 const { deleteUser } = require( '../controllers/deleteUser' )
 const { sendWelcomeEmail } = require('../controllers/emailService');
+const { updateUser} = require("../controllers/putUsers")
 
-const getUsersHandler = async ( _req, res ) => {
+const getUsersHandler = async ( req, res ) => {
     try {
         
-        const users = await getUsers()
+        const {name} = req.query;
+
+        const users = await getUsers(name);
     
         res.status( 200 ).send( users )
     } catch (error) {
@@ -23,16 +26,18 @@ const getUserIDHandler = async ( req, res ) => {
     const userId = totalUsers.find( user => user.id === id )
 
     if( userId ) res.json( userId )
-    else res.json( { mensaje: 'No se encontró ningún usuario con esa ID' } )
+    else res.json( { mensaje: 'No se encontró ningún usuario con ese Token' } )
 }
 
 const registerHandler = async ( req, res ) => {
-    const { name, email, password, userName, lastName, birthDate } = req.body
+
+    const { name, email, password, userName, lastName, birthDate, role } = req.body
     const profileImage = req.file
     console.log(profileImage);
 
     try{
-        const result = await register( name, email, password, userName, lastName, birthDate, profileImage  )
+        const result = await register( name, email, password, userName, lastName, birthDate, profileImage, role )
+
         await sendWelcomeEmail(email);
 
         res.status( 200 ).json( result )
@@ -74,4 +79,19 @@ const deleteHandler = async ( req, res ) => {
     }
 }
 
-module.exports = { getUsersHandler, registerHandler, getUserIDHandler, loginHandler, deleteHandler }
+const updateHandler = async (req, res) => {
+    const { id } = req.params;
+    const { name, email, password, userName, lastName, birthDate, profileImage, } = req.body;
+  
+    try {
+      const result = await updateUser( id, name, email, password, userName, lastName, birthDate,profileImage);
+  
+      res.status(200).json(result);
+    } catch (error) {
+      console.error('Error al intentar actualizar el usuario: ', error);
+  
+      res.status(500).json({ error: 'server error' });
+    }
+  }
+
+module.exports = { getUsersHandler, registerHandler, getUserIDHandler, loginHandler, deleteHandler, updateHandler }

@@ -10,7 +10,7 @@ const login = async (email, password) => {
   const isCorrect = await bcrypt.compare(password, user.password);
 
   if (isCorrect) {
-    const { id, name, email, userName, lastName, birthDate, profileImage } = user;
+    const { id, name, email, userName, lastName, birthDate, profileImage, role, estado } = user;
 
     const data = {
       id: id,
@@ -20,6 +20,8 @@ const login = async (email, password) => {
       userName: userName,
       birthDate: birthDate,
       profileImage: profileImage,
+      estado: estado,
+      role: role
 
     };
 
@@ -38,6 +40,8 @@ const login = async (email, password) => {
         birthDate,
         profileImage,
         token,
+        estado,
+        role
       },
     };
   }

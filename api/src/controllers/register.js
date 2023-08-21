@@ -37,7 +37,7 @@ const upload = multer({
 });
 
 
-const register = async ( name, email, password, userName, lastName, birthDate, profileImage ) => {
+const register = async ( name, email, password, userName, lastName, birthDate, profileImage, role ) => {
   
   
   const user = await User.findOne( { where: { email } } )
@@ -58,7 +58,9 @@ const register = async ( name, email, password, userName, lastName, birthDate, p
       fullImageUrl = baseUrl + imageUrl
     }
 
-    const newUser = await User.create( { name, email, userName, lastName, birthDate, profileImage: fullImageUrl, password: passwordHash } )
+    
+    const newUser = await User.create( { name, email, userName, lastName, birthDate, profileImage: fullImageUrl, password: passwordHash, role } )
+
 
     const responseUser = {
       id: newUser.id,
@@ -69,6 +71,7 @@ const register = async ( name, email, password, userName, lastName, birthDate, p
       birthDate: newUser.birthDate,
       profileImage: newUser.profileImage,
       estado: newUser.estado,
+      role: newUser.role
     }
 
     return { message: 'Usuario creado correctamente!', valid: true, user: responseUser }

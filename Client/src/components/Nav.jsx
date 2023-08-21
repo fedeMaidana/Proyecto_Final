@@ -34,6 +34,7 @@ export function Nav() {
           setUserId( userId )
           localStorage.setItem( 'userId', userId )
 
+
           setUser( response?.data?.name )
 
         }catch( error ){
@@ -83,6 +84,7 @@ export function Nav() {
     setUser( undefined )
     setModalProfile( false )
   }
+
 
   return (
     <>

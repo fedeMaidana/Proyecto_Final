@@ -46,12 +46,11 @@ const register = async ( name, email, password, userName, lastName, birthDate, p
   else{
     const passwordHash = await bcrypt.hash( password, 10 )
     const baseUrl = 'http://localhost:3001'; // Cambiar esto al hacer deploy
-    const imageUrl = `/upload/${profileImage.filename}`; 
+    const imageUrl = `/upload/${profileImage.filename}`;
     const fullImageUrl = baseUrl + imageUrl
 
     
     const newUser = await User.create( { name, email, userName, lastName, birthDate, profileImage: fullImageUrl, password: passwordHash, role } )
-
 
     const responseUser = {
       id: newUser.id,

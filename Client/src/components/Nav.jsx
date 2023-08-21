@@ -19,11 +19,7 @@ export function Nav() {
 
   useEffect(() => {
     const token = localStorage.getItem( 'token' )
-    const googleToken = cookies.get('googleToken');
-    console.log('Google Token:', googleToken);
-
-    console.log( 'Local Token:', token )
-    console.log( 'Google Token inside useEffect:', googleToken )
+    const googleToken = cookies.get('googleToken')
 
     if( token ){
       const fetchUserDetails = async () => {
@@ -58,8 +54,6 @@ export function Nav() {
           })
 
           const { name, id } = responseGoogle.data
-
-          console.log( responseGoogle.data )
 
           setUserId( id )
           localStorage.setItem( 'userId', id )

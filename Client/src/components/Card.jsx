@@ -6,18 +6,18 @@ import AddComment from './AddComments'
 
 export const Card = ( { name, nameProduct, description, images, price, id } ) => {
     const [currentIndex, setCurrentIndex] = useState( 0 )
-    const [userId, setUserId] = useState(null); // Estado local para almacenar userId
+    const [userId, setUserId] = useState( null )
 
     useEffect(() => {
-      const userId = localStorage.getItem('userId'); // Obtener userId de localStorage
-      setUserId(userId);
-    }, []);
+        const userId = localStorage.getItem('userId')
+        setUserId(userId)
+    }, [])
 
     useEffect(() => {
         const interval = setInterval(() => {
-            const nextIndex = (currentIndex + 1) % images.length;
-            setCurrentIndex(nextIndex);
-        }, 3000);
+            const nextIndex = (currentIndex + 1) % images.length
+            setCurrentIndex( nextIndex )
+        }, 3000)
 
         return () => clearInterval(interval);
     }, [currentIndex, images.length]);
@@ -27,21 +27,19 @@ export const Card = ( { name, nameProduct, description, images, price, id } ) =>
             const response = await axios.post('http://localhost:3001/create-checkout-session', {
                 cardName: nameProduct,
                 cardDescription: description,
-            });
-    
-            const { sessionUrl } = response.data; // Obtiene la URL de sesión
-    
+            })
+
+            const { sessionUrl } = response.data
+
             if (sessionUrl) {
-                // Redirige a la URL de sesión usando window.location
                 window.location.href = sessionUrl;
             } else {
-                console.error('URL de sesión no disponible.');
+                console.error('URL de sesión no disponible.')
             }
-    
         } catch (error) {
-            console.error('Error al enviar datos al backend:', error);
+            console.error('Error al enviar datos al backend:', error)
         }
-    };
+    }
 
     return(
         <div className="w-[90%] h-[300px] bg-white rounded-[10px] grid grid-cols-2 grid-rows-4 p-[10px] border border-[#e7e9ec]" key={ id } id= { id }>
@@ -56,14 +54,14 @@ export const Card = ( { name, nameProduct, description, images, price, id } ) =>
             </div>
 
             <div className="flex justify-center row-span-3 border-r-[1px]">
-            {images.map( ( image, index ) => (
-                    <img
-                        key={ index }
-                        src={ image }
-                        alt={ image }
-                        className={ `w-[90%] h-full rounded-[10px] mt-[5px] bg-[#b7bbc3] object-cover ${ index === currentIndex ? 'visible' : 'hidden' }` }
-                    />
-                ))}
+                {images.map( ( image, index ) => (
+                        <img
+                            key={ index }
+                            src={ image }
+                            alt={ image }
+                            className={ `w-[90%] h-full rounded-[10px] mt-[5px] bg-[#b7bbc3] object-cover ${ index === currentIndex ? 'visible' : 'hidden' }` }
+                        />
+                    ))}
             </div>
 
 
@@ -71,19 +69,14 @@ export const Card = ( { name, nameProduct, description, images, price, id } ) =>
                 <h3 className="text-[2rem] font-semibold">Sobre el producto</h3>
                 <p className="text-[1.5rem]">{description}</p>
                 <div className="flex items-center justify-center space-x-4">
-         
-            <FavoriteButton userId={userId} productId={id}/>
-            
-            <AddComment userId={userId} productId={id}/>
-            </div>
+                    <FavoriteButton userId={userId} productId={id}/>
+                    <AddComment userId={userId} productId={id}/>
+                </div>
             </div>
 
             <button onClick={handleBuyButton}>Comprar</button>
 
             <Link to={`detail/${id}`}>Detalles</Link>
-
-            
-            
         </div>
-    );
-};
+    )
+}

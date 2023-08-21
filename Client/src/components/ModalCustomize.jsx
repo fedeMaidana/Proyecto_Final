@@ -7,11 +7,12 @@ import { handlerSaveDesign, handlerSendDesignDataBase } from "../handlers/handle
 import { v4 as uuidv4 } from 'uuid'
 import { addToCart, loadCart } from "../redux/actions"
 import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage'
+import { categoryByModel } from "../auxFunctions/categoryByModel"
 
 const enabledButtonClasses = "h-[40px] w-[40px] bg-white border rounded-full flex items-center justify-center cursor-pointer"
 const disabledButtonClasses = "h-[40px] w-[40px] bg-gray-300 border rounded-full flex items-center justify-center cursor-not-allowed"
 
-export function ModalCustomize( { price } ){
+export function ModalCustomize( { price, currentModel } ){
     const dispatch = useDispatch()
 
     const [ isButtonsEnabled, setButtonsEnabled ] = useState( false )
@@ -29,7 +30,9 @@ export function ModalCustomize( { price } ){
     const cartTotal = useSelector( state => state.cartTotal )
     const cartCount = useSelector( state => state.cartCount )
 
-    let formdata = handlerSaveDesign( description, capturedImages, color, size, title, price, 1, 3 )
+    let category = categoryByModel( currentModel )
+
+    let formdata = handlerSaveDesign( description, capturedImages, color, size, title, price, 1, category )
 
     const onAddProduct = ( data, products ) => {
         const newProduct = {
@@ -86,7 +89,7 @@ export function ModalCustomize( { price } ){
 
                         <div className="h-[100%] flex flex-col justify-evenly items-center">
                             <div className="w-full">
-                                <label htmlFor='description' className="text-[1.2rem] font-semibold">Agregale una descripción al diseño</label>
+                                <label htmlFor='description' className="text-[1.2rem] font-semibold">Agrega una descripción</label>
                                 <textarea
                                     id="description"
                                     type="text"
@@ -98,8 +101,14 @@ export function ModalCustomize( { price } ){
 
                             <div className="w-full flex justify-center gap-[30px]">
                                 <button
-                                    className="w-[25%] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full"
-                                    onClick={ () => handlerSendDesignDataBase(setButtonsEnabled, formdata) }
+                                    className={ description === ''
+                                        ? 'w-[140px] h-[40px] py-3 bg-gray-300 text-[#999] border font-semibold text-[1.5rem] rounded-full cursor-not-allowed'
+                                        : 'w-[140px] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full'
+                                    }
+                                    onClick={ () => {
+                                        if( description !== '' ){
+                                            handlerSendDesignDataBase( setButtonsEnabled, formdata ) } }
+                                        }
                                 >
                                     Guardar diseño
                                 </button>

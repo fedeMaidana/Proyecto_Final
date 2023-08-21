@@ -7,7 +7,6 @@ export const CardsContainer = () => {
     const dispatch = useDispatch()
 
     const allUsers = useSelector( state => state.allUsers )
-    const allProducts = useSelector( state => state.allProducts )
     console.log(allUsers)
 
     useEffect( () => {

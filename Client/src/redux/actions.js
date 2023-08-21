@@ -78,17 +78,16 @@ export const getSearch = (name) => {
         dispatch({
           type: SEARCH_PRODUCT,
           payload: products,
-        });
+        })
       } catch (error) {
         dispatch({
           type: SEARCH_PRODUCT_FAILURE,
           payload: error.response.data.message,
-          
-        });
+        })
       }
-    };
-  };
-  
+    }
+  }
+
   export const clearSearch = ()=>{
       return{
           type: CLEAR_SEARCH_PRODUCTS
@@ -137,50 +136,48 @@ export const applyFilters = (filters) => {
             category: filters.category,
             min_price: filters.minPrice,
             max_price: filters.maxPrice,
-            
-          },
-        });
-  
+          }
+        })
+
         dispatch({
           type: APPLY_FILTERS,
           payload: response.data,
-        filters : filters
-        });
+          filters : filters
+        })
       } catch (error) {
         console.error('Error fetching filtered products:', error);
       }
-    };
-  };
-
+    }
+  }
 
 export const applySorting = ( sorting ) => {
     return async ( dispatch ) => {
-         try {
-             const response = await axios.get( '/filter', {
-                params: {
-                     sortOption: sorting,
-                 }
-             })
+      try {
+        const response = await axios.get( '/filter', {
+          params: {
+            sortOption: sorting
+            }
+        })
 
-            dispatch({
-                 type: APPLY_SORTING,
-                payload: response.data,
-                sorting: sorting
-            })
-         } catch( error ) {
-            console.error( 'Error fetching sorted products:', error )
-        }
+        dispatch({
+          type: APPLY_SORTING,
+          payload: response.data,
+          sorting: sorting
+        })
+      } catch( error ) {
+        console.error( 'Error fetching sorted products:', error )
     }
- }
+    }
+}
 
 export const getCategories = () => {
     return async ( dispatch ) => {
         try {
-            const response = await axios.get( '/categories' )
+          const response = await axios.get( '/categories' )
 
-            dispatch( { type: ALL_CATEGORIES, payload: response.data } )
+          dispatch( { type: ALL_CATEGORIES, payload: response.data } )
         } catch( error ){
-            console.error( 'Error fetching sorted products:', error )
+          console.error( 'Error fetching sorted products:', error )
         }
     }
 }
@@ -192,46 +189,44 @@ export const addImage = (imageDataUrl) => ({
 
 export const clearImages = () => ({
     type: CLEAR_IMAGES,
-
-});
-
-
-/* Carrito de compras */
+})
 
 export const addToCart = (product) => ({
     type: ADD_TO_CART,
     payload: product,
-  });
-  
+  })
+
   export const removeFromCart = (productId) => ({
     type: REMOVE_FROM_CART,
     payload: productId,
-  });
+  })
+
   export const clearCart = () => {
     return {
       type: CLEAR_CART,
-    };
-  };
+    }
+  }
+
   export const incrementProduct = (product) => {
     return {
       type: INCREMENT_PRODUCT,
       payload: {product},
-    };
-  };
-  
+    }
+  }
+
   export const decrementProduct = (product) => {
     return {
       type: DECREMENT_PRODUCT,
       payload: {product},
-    };
-  };
+    }
+  }
 
 export const loadCart = (cartData) => {
     return {
       type: LOAD_CART,
       payload: cartData,
-    };
-  };
+    }
+  }
 
 export const getUsers = () => {
     return async ( dispatch ) => {
@@ -241,8 +236,6 @@ export const getUsers = () => {
     }
 }
 
-
-//Favorites
 export const getFavorites = (userId) => {
   return async (dispatch) => {
     try {
@@ -251,8 +244,8 @@ export const getFavorites = (userId) => {
     } catch (error) {
       console.error('Error fetching favorites:', error);
     }
-  };
-};
+  }
+}
 
 export const addFavorite = (userId, productId) => {
   return async (dispatch) => {
@@ -262,8 +255,8 @@ export const addFavorite = (userId, productId) => {
     } catch (error) {
       console.error('Error adding favorite:', error);
     }
-  };
-};
+  }
+}
 
 export const deleteFavorite = (favoriteId) => {
   return async (dispatch) => {
@@ -273,11 +266,8 @@ export const deleteFavorite = (favoriteId) => {
     } catch (error) {
       console.error('Error deleting favorite:', error);
     }
-  };
-};
-
-
-//Comments
+  }
+}
 
 export const addComment = (userId, productId, text) => {
   return async (dispatch) => {
@@ -287,8 +277,8 @@ export const addComment = (userId, productId, text) => {
     } catch (error) {
       console.error('Error adding comment:', error);
     }
-  };
-};
+  }
+}
 
 export const getComments = () => {
   return async (dispatch) => {
@@ -298,8 +288,8 @@ export const getComments = () => {
     } catch (error) {
       console.error('Error getting comments:', error);
     }
-  };
-};
+  }
+}
 
 export const getCommentsId = (productId) => {
   return async (dispatch) => {
@@ -309,8 +299,8 @@ export const getCommentsId = (productId) => {
     } catch (error) {
       console.error('Error getting comments:', error);
     }
-  };
-};
+  }
+}
 
 export const updateComment = (commentId, newText) => {
   return async (dispatch) => {
@@ -320,8 +310,8 @@ export const updateComment = (commentId, newText) => {
     } catch (error) {
       console.error('Error updating comment:', error);
     }
-  };
-};
+  }
+}
 
 export const deleteComment = (commentId) => {
   return async (dispatch) => {
@@ -331,7 +321,5 @@ export const deleteComment = (commentId) => {
     } catch (error) {
       console.error('Error deleting comment:', error);
     }
-  };
-};
-
-
+  }
+}

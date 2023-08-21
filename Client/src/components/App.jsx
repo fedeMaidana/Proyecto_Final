@@ -7,8 +7,12 @@ import { Customize } from '../views/Customize.jsx'
 import { Register } from '../views/Register.jsx'
 import { Community } from '../views/Community'
 
-import {ProfilePage} from '../views/Perfil'
 
+import { ProfilePage } from '../views/Perfil'
+
+
+
+import { Dashboard } from '../views/Dashboard'
 
 import axios from "axios"
 axios.defaults.baseURL = 'http://localhost:3001/'
@@ -16,20 +20,26 @@ axios.defaults.baseURL = 'http://localhost:3001/'
 export function App() {
   const location = useLocation()
 
-  const shouldShowNavBar = [ '/home', '/Community' ].some( path => location.pathname.startsWith( path ) )
+  const shouldShowNavBar = ['/home', '/Community'].some(path => location.pathname.startsWith(path))
 
 
   return (
     <>
-    { shouldShowNavBar && <Nav /> }
+      {shouldShowNavBar && <Nav />}
       <Routes>
-        <Route path='/' element={ <Intro/> } />
-        <Route path='/home' element={ <Home/> } />
-        <Route path='/customize/:model' element={ <Customize/> } />
-        <Route path='/login' element={ <Login/> } />
-        <Route path='/register' element={ <Register/> } />
+        <Route path='/' element={<Intro />} />
+        <Route path='/home' element={<Home />} />
+        <Route path='/customize/:model' element={<Customize />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
         <Route path="/community" element={<Community />} />
+
         <Route path='/my-profile' element={<ProfilePage />} />
+
+
+        <Route path="/dashboard" element={<Dashboard />} />
+
+
       </Routes>
     </>
   )

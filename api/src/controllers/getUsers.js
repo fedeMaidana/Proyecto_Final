@@ -1,9 +1,21 @@
 const { User, Product, Favorite  } = require( '../db' )
+const { Op } = require('sequelize');
 
-const getUsers = async () => {
+const getUsers = async (name) => {
+
     try {
+
+        const whereCondition = name ? {
+            role: 'user', 
+            name: {
+                [Op.iLike]: `%${name.toLowerCase()}%`
+            }
+        } 
+        : { role: 'user' };
+
+
         const dataBaseUsers = await User.findAll({
-            where: { estado: 1 },
+            where: whereCondition,
             include:
                 { model: Product, as: 'CreatedProducts' },
                 
@@ -30,4 +42,7 @@ const getUsers = async () => {
         throw error;
     }
 };
+
+
+
 module.exports = { getUsers }

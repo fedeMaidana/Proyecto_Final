@@ -1,0 +1,6 @@
+.env
+node_modules/
+package-lock.json
+
+# Ignorar el contenido de la carpeta upload
+upload/*

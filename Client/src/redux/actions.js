@@ -384,13 +384,13 @@ export const createOrAddToCartbackend = (parsedUserId, cartId, newProduct) => {
       if (cartId === null || cartId === "null") {
         console.log(parsedUserId)
         // Si no hay cartId, crea un nuevo carrito y agrega el producto inicial
-        response = await axios.post('http://localhost:3001/shopping_cart/create-cart', {
+        response = await axios.post('/shopping_cart/create-cart', {
           userId: parsedUserId,
           product: newProduct,
         });
       } else {
         // Si hay un cartId, agrega el producto al carrito existente
-        response = await axios.post('http://localhost:3001/shopping_cart/add-cart', {
+        response = await axios.post('/shopping_cart/add-cart', {
           cartId: cartId,
           product: newProduct,
         });
@@ -423,7 +423,7 @@ export const buyToCartbackend = (cartId, newProduct, cartTotal) => {
   console.log(typeof cartId)
   return async (dispatch) => {
     try {
-        const response = await axios.post('http://localhost:3001/shopping_cart/buy-cart', {
+        const response = await axios.post('/shopping_cart/buy-cart', {
           cartId: cartId,
           product: newProduct,
           cartTotal: cartTotal
@@ -442,7 +442,7 @@ export const cancelToCartbackend = (cartId, newProduct, cartTotal) => {
   console.log(typeof cartId)
   return async (dispatch) => {
     try {
-        const response = await axios.post('http://localhost:3001/shopping_cart/cancel-cart', {
+        const response = await axios.post('/shopping_cart/cancel-cart', {
           cartId: cartId,
           product: newProduct,
           cartTotal: cartTotal
@@ -460,7 +460,7 @@ export const buySuccessCart = (cartId, userId) => {
   console.log(typeof cartId)
   return async (dispatch) => {
     try {
-        const response = await axios.post('http://localhost:3001/shopping_cart/buy-success', {
+        const response = await axios.post('/shopping_cart/buy-success', {
           cartId: cartId,
           userId:userId,
         });

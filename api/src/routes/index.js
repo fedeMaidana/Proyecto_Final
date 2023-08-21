@@ -32,7 +32,7 @@ mainRouter.use('/products',productRouter)
 mainRouter.use('/filter', filterRouter)
 
 
-mainRouter.use(paymentRouter)
+mainRouter.use('/', paymentRouter)
 
 mainRouter.use('/favorites', favoriteRouter)
 

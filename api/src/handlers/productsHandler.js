@@ -33,7 +33,9 @@ const getProductsHandlerById = async ( req, res ) => {
 const postProductHandler = async ( req, res ) => {
     try{
         const { idUser, name, price, description, stock, category, color, size, stateShare } = req.body
+        console.log(idUser, name, price, description, stock, category, color, size, stateShare)
         const images = req.files
+
 
         const response = await createProduct( idUser, name, price, description, stock, images, category, color, size, stateShare )
 

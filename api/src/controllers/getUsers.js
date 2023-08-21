@@ -31,7 +31,7 @@ const getUsers = async (name) => {
 
             return {
                 ...userWithoutPassword,
-                favoriteProducts: favorites
+                FavoriteProducts: favorites
             };
         }));
 

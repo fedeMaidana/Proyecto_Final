@@ -20,6 +20,11 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
+
+    if (!file) {
+      cb(null, true);
+      return;
+    }
     const allowedExtensions = ['.png', '.jpg', '.webp'];
     const fileExtension = path.extname(file.originalname).toLowerCase();
   
@@ -45,9 +50,13 @@ const register = async ( name, email, password, userName, lastName, birthDate, p
 
   else{
     const passwordHash = await bcrypt.hash( password, 10 )
-    const baseUrl = 'http://localhost:3001'; // Cambiar esto al hacer deploy
-    const imageUrl = `/upload/${profileImage.filename}`; 
-    const fullImageUrl = baseUrl + imageUrl
+
+    let fullImageUrl = null;
+    if(profileImage){
+      const baseUrl = 'http://localhost:3001'; // Cambiar esto al hacer deploy
+      const imageUrl = `/upload/${profileImage.filename}`; 
+      fullImageUrl = baseUrl + imageUrl
+    }
 
     
     const newUser = await User.create( { name, email, userName, lastName, birthDate, profileImage: fullImageUrl, password: passwordHash, role } )

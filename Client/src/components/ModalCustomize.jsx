@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { setModal, getUsers, getProducts } from "../redux/actions"
+import { getProducts, getUsers, setModal, createOrAddToCartbackend } from "../redux/actions"
 import { handleDescriptionChange } from "../handlers/handlers"
 import { IconCart, IconShare } from "../assets/icons/icons"
 import { handlerSaveDesign, handlerSendDesignDataBase } from "../handlers/handlers"
@@ -28,12 +28,38 @@ export function ModalCustomize( { price } ){
     const cartProducts = useSelector( state => state.cartProducts )
     const cartTotal = useSelector( state => state.cartTotal )
     const cartCount = useSelector( state => state.cartCount )
+    const allUsers = useSelector(state => state.allUsers)
 
-    let formdata = handlerSaveDesign( description, capturedImages, color, size, title, price, 1, 3 )
+        //accediendo al Local Storage
+        const userId = localStorage.getItem('userId'); 
+        
+
+
+      
+      const parsedUserId = parseInt(userId, 10);
+      const connectedUser = allUsers.find(user => user.id === parsedUserId);
+
+      let lastCreatedProductId;
+      if (connectedUser && Array.isArray(connectedUser.CreatedProducts)) {
+          const createdProducts = connectedUser.CreatedProducts;
+      
+          if (createdProducts.length > 0) {
+              lastCreatedProductId = createdProducts.slice(-1)[0].id;
+          } else {
+              console.log("El usuario ha creado 0 productos.");
+          }
+      } else {
+          console.log("El usuario no tiene permiso para crear productos o no se pudo encontrar el usuario.");
+      }
+      console.log("ID del último producto creado:", lastCreatedProductId);
+      
+
+    let formdata = handlerSaveDesign( description, capturedImages, color, size, title, price, 1, userId)
 
     const onAddProduct = ( data, products ) => {
         const newProduct = {
-            id: uuidv4(),
+            productId: uuidv4(),
+            id: lastCreatedProductId,
             name: data.get('name'),
             price: data.get('price'),
             description: data.get('description'),
@@ -46,6 +72,15 @@ export function ModalCustomize( { price } ){
 
         setAllProducts( [ ...allProducts, newProduct ] )
         dispatch( addToCart( newProduct ) )
+        const cartId = localStorage.getItem('cartId'); 
+        console.log(cartId)
+        console.log('us',parsedUserId)
+        if(parsedUserId || cartId === null ){
+            dispatch(createOrAddToCartbackend(parsedUserId, cartId, newProduct));
+        }else{
+            dispatch(createOrAddToCartbackend(parsedUserId, cartId, newProduct));
+        }
+    
     }
 
     useEffect(() => {

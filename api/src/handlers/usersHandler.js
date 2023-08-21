@@ -5,10 +5,12 @@ const { login } = require( '../controllers/login' )
 const { deleteUser } = require( '../controllers/deleteUser' )
 const { sendWelcomeEmail } = require('../controllers/emailService');
 
-const getUsersHandler = async ( _req, res ) => {
+const getUsersHandler = async ( req, res ) => {
     try {
         
-        const users = await getUsers()
+        const {name} = req.query;
+
+        const users = await getUsers(name);
     
         res.status( 200 ).send( users )
     } catch (error) {
@@ -23,16 +25,18 @@ const getUserIDHandler = async ( req, res ) => {
     const userId = totalUsers.find( user => user.id === id )
 
     if( userId ) res.json( userId )
-    else res.json( { mensaje: 'No se encontró ningún usuario con esa ID' } )
+    else res.json( { mensaje: 'No se encontró ningún usuario con ese Token' } )
 }
 
 const registerHandler = async ( req, res ) => {
-    const { name, email, password, userName, lastName, birthDate } = req.body
+
+    const { name, email, password, userName, lastName, birthDate, role } = req.body
     const profileImage = req.file
     console.log(profileImage);
 
     try{
-        const result = await register( name, email, password, userName, lastName, birthDate, profileImage  )
+        const result = await register( name, email, password, userName, lastName, birthDate, profileImage, role )
+
         await sendWelcomeEmail(email);
 
         res.status( 200 ).json( result )

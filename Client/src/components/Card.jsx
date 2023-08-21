@@ -69,7 +69,7 @@ export const Card = ({
         dispatch(createOrAddToCartbackend(parsedUserId, cartId, newProduct));
       }
       const response = await axios.post(
-        'http://localhost:3001/create-checkout-session',
+        'https://proyectofinal-production-4957.up.railway.app/create-checkout-session',
         {
           products: [newProduct],
           cartId: cartId,

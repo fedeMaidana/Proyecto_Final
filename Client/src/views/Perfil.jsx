@@ -25,7 +25,7 @@ export const ProfilePage = () => {
     if (token) {
       const fetchUserDetails = async () => {
         try {
-          const response = await axios.get('http://localhost:3001/user', {
+          const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
             headers: {
               token: `${token}`,
             },
@@ -55,7 +55,7 @@ export const ProfilePage = () => {
       setLoading(true);
 
       try {
-        const response = await axios.put(`http://localhost:3001/updateuser/${user.id}`, updatedUser);
+        const response = await axios.put(`https://proyectofinal-production-4957.up.railway.app/updateuser/${user.id}`, updatedUser);
         setMessage(response.data.message);
         setInputs({ name: '', email: '', userName: '', lastName: '', birthDate: '' });
 

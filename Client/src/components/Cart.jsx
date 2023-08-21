@@ -84,7 +84,7 @@ export function Cart() {
     console.log('Cart Total:', cartTotal);
       const cartId = localStorage.getItem('cartId'); 
       dispatch(buyToCartbackend(cartId,cartProducts, cartTotal))
-        const response = await axios.post('http://localhost:3001/create-checkout-session', {
+        const response = await axios.post('https://proyectofinal-production-4957.up.railway.app/create-checkout-session', {
             products: cartProducts,
             cartId: cartId,
         });

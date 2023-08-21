@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addComment, getComments, deleteComment, updateComment  } from '../redux/actions';
+import { addComment, deleteComment, updateComment,   } from '../redux/actions';
 import { AiOutlineComment } from 'react-icons/ai';
 import { BiCommentX, BiSend } from 'react-icons/bi';
 
@@ -12,12 +12,8 @@ const AddComment = ({ userId, productId }) => {
   const dispatch = useDispatch();
   const allComments = useSelector((state) => state.comments);
   const allUsers = useSelector((state) => state.users); //Me traigo para agregar el nombre
-  
-  // Filtrar los comentarios basados en el productId
-  useEffect(() => {
-    dispatch(getComments());
-  }, []);
-  const comments = allComments.filter((comment) => comment.productId === productId);
+
+  const comments = allComments ? allComments.filter((comment) => comment.productId === productId) : [];
   const parsedUserId = parseInt(userId, 10);
 
 

@@ -5,6 +5,7 @@ const createSession = async (req, res) => {
     try {
         const { products, cartId } = req.body;
 
+
         if (!Array.isArray(products) || products.length === 0) {
             return res.status(400).json({ error: 'La lista de productos es inválida o está vacía' });
         }
@@ -42,8 +43,8 @@ const createSession = async (req, res) => {
         const session = await stripe.checkout.sessions.create({
             line_items: lineItems,
             mode: 'payment',
-            success_url: 'http://localhost:3001/success',
-            cancel_url: 'http://localhost:3001/cancel',
+            success_url: 'http://localhost:5173/success',
+            cancel_url: 'http://localhost:5173/cancel',
         });
 
         //Para guardar la compra

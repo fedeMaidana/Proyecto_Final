@@ -4,13 +4,13 @@ const sendEmail = async (to, subject, text) => {
     const transporter = nodemailer.createTransport({
         service: 'Gmail', // Configura el servicio de correo (puede ser otro)
         auth: {
-            user: 'tu_correo@gmail.com', // Cambia esto
-            pass: 'tu_contraseña', // Cambia esto
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
         },
     });
 
     const mailOptions = {
-        from: 'tu_correo@gmail.com',
+        from: `"Custom Craft" <${process.env.EMAIL_USER}>`,
         to: to,
         subject: subject,
         text: text,

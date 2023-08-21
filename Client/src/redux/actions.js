@@ -32,7 +32,10 @@ import {
     GET_COMMENTS,
      UPDATE_COMMENT, 
      DELETE_COMMENT,
-     UPDATE_CART_ID
+     UPDATE_CART_ID,
+     BUY_CART_ID,
+     CANCEL_CART_ID, 
+     BUY_SUCCESS
 
 } from "./action-types"
 
@@ -184,7 +187,7 @@ export const applySorting = (sorting) => {
       const updatedUsers = allUsers.map((user) => {
         const createdProducts = user.CreatedProducts;
         const sortedProducts = applySortingToProducts(createdProducts, sorting);
-        
+
         return {
           ...user,
           CreatedProducts: sortedProducts,
@@ -201,6 +204,12 @@ export const applySorting = (sorting) => {
     }
   };
 };
+
+
+
+
+
+
 
 
 export const getCategories = () => {
@@ -406,6 +415,61 @@ export const updateCartId = (newCartId) => {
   return {
     type: UPDATE_CART_ID,
     payload: newCartId,
+  };
+};
+
+
+export const buyToCartbackend = (cartId, newProduct, cartTotal) => {
+  console.log(typeof cartId)
+  return async (dispatch) => {
+    try {
+        const response = await axios.post('http://localhost:3001/shopping_cart/buy-cart', {
+          cartId: cartId,
+          product: newProduct,
+          cartTotal: cartTotal
+        });
+
+        return dispatch( { type: BUY_CART_ID, payload: response.data } )
+
+    } catch (error) {
+      console.error('Error al agregar el producto al carrito:', error);
+    }
+  };
+};
+
+
+export const cancelToCartbackend = (cartId, newProduct, cartTotal) => {
+  console.log(typeof cartId)
+  return async (dispatch) => {
+    try {
+        const response = await axios.post('http://localhost:3001/shopping_cart/cancel-cart', {
+          cartId: cartId,
+          product: newProduct,
+          cartTotal: cartTotal
+        });
+
+        return dispatch( { type: CANCEL_CART_ID, payload: response.data } )
+
+    } catch (error) {
+      console.error('Error al agregar el producto al carrito:', error);
+    }
+  };
+};
+
+export const buySuccessCart = (cartId, userId) => {
+  console.log(typeof cartId)
+  return async (dispatch) => {
+    try {
+        const response = await axios.post('http://localhost:3001/shopping_cart/buy-success', {
+          cartId: cartId,
+          userId:userId,
+        });
+
+        return dispatch( { type: BUY_SUCCESS, payload: response.data } )
+
+    } catch (error) {
+      console.error('Error al agregar el producto al carrito:', error);
+    }
   };
 };
 

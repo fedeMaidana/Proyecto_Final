@@ -7,21 +7,13 @@ module.exports = (sequelize) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
-    quantity: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: true,
-    },
-    unit_prices: {
-      type: DataTypes.ARRAY(DataTypes.FLOAT),
+    products: {
+      type: DataTypes.ARRAY(DataTypes.JSONB),
       allowNull: true,
     },
     total: {
-      type: DataTypes.ARRAY(DataTypes.FLOAT),
+      type: DataTypes.FLOAT,
       allowNull: true,
-    },
-    name: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: false,
     },
     estado_pedido: {
       type: DataTypes.ENUM(

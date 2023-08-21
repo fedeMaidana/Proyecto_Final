@@ -10,6 +10,29 @@ const cartHandler = {
     }
   },
 
+  payCancel: async ( req, res ) => {
+    try{
+        const {   cartId, userId} = req.body
+        const cart = await cartController.addToCartControllers( {  cartId, userId})
+
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+  paySuccess: async ( req, res ) => {
+    try{
+        const {   cartId, userId} = req.body
+        const cart = await cartController.addToCartControllers( {   cartId, userId})
+
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+
   addToCart: async ( req, res ) => {
     try{
         const {   cartId, product} = req.body
@@ -20,6 +43,41 @@ const cartHandler = {
       res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
     }
   },
+
+  buyToCart: async ( req, res ) => {
+    try{
+        const {   cartId, product, cartTotal} = req.body
+        const cart = await cartController.buyToCartControllers( {   cartId, product, cartTotal})
+
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+  cancelToCart: async ( req, res ) => {
+    try{
+        const {   cartId, product, cartTotal} = req.body
+        const cart = await cartController.cancelToCartControllers( {   cartId, product, cartTotal})
+
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+  buySuccessCart: async ( req, res ) => {
+    try{
+        const {   cartId, userId} = req.body
+        const response = await cartController.buySuccessControllers( {   cartId, userId})
+
+        res.status( 201 ).json( response)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+
 
   createCart: async ( req, res ) => {
     try{

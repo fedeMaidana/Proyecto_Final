@@ -2,7 +2,6 @@ const { Shopping_cart, User  } = require( '../db' )
 
 const handlePaymentSuccess = async (event) => {
     const sessionData = event.data.object.metadata;
-    const products = sessionData.products;
 
     try {
         const shoppingCart = await Shopping_cart.findOne({
@@ -10,13 +9,6 @@ const handlePaymentSuccess = async (event) => {
         });
 
         if (shoppingCart) {
-            const productQuantities = products.map(product => product.quantity);
-            const productPrices = products.map(product => product.price);
-            const productTotalPrices = products.map(product => product.total_price);
-
-            shoppingCart.quantity = productQuantities;
-            shoppingCart.unit_prices = productPrices;
-            shoppingCart.total = productTotalPrices;
             shoppingCart.estado_pedido = 'Pago Aprobado';
 
             await shoppingCart.save();

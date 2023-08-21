@@ -71,6 +71,6 @@ export const handlerSendDesignDataBase = async (setButtonsEnabled, formData, dis
         }
     })
 
-    dispatch(getUsers())
     setButtonsEnabled( true )
+    
 }

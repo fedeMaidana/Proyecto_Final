@@ -1,103 +1,89 @@
-import { useState, useEffect  } from 'react';
-import { useSelector, useDispatch} from 'react-redux'; 
-import { removeFromCart, clearCart, incrementProduct, decrementProduct, loadCart} from '../redux/actions';
-import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage'; // Importa las funciones de localStorage
-import axios from 'axios';
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { removeFromCart, clearCart, incrementProduct, decrementProduct, loadCart, buyToCartbackend, cancelToCartbackend } from '../redux/actions'
+import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage'
+import { IconDelete, IconSubstraction, IconSum } from '../assets/icons/icons'
 
-export function Cart({userId}) {
-  const cartProducts = useSelector((state) => state.cartProducts); // estás asegurándote de que cartProducts tenga un valor (en este caso, un array vacío []) en caso de que sea undefined. Esto evitará que la función reduce genere errores debido a un valor no definido.
-  const cartTotal = useSelector((state) => state.cartTotal);
-  const cartCount = useSelector((state) => state.cartCount);
+export function Cart() {
+  const dispatch = useDispatch()
 
-  const dispatch = useDispatch(); // Obtiene la función dispatch
+  const cartProducts = useSelector( state => state.cartProducts )
+  const cartTotal = useSelector( state => state.cartTotal )
+  const cartCount = useSelector( state => state.cartCount )
 
-  
-    
-  
+  const [ cartData, setCartData ] = useState( { cartProducts: [], cartTotal: 0, cartCount: 0 } )
+  const [ productQuantities, setProductQuantities ] = useState(
+    cartProducts.reduce(( quantities, product ) => {
+      quantities[ product.productId ] = product.quantity
+      return quantities
+    }, {})
+  )
 
-  const [cartData, setCartData] = useState({
-    cartProducts: [],
-    cartTotal: 0,
-    cartCount: 0,
-  });
   useEffect(() => {
     setCartData({
       cartProducts: cartProducts,
       cartTotal: cartTotal,
       cartCount: cartCount,
-    });
-  }, [cartProducts, cartTotal, cartCount]);
-  //**********************************************  LOCAL STORAGE  ************************************************************************************** */
-  // Cargar el carrito desde Local Storage al cargar el componente
+    })
+  }, [ cartProducts, cartTotal, cartCount ])
 
   useEffect(() => {
-    //console.log(`CartProducts del primer useEffect loadCartFromlocalStorage:  ${cartProducts}`); */
-    const savedCart = loadCartFromLocalStorage();
-    //console.log(savedCart); //{cartProducts: Array(0), cartTotal: 0, cartCount: 0}
-    if (savedCart) {
-      dispatch(loadCart(savedCart)); // Cargar el carrito previamente guardado en el Local Storage
-    }
-  }, [dispatch]);
-  
-  // Guardar el carrito en Local Storage al cambiar
+    const savedCart = loadCartFromLocalStorage()
+
+    if( savedCart ) dispatch( loadCart( savedCart ) )
+
+  }, [ dispatch ])
+
   useEffect(() => {
-    //console.log(`Guardando datos del carrito en Local Storage: ${JSON.stringify(cartData)}`);
-    saveCartToLocalStorage(cartData);
-  }, [cartData]);
+    saveCartToLocalStorage( cartData )
+  }, [ cartData ])
 
-  //********************************************************************************************************************************* */
+  const onDeleteProduct = ( productId ) => {
+    console.log("Botón de eliminación clickeado. ID del producto:", productId);
+    const productToDelete = cartProducts.find( product => product.productId === productId )
 
-  // Estado local para almacenar la cantidad de cada producto
-  const [productQuantities, setProductQuantities] = useState(
-    cartProducts.reduce((quantities, product) => {
-      quantities[product.productId] = product.quantity;
-      return quantities;
-    }, {})
-  );
-
-  const onDeleteProduct = (productId) => {
-    const productToDelete = cartProducts.find((product) => product.productId === productId);
-    if (productToDelete) {
-      dispatch(removeFromCart(productId));
-    }
-  };
-  const clearCartButton = () => {
-    dispatch(clearCart());
+    if (productToDelete) dispatch( removeFromCart( productId ) )
   }
 
-  const [active, setActive] = useState(false);
+  const clearCartButton = () => {
+    const cartData = JSON.parse(localStorage.getItem('cart'));
+    // Acceder al valor de cartTotal
+    const cartTotal = cartData.cartTotal;
+    console.log('Cart Total:', cartTotal);
+    const cartId = localStorage.getItem('cartId'); 
+    dispatch(cancelToCartbackend(cartId,cartProducts, cartTotal))
+    dispatch( clearCart() )
+  }
 
-  const handleIncrement = async (product) => {
-    const updatedQuantities = { ...productQuantities };
-    updatedQuantities[product.productId] += 1;
-    setProductQuantities(updatedQuantities);
-    
+  const handleIncrement = ( product ) => {
+    const updatedQuantities = { ...productQuantities }
+    updatedQuantities[ product.productId ] += 1
+    setProductQuantities( updatedQuantities )
 
-    dispatch(incrementProduct(product)); // Pasar el objeto de producto completo
-    try {
-      dispatch(incrementProduct(product));
+    dispatch( incrementProduct( product ) )
+  }
 
+  const handleDecrement = ( product ) => {
+    if( productQuantities[ product.productId ] > 1 ){
+      const updatedQuantities = { ...productQuantities }
+      updatedQuantities[ product.productId ] -= 1
+      setProductQuantities( updatedQuantities )
 
-      // Maneja la respuesta exitosa si es necesario
-    } catch (error) {
-      // Maneja el error de la solicitud
-      console.error('Error al incrementar el producto en el carrito:', error);
+      dispatch( decrementProduct( product ) )
     }
-  };
-  const handleDecrement = (product) => {
-    if (productQuantities[product.productId] > 1) {
-      const updatedQuantities = { ...productQuantities };
-      updatedQuantities[product.productId] -= 1;
-      setProductQuantities(updatedQuantities);
-
-      dispatch(decrementProduct(product)); // Pasar el objeto de producto completo
-    }
-  };
+  }
 
   const handleBuyButton = async () => {
     console.log('ver',cartProducts)
     try {
+      // Obtener el objeto de la local storage
+    const cartData = JSON.parse(localStorage.getItem('cart'));
+    // Acceder al valor de cartTotal
+    const cartTotal = cartData.cartTotal;
+    console.log('Cart Total:', cartTotal);
       const cartId = localStorage.getItem('cartId'); 
+      dispatch(buyToCartbackend(cartId,cartProducts, cartTotal))
         const response = await axios.post('http://localhost:3001/create-checkout-session', {
             products: cartProducts,
             cartId: cartId,
@@ -111,103 +97,71 @@ export function Cart({userId}) {
             console.error('URL de sesión no disponible.');
         }
 
-    } catch (error) {
-        console.error('Error al enviar datos al backend:', error);
+    }catch( error ){
+      console.error( 'Error al enviar datos al backend:', error )
     }
-  };
+  }
 
 
     return(
+      <div className='relative z-[60]'>
+        <div className={`w-[400px] fixed bg-white/[.3] backdrop-blur-[5px] border-l-[1px] border-b-[1px] border-r-[1px] rounded-bl-[10px] rounded-br-[10px] top-[68px] right-0 rounded`} >
+          {cartProducts.length ? (
+            <>
+              <div className='row-product min-h-[50px] max-h-[200px] overflow-y-scroll'>
+                {cartProducts.map( product => (
+                  <div className='flex items-center justify-between p-5 border-b' key={ product.productId }>
+                    <div className='w-[90%] flex items-center justify-around'>
+                      <img src={ product.images } alt={ product.description } className='w-[60px] h-[60px] object-cover select-none rounded-full' />
+                      <p className='w-[100px] select-none truncate text-[1.5rem] font-semibold'>{ product.name }</p>
+                      <span className='select-none font-semibold text-[1.5rem]'>${ product.price }</span>
 
-          <div className='relative'>
-            <div className='cursor-pointer' onClick={() => setActive(!active)} >
+                      <div className='w-[100px] flex bg-[#34a1fd] rounded-[10px] items-center justify-between px-2'>
+                        <button className='font-semibold text-[2rem] flex items-center' onClick={ () => handleDecrement( product ) }>
+                          <IconSubstraction/>
+                        </button>
+                        <p className='select-none font-semibold text-[1.2rem] text-white flex items-center'>{ productQuantities[ product.productId ] }</p>
+                        <button onClick={ () => handleIncrement( product ) }>
+                          <IconSum/>
+                        </button>
+                      </div>
+                    </div>
 
-              <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor'
-                className='w-10 h-10 stroke-current text-principal-black' >
-                <path strokeLinecap='round' strokeLinejoin='round'd='M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'/>
-              </svg>
-
-              <div className='absolute top-1/2 right-0 bg-principal-black text-principal-white w-6 h-6 flex justify-center items-center rounded-full'>
-                <span className='text-xs' id='contador-productos'>{cartCount}</span>
+                    <span className='w-[20px] h-[20px] rounded-full bg-[#ff0000] flex items-center justify-center pt-[1px]'>
+                      <IconDelete onClick={ () => onDeleteProduct( product.productId ) } type='button'/>
+                    </span>
+                  </div>
+                ))}
               </div>
 
-            </div>
+              <div className='h-[50px] flex justify-center items-center gap-3 border-b-[1px]'>
+                <h3 className='select-none text-[1.5rem] font-bold'>Productos:</h3>
+                <span className='select-none text-[1.5rem] font-semibold'>{ cartCount }</span>
+              </div>
+              <div className='h-[50px] flex justify-center items-center gap-3 border-b-[1px]'>
+                <h3 className='select-none text-[1.5rem] font-bold'>Total:</h3>
+                <span className='select-none text-[1.5rem] font-semibold'>${ cartTotal }</span>
+              </div>
 
-            <div
-              className={`absolute top-12 right-0 bg-white w-[30rem] z-10 shadow-md rounded ${active ? '' : 'hidden'}`}
-            >
-              {cartProducts.length ? ( // existen productos ? 
-                <> {/* si hay productos entonces: */}
-                  <div className='row-product '>
-                    {cartProducts.map((product) => (
-                      <div className='flex items-center justify-between p-8 border-b' key={product.productId}>
-                        <div className='flex items-center justify-between flex-8'>
-
-                          {/* {product.name} - {product.price} x{' '} */}
-                          <p className='text-[1.5rem] mr-3'>
-                            {product.name}
-                          </p>
-                          <span className='font-bold text-[1.5rem] ml-2.5'>
-                            ${product.price}
-                          </span>
-
-                          <span className='w-[4rem]'></span>
-
-                          <button className='mr-6 text-[1.5rem] bg-secondary-blue2 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded-full' onClick={() => handleDecrement(product)}>-</button>
-                          <span className='font-normal text-[1.5rem] mr-6'>
-                            {productQuantities[product.productId]}
-                          </span>
-                          <button className='text-[1.5rem] bg-secondary-blue2 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded-full' onClick={() => handleIncrement(product)}>+</button>
-
-
-
-                        </div>
-                        {/* Cruz de eliminar producto */}
-                        <svg 
-                          xmlns='http://www.w3.org/2000/svg'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          strokeWidth='1.5'
-                          stroke='currentColor'
-                          className='w-6 h-6 cursor-pointer'
-                          onClick={() => onDeleteProduct(product.productId)}
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='M6 18L18 6M6 6l12 12'
-                          />
-                        </svg>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className='flex justify-center items-center py-5 gap-5'>
-                    <h3 className='text-[1.5rem]'>Products:</h3>
-                    <span className='text-[1.5rem] font-extrabold'>{cartCount}</span>
-                  </div>
-                  <div className='flex justify-center items-center py-5 gap-5'>
-                    <h3 className='text-[1.5rem]'>Total:</h3>
-                    <span className='text-[1.5rem] font-extrabold'>${cartTotal}</span>
-                  </div>
-
-                  <button className='border-0 bg-black text-white py-4 block w-full mt-2.5 rounded-bl-lg rounded-br-lg font-inherit cursor-pointer text-[1.5rem] transition-all duration-300 ease-in-out' 
-                  onClick={clearCartButton}>
-                    Empty cart
-                  </button>
-                  <button 
-                    className='border-0 bg-green-500 text-white py-4 block w-full mt-2.5 rounded-bl-lg rounded-br-lg font-inherit cursor-pointer text-[1.5rem] transition-all duration-300 ease-in-out hover:bg-green-600' 
-                    onClick={handleBuyButton}
-                  >
-                    Buy
+              <div className='flex p-3 gap-[10px]'>
+                <button
+                  className='select-none bg-transparent border py-4 w-full cursor-pointer text-[1.5rem] font-semibold rounded-[10px]'
+                  onClick={ clearCartButton }
+                >
+                  Vaciar carrito
                 </button>
-                </>
-              ) : (
-                <p className='p-5 text-center'>Cart is empty</p>
-              )}
-            </div>
-          </div>
-        
-    );
-
+                <button
+                  className='select-none bg-[#34a1fd] text-white py-4 w-full cursor-pointer text-[1.5rem] font-semibold rounded-[10px]'
+                  onClick={ handleBuyButton }
+                >
+                  Comprar
+                </button>
+              </div>
+            </>
+          ) : (
+            <p className='select-none p-5 text-center text-[1.5rem] font-semibold'>El carrito esta vacío</p>
+          )}
+        </div>
+      </div>
+    )
 }

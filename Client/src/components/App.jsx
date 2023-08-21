@@ -13,7 +13,8 @@ import { ProfilePage } from '../views/Perfil'
 
 
 import { Dashboard } from '../views/Dashboard'
-
+import PaymentCancel from '../views/PaymentCancel'
+import PaymentSuccess from '../views/PaymentSuccess'
 import axios from "axios"
 axios.defaults.baseURL = 'http://localhost:3001/'
 
@@ -33,10 +34,8 @@ export function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path="/community" element={<Community />} />
-
-        <Route path='/my-profile' element={<ProfilePage />} />
-
-
+        <Route path="/cancel" element={<PaymentCancel/>} />
+        <Route path="/success" element={<PaymentSuccess/>} />
         <Route path="/dashboard" element={<Dashboard />} />
 
 

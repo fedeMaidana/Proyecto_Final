@@ -37,7 +37,7 @@ userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { 
   console.log('Cookies:', req.cookies); // Añade esta línea para verificar en la consola del servidor
 
   // Redirige al usuario a la página de inicio
-  res.redirect('http://localhost:5173/home');
+  res.redirect('http://127.0.0.1:5173/home');
 });
 
 

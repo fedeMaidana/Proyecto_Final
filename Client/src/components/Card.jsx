@@ -27,6 +27,7 @@ export const Card = ( { name, nameProduct, description, images, price, id } ) =>
             const response = await axios.post('http://localhost:3001/create-checkout-session', {
                 cardName: nameProduct,
                 cardDescription: description,
+                cardPrice:price*100
             });
     
             const { sessionUrl } = response.data; // Obtiene la URL de sesión

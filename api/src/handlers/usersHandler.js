@@ -4,6 +4,7 @@ const { register } = require( '../controllers/register' )
 const { login } = require( '../controllers/login' )
 const { deleteUser } = require( '../controllers/deleteUser' )
 const { sendWelcomeEmail } = require('../controllers/emailService');
+const { updateUser} = require("../controllers/putUsers")
 
 const getUsersHandler = async ( req, res ) => {
     try {
@@ -78,4 +79,19 @@ const deleteHandler = async ( req, res ) => {
     }
 }
 
-module.exports = { getUsersHandler, registerHandler, getUserIDHandler, loginHandler, deleteHandler }
+const updateHandler = async (req, res) => {
+    const { id } = req.params;
+    const { name, email, password, userName, lastName, birthDate, profileImage, } = req.body;
+  
+    try {
+      const result = await updateUser( id, name, email, password, userName, lastName, birthDate,profileImage);
+  
+      res.status(200).json(result);
+    } catch (error) {
+      console.error('Error al intentar actualizar el usuario: ', error);
+  
+      res.status(500).json({ error: 'server error' });
+    }
+  }
+
+module.exports = { getUsersHandler, registerHandler, getUserIDHandler, loginHandler, deleteHandler, updateHandler }

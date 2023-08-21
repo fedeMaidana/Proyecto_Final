@@ -50,7 +50,7 @@ export const Register = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:3001/register",
+          "https://proyectofinal-production-4957.up.railway.app/register",
           formData
         );
         setMessage(response.data.message);

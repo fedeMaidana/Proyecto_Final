@@ -16,7 +16,7 @@ import { Dashboard } from '../views/Dashboard'
 import PaymentCancel from '../views/PaymentCancel'
 import PaymentSuccess from '../views/PaymentSuccess'
 import axios from "axios"
-axios.defaults.baseURL = 'http://localhost:3001/'
+axios.defaults.baseURL = 'https://proyectofinal-production-4957.up.railway.app'
 
 export function App() {
   const location = useLocation()

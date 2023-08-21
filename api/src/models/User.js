@@ -43,6 +43,11 @@ module.exports = ( sequilize ) => {
           type: DataTypes.STRING, 
           allowNull: true, 
       },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'user', // Valor predeterminado para usuarios normales
+      },
       estado: {
         type: DataTypes.INTEGER,
         allowNull: false,

@@ -23,7 +23,7 @@ export const Login = () => {
         if( email !== '' && password !== '' ){
             const User = { email, password }
 
-            await axios.post( 'http://localhost:3001/login', User ).then( ( { data } ) => {
+            await axios.post( 'https://proyectofinal-production-4957.up.railway.app/login', User ).then( ( { data } ) => {
                 setMessage( data.message )
                 // setInputs( { email: '', password: '' } )
 
@@ -57,7 +57,7 @@ export const Login = () => {
     const handleGoogleLogin = () => {
       try {
         // Redirige al usuario a la URL de inicio de sesión de Google
-        window.location.href = 'http://localhost:3001/login/auth/google';
+        window.location.href = 'https://proyectofinal-production-4957.up.railway.app/login/auth/google';
       } catch (error) {
         console.error('Error during Google login:', error);
       }

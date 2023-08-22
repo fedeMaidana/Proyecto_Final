@@ -18,12 +18,14 @@ export function HeaderCanvas(){
 
     const [ isEditing, setIsEditing ] = useState( false )
 
-    const handleArrowClean = () => {
+    const handleArrowClean = ( event ) => {
         dispatch( setColor( '' ) )
         dispatch( setDescription( '' ) )
         dispatch( setSize( '' ) )
         dispatch( setTitle( 'Diseño sin titulo' ) )
         dispatch( clearImages() )
+
+        console.log('click', event)
     }
 
     return(

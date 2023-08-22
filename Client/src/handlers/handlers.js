@@ -64,7 +64,7 @@ export const handlerSaveDesign = (description, images, color, size, title, price
     return formData
 }
 
-export const handlerSendDesignDataBase = async (setButtonsEnabled, formData, dispatch) => {
+export const handlerSendDesignDataBase = async (setButtonsEnabled, formData) => {
     await axios.post( '/products', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -72,5 +72,4 @@ export const handlerSendDesignDataBase = async (setButtonsEnabled, formData, dis
     })
 
     setButtonsEnabled( true )
-    
 }

@@ -1,88 +1,85 @@
-import {  useState} from "react";
-import {getSearch, clearSearch} from "../redux/actions"
- import { useDispatch, useSelector } from "react-redux";
- import { debounce } from "lodash"; 
- import { FaSearch } from "react-icons/fa";
-
-
-
-
+import { useState } from "react"
+import {getSearch, clearSearch } from "../redux/actions"
+import { useDispatch, useSelector } from "react-redux"
+import { debounce } from "lodash"
+import { FaSearch } from "react-icons/fa"
 
 function SearchBar() {
-  const [name, setName] = useState('');
- 
-  const searchResults = useSelector(state=> state.searchProducts)
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-//   const handleSubmit = (event) => {
-//     event.preventDefault();
+  const [ name, setName ] = useState( '' )
 
-//     if (name.trim() === '') {
-//       return; // Si está vacío, no se realiza ninguna acción
-//     }
+  const searchResults = useSelector( state => state.searchProducts )
 
-//     dispatch(getSearch(name));
-//     dispatch(clearSearch())
-//   };
+  const delayedSearch = debounce( searchTerm => {
+    dispatch( getSearch( searchTerm ) )
+  }, 300)
 
-  const delayedSearch = debounce((searchTerm) => {
-    dispatch(getSearch(searchTerm));
-  }, 300);
+  const handleChange = ( event ) => {
+    const regex = /^[a-zA-Z0-9ñÑ\s]*$/
+    const inputValue = event.target.value
 
-  const handleChange = (event) => {
-    const regex = /^[a-zA-Z0-9ñÑ\s]*$/;
-    const inputValue = event.target.value;
-    if (regex.test(inputValue)) {
-      setName(inputValue);
-      delayedSearch(inputValue);
-    } // Limpiar el campo de búsqueda
-        if (inputValue === "") {
-          dispatch(clearSearch()); // Limpiar los resultados de búsqueda en el estado
+    if( regex.test( inputValue ) ){
+      setName( inputValue )
+      delayedSearch( inputValue )
+    }
+
+    if( inputValue === '' ) dispatch( clearSearch() )
+  }
+
+  console.log(searchResults)
+
+  return(
+    <>
+      <div className="flex h-[100%] w-[75%] justify-between gap-[10px] overflow-x-auto whitespace-nowrap p-2 border-r-[1px]">
+        {searchResults !== 0
+          ?
+            searchResults.map( result => (
+              <div key={ result.id } className="w-[150px] border rounded-[10px] flex flex-col flex-shrink-0 items-center justify-center cursor-pointer p-2">
+                <a href={ `#${ result.id }` } className="w-[100%] flex flex-col items-center justify-center gap-[10px]">
+                  <img src={ result.images[ 0 ] } alt={ `Product ${ result.id }` } className="rounded-[5px] w-[120px] h-[120pxpx] object-cover" />
+                  <span className="w-[100%] text-center truncate text-[1.2rem] font-semibold">{ result.name }</span>
+                </a>
+              </div>
+            ))
+          :
+            ''
         }
-      // Limpiar los resultados de búsqueda en el estado
-      
-  };
 
-
-
-  return (
-    <div className="p-4">
-<div className="relative">
-  <input
-    className="w-full p-2 pl-10 rounded-lg border border-black bg-gray-200 bg-opacity-40 focus:outline-none"
-    placeholder="Remera"
-    type="text"
-    name="search"
-    onChange={handleChange}
-    value={name}
-  />
-  <div className="absolute left-2 top-1/2 transform -translate-y-1/2">
-    <FaSearch className="text-gray-500" />
-  </div>
-</div>
-<div>
-  {searchResults !== 0 ? searchResults.map((result) => (
-    <div
-      key={result.id}
-      className="flex items-center my-2 cursor-pointer"
-    >
-      <a href={`#${result.id}`}>
-        <img
-          src={result.images[0]}
-          alt={`Product ${result.id}`}
-          className="rounded-lg w-15 h-12"
+        { name !== '' && searchResults.length === 0
+          ?
+            <div className="w-full flex items-center justify-center">
+              <div>
+                <p className="text-center text-[1.5rem] font-semibold">No se encontraron resultados para su búsqueda</p>
+              </div>
+            </div>
+          :
+            name === '' && searchResults.length === 0
+              ?
+                (
+                  <div className="w-full flex items-center justify-center">
+                    <div>
+                      <p className="text-center text-[1.5rem] font-semibold">¿ Que estas buscando ?</p>
+                    </div>
+                  </div>
+                )
+              :
+                ''
+        }
+      </div>
+      <div className="w-[25%] px-[5px] mr-[7px] border rounded-[7px] bg-[#f6f6f6] flex justify-between items-center">
+        <input
+          className="w-[90%] p-2 bg-[#f6f6f6] text-[1.5rem] outline-none"
+          placeholder="Remera"
+          type="text"
+          name="search"
+          onChange={ handleChange }
+          value={ name }
         />
-        <span className="ml-2">{result.name}</span>
-      </a>
-    </div>
-  )) : ""}
-</div>
-
-
-
-
-    </div>
-  );
+        <FaSearch className="text-[#646464] font-semibold text-[1.5rem]" />
+      </div>
+    </>
+  )
 }
 
-export default SearchBar;
+export default SearchBar

@@ -1,5 +1,7 @@
+require( 'dotenv' ).config()
+const {STRIPE} = process.env
 const Stripe = require('stripe');
-const stripe = new Stripe('sk_test_51Nct5HE72cTKcNQsOnxyCKw5Yin2h9AOZpffa4T3oZwOeYyS0s498NWFCTx6BjUb8c6Ajo1a2hn3YebAjqd2XfXj00OUD93IHQ');
+const stripe = new Stripe(`${STRIPE}`);
 
 const createSession = async (req, res) => {
   try {

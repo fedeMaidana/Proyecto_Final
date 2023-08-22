@@ -36,7 +36,6 @@ export function App() {
 
         <Route path='/my-profile' element={<ProfilePage />} />
 
-
         <Route path="/dashboard" element={<Dashboard />} />
 
 

@@ -45,7 +45,7 @@ const createProduct = async ( idUser, name, price, description, stock, images, c
         .join( ' ' )
 
       console.log(images);
-      const baseUrl = 'http://localhost:3001'; // Cambiar esto al hacer deploy
+      const baseUrl = 'https://proyectofinal-production-4957.up.railway.app/'; // Cambiar esto al hacer deploy
       
       const imageUrls = await Promise.all(images.map(async (image) => {
         const imageUrl = `/upload/${image.filename}`; 

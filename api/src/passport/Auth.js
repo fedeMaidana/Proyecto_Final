@@ -3,7 +3,7 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const { User } = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const URL = 'http://localhost:3001';
+const URL = 'http://localhost:3001https://proyectofinal-production-4957.up.railway.app';
 
 
 // Serialización del usuario en la sesión

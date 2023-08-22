@@ -53,7 +53,7 @@ const register = async ( name, email, password, userName, lastName, birthDate, p
 
     let fullImageUrl = null;
     if(profileImage){
-      const baseUrl = 'http://localhost:3001'; // Cambiar esto al hacer deploy
+      const baseUrl = 'https://proyectofinal-production-4957.up.railway.app/'; // Cambiar esto al hacer deploy
       const imageUrl = `/upload/${profileImage.filename}`; 
       fullImageUrl = baseUrl + imageUrl
     }

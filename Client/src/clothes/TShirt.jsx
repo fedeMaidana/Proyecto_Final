@@ -2,7 +2,7 @@ import { MeshStandardMaterial, DoubleSide } from 'three'
 import { useGLTF } from "@react-three/drei"
 
 export function TShirt( props ){
-    const { nodes } = useGLTF( '../assets/models/t-shirt.glb' )
+    const { nodes } = useGLTF( 'src/assets/models/t-shirt.glb' )
 
     const { clothingColor } = props
 
@@ -50,4 +50,4 @@ export function TShirt( props ){
     )
 }
 
-useGLTF.preload( "../assets/models/t-shirt.glb" )
+useGLTF.preload( "src/assets/models/t-shirt.glb" )

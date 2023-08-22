@@ -147,6 +147,22 @@ await sendEmail(to, subject, text);
     }
   },
 
+  adminCartControllers: async ( { cartId, estado_pedido }) => {
+    try {
+      const cart = await Shopping_cart.findByPk(cartId);
+      if (!cart) {
+        return res.status(404).json({ error: 'Carrito no encontrado.' });
+      }
+
+    cart.estado_pedido = estado_pedido,
+
+    await cart.save();
+  } catch (error) {
+    console.error(error)
+    throw new Error('Error al agregar el producto al carrito');
+  }
+    },
+
 
   
 

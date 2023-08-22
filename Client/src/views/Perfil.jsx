@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
+// import { Card } from '../components/Card';
 
 export const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -121,44 +122,42 @@ export const ProfilePage = () => {
           <p>Loading user information...</p>
         )}
 
-        {user && user.Products && user.Products.length > 0 && (
-          <div className="bg-white p-4 rounded mb-4" id="productos-creados">
-            {activeSection === 'productos-creados' && (
-              <>
-                <h3 className="text-lg font-semibold mb-4">Productos Creados</h3>
-                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                  {user.Products.map((product) => (
-                    <div
+{user && user.CreatedProducts && user.CreatedProducts.length > 0 && (
+        <div className="bg-white p-4 rounded mb-4" id="productos-creados">
+          {activeSection === 'productos-creados' && (
+            <>
+              <h3 className="text-lg font-semibold mb-4">Productos Creados</h3>
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {user.CreatedProducts.map((product) => (
+                  <div
                     key={product.id}
-                    className="w-[90%] h-[300px] bg-white rounded-[10px] grid grid-cols-2 grid-rows-4 p-[10px] border border-[#e7e9ec]"
+                    className="bg-white rounded p-4 border border-[#e7e9ec] flex flex-col"
                   >
-                    <div className="flex items-center gap-[10px] row-span-1 border-b-[1px]">
-                      <span className="w-[50px] h-[50px] rounded-full bg-[#b7bbc3]"></span>
-                      <p className="text-[2rem] font-semibold">{user.name}</p>
+                      <div className="w-[50px] h-[50px] rounded-full "><img src={user.profileImage} alt={user.profileImage} /></div>
+                    <div className="flex items-center mb-2">
+                      <div className="ml-4">
+                        <h3 className="text-xl font-semibold">{product.name}</h3>
+                        <p className="text-lg font-semibold">{`$${product.price}`}</p>
+                      </div>
                     </div>
-        
-                    <div className="flex items-center justify-between border-l-[1px] border-b-[1px] pl-[10px]">
-                      <h3 className="text-[3rem] font-bold">{product.name}</h3>
-                      <p className="text-[2rem] font-semibold">{`$${product.price}`}</p>
+                    <p className="text-sm mb-2">{product.description}</p>
+                    <div className="flex overflow-x-auto">
+                      {product.images.map((image, index) => (
+                        <img
+                          key={index}
+                          src={image}
+                          alt={`Product Image ${index}`}
+                          className="max-w-[150px] h-auto mr-2"
+                        />
+                      ))}
                     </div>
-        
-                    <div className="flex justify-center row-span-3 border-r-[1px]">
-                      {/* Your images mapping logic here */}
-                    </div>
-        
-                    <div className="flex flex-col items-center justify-around row-span-3">
-                      <h3 className="text-[2rem] font-semibold">Sobre el producto</h3>
-                      <p className="text-[1.5rem]">{product.description}</p>
-                    </div>
-        
                   </div>
-        
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        )}
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
         {user && (
           <div className="bg-white p-4 rounded" id="actualizar-usuario">

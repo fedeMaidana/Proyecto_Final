@@ -190,4 +190,4 @@ export function Shirt( props ){
     )
 }
 
-useGLTF.preload( "src/assets/models/shirt.glb" )
+useGLTF.preload( "../assets/models/shirt.glb" )

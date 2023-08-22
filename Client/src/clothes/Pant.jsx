@@ -28,4 +28,4 @@ export function Pant( props ){
     )
 }
 
-useGLTF.preload( "src/assets/models/pant.glb" )
+useGLTF.preload( "../assets/models/pant.glb" )

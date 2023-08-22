@@ -31,31 +31,25 @@ export function ModalCustomize( { price, currentModel } ){
     const cartCount = useSelector( state => state.cartCount )
     const allUsers = useSelector(state => state.allUsers)
 
-        //accediendo al Local Storage
-        const userId = localStorage.getItem('userId'); 
-        
+    //accediendo al Local Storage
+    const userId = localStorage.getItem('userId');
 
+    const parsedUserId = parseInt(userId, 10);
+    const connectedUser = allUsers.find(user => user.id === parsedUserId);
 
-      
-      const parsedUserId = parseInt(userId, 10);
-      const connectedUser = allUsers.find(user => user.id === parsedUserId);
+    let lastCreatedProductId
 
-      let lastCreatedProductId;
-      if (connectedUser && Array.isArray(connectedUser.CreatedProducts)) {
-          const createdProducts = connectedUser.CreatedProducts;
-      
-          if (createdProducts.length > 0) {
-              lastCreatedProductId = createdProducts.slice(-1)[0].id;
-          } else {
-              console.log("El usuario ha creado 0 productos.");
-          }
-      } else {
-          console.log("El usuario no tiene permiso para crear productos o no se pudo encontrar el usuario.");
-      }
-      console.log("ID del último producto creado:", lastCreatedProductId);
-      
+    if (connectedUser && Array.isArray(connectedUser.CreatedProducts)) {
+        const createdProducts = connectedUser.CreatedProducts;
 
-    //let formdata = handlerSaveDesign( description, capturedImages, color, size, title, price, 1, userId)
+        if (createdProducts.length > 0) lastCreatedProductId = createdProducts.slice(-1)[0].id;
+        else console.log("El usuario ha creado 0 productos.")
+
+    }else{
+        console.log("El usuario no tiene permiso para crear productos o no se pudo encontrar el usuario.");
+    }
+
+    console.log("ID del último producto creado:", lastCreatedProductId);
 
     let category = categoryByModel( currentModel )
 
@@ -72,12 +66,12 @@ export function ModalCustomize( { price, currentModel } ){
             color: data.get('color'),
             size: data.get('size'),
             category: data.get('category'),
-            images: products[ products.length - 1 ].images[ 0 ]
+            images: products[ products.length - 1 ]?.images[ 0 ]
         }
 
         setAllProducts( [ ...allProducts, newProduct ] )
         dispatch( addToCart( newProduct ) )
-        const cartId = localStorage.getItem('cartId'); 
+        const cartId = localStorage.getItem('cartId')
         console.log(cartId)
         console.log('us',parsedUserId)
         if(parsedUserId || cartId === null ){
@@ -85,7 +79,6 @@ export function ModalCustomize( { price, currentModel } ){
         }else{
             dispatch(createOrAddToCartbackend(parsedUserId, cartId, newProduct));
         }
-    
     }
 
     useEffect(() => {

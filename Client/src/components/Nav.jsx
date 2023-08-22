@@ -29,7 +29,7 @@ export function Nav() {
     if( token ){
       const fetchUserDetails = async () => {
         try{
-          const response = await axios.get( 'http://localhost:3001/user', {
+          const response = await axios.get( 'https://proyectofinal-production-4957.up.railway.app/user', {
             headers: {
               token: `${ token }`
             }
@@ -54,7 +54,7 @@ export function Nav() {
     if( googleToken ){
       const fetchGoogleUserDetails = async () => {
         try {
-          const responseGoogle = await axios.get('http://localhost:3001/user/google', {
+          const responseGoogle = await axios.get('https://proyectofinal-production-4957.up.railway.app/user/google', {
             headers: {
               googleToken: googleToken,
             }

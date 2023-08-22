@@ -25,7 +25,7 @@ userRoutes.get('/user/google', authMiddleware, getUserDetails);
 userRoutes.get('/login/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // Ruta de callback después de la autenticación de Google
-userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }), (req, res) => {
+userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { failureRedirect: 'https://proyecto-final-eight-beige.vercel.app/login' }), (req, res) => {
   const googleToken = req.user.token;
   res.cookie('googleToken', googleToken, {
     // httpOnly: true,
@@ -37,7 +37,7 @@ userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { 
   console.log('Cookies:', req.cookies); // Añade esta línea para verificar en la consola del servidor
 
   // Redirige al usuario a la página de inicio
-  res.redirect('http://127.0.0.1:5173/home');
+  res.redirect('https://proyecto-final-eight-beige.vercel.app/home');
 });
 
 

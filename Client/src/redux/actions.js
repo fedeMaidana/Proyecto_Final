@@ -472,4 +472,3 @@ export const buySuccessCart = (cartId, userId) => {
     }
   };
 };
-

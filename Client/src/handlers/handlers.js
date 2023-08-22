@@ -45,7 +45,7 @@ export const handleModal = async ( dispatch ) => {
     dispatch( setModal( true ) )
 }
 
-export const handlerSaveDesign = (description, images, color, size, title, price, stateShare, userId ) => {
+export const handlerSaveDesign = (description, images, color, size, title, price, stateShare, category ) => {
     const formData = new FormData()
     formData.append( 'idUser', userId )
     formData.append( 'description', description )
@@ -54,7 +54,7 @@ export const handlerSaveDesign = (description, images, color, size, title, price
     formData.append( 'name', title )
     formData.append( 'price', price )
     formData.append( 'stock', 10 )
-    formData.append( 'category', 1 )
+    formData.append( 'category', category )
     formData.append( 'stateShare', stateShare )
 
     images.forEach( ( image, index ) => {

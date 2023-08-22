@@ -61,7 +61,6 @@ const register = async ( name, email, password, userName, lastName, birthDate, p
     
     const newUser = await User.create( { name, email, userName, lastName, birthDate, profileImage: fullImageUrl, password: passwordHash, role } )
 
-
     const responseUser = {
       id: newUser.id,
       name: newUser.name,

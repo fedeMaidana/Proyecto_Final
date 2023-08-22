@@ -7,11 +7,12 @@ import { handlerSaveDesign, handlerSendDesignDataBase } from "../handlers/handle
 import { v4 as uuidv4 } from 'uuid'
 import { addToCart, loadCart } from "../redux/actions"
 import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage'
+import { categoryByModel } from "../auxFunctions/categoryByModel"
 
 const enabledButtonClasses = "h-[40px] w-[40px] bg-white border rounded-full flex items-center justify-center cursor-pointer"
 const disabledButtonClasses = "h-[40px] w-[40px] bg-gray-300 border rounded-full flex items-center justify-center cursor-not-allowed"
 
-export function ModalCustomize( { price } ){
+export function ModalCustomize( { price, currentModel } ){
     const dispatch = useDispatch()
 
     const [ isButtonsEnabled, setButtonsEnabled ] = useState( false )
@@ -30,31 +31,29 @@ export function ModalCustomize( { price } ){
     const cartCount = useSelector( state => state.cartCount )
     const allUsers = useSelector(state => state.allUsers)
 
-        //accediendo al Local Storage
-        const userId = localStorage.getItem('userId'); 
-        
+    //accediendo al Local Storage
+    const userId = localStorage.getItem('userId');
 
+    const parsedUserId = parseInt(userId, 10);
+    const connectedUser = allUsers.find(user => user.id === parsedUserId);
 
-      
-      const parsedUserId = parseInt(userId, 10);
-      const connectedUser = allUsers.find(user => user.id === parsedUserId);
+    let lastCreatedProductId
 
-      let lastCreatedProductId;
-      if (connectedUser && Array.isArray(connectedUser.CreatedProducts)) {
-          const createdProducts = connectedUser.CreatedProducts;
-      
-          if (createdProducts.length > 0) {
-              lastCreatedProductId = createdProducts.slice(-1)[0].id;
-          } else {
-              console.log("El usuario ha creado 0 productos.");
-          }
-      } else {
-          console.log("El usuario no tiene permiso para crear productos o no se pudo encontrar el usuario.");
-      }
-      console.log("ID del último producto creado:", lastCreatedProductId);
-      
+    if (connectedUser && Array.isArray(connectedUser.CreatedProducts)) {
+        const createdProducts = connectedUser.CreatedProducts;
 
-    let formdata = handlerSaveDesign( description, capturedImages, color, size, title, price, 1, userId)
+        if (createdProducts.length > 0) lastCreatedProductId = createdProducts.slice(-1)[0].id;
+        else console.log("El usuario ha creado 0 productos.")
+
+    }else{
+        console.log("El usuario no tiene permiso para crear productos o no se pudo encontrar el usuario.");
+    }
+
+    console.log("ID del último producto creado:", lastCreatedProductId);
+
+    let category = categoryByModel( currentModel )
+
+    let formdata = handlerSaveDesign( description, capturedImages, color, size, title, price, 1, category, userId )
 
     const onAddProduct = ( data, products ) => {
         const newProduct = {
@@ -67,12 +66,12 @@ export function ModalCustomize( { price } ){
             color: data.get('color'),
             size: data.get('size'),
             category: data.get('category'),
-            images: products[ products.length - 1 ].images[ 0 ]
+            images: products[ products.length - 1 ]?.images[ 0 ]
         }
 
         setAllProducts( [ ...allProducts, newProduct ] )
         dispatch( addToCart( newProduct ) )
-        const cartId = localStorage.getItem('cartId'); 
+        const cartId = localStorage.getItem('cartId')
         console.log(cartId)
         console.log('us',parsedUserId)
         if(parsedUserId || cartId === null ){
@@ -80,7 +79,6 @@ export function ModalCustomize( { price } ){
         }else{
             dispatch(createOrAddToCartbackend(parsedUserId, cartId, newProduct));
         }
-    
     }
 
     useEffect(() => {
@@ -121,7 +119,7 @@ export function ModalCustomize( { price } ){
 
                         <div className="h-[100%] flex flex-col justify-evenly items-center">
                             <div className="w-full">
-                                <label htmlFor='description' className="text-[1.2rem] font-semibold">Agregale una descripción al diseño</label>
+                                <label htmlFor='description' className="text-[1.2rem] font-semibold">Agrega una descripción</label>
                                 <textarea
                                     id="description"
                                     type="text"
@@ -133,8 +131,14 @@ export function ModalCustomize( { price } ){
 
                             <div className="w-full flex justify-center gap-[30px]">
                                 <button
-                                    className="w-[25%] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full"
-                                    onClick={ () => handlerSendDesignDataBase(setButtonsEnabled, formdata) }
+                                    className={ description === ''
+                                        ? 'w-[140px] h-[40px] py-3 bg-gray-300 text-[#999] border font-semibold text-[1.5rem] rounded-full cursor-not-allowed'
+                                        : 'w-[140px] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full'
+                                    }
+                                    onClick={ () => {
+                                        if( description !== '' ){
+                                            handlerSendDesignDataBase( setButtonsEnabled, formdata ) } }
+                                        }
                                 >
                                     Guardar diseño
                                 </button>

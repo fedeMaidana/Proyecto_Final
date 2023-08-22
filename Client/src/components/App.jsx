@@ -13,6 +13,7 @@ import PaymentSuccess from '../views/PaymentSuccess'
 import axios from "axios"
 
 axios.defaults.baseURL = 'https://proyectofinal-production-4957.up.railway.app'
+//axios.defaults.baseURL = 'https://localhost:3001'
 
 export function App() {
   const location = useLocation()

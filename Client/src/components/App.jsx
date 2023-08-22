@@ -37,7 +37,7 @@ export function App() {
         <Route path="/cancel" element={<PaymentCancel/>} />
         <Route path="/success" element={<PaymentSuccess/>} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/dashboard" element={<ProfilePage />} />
+        <Route path="/my-profile" element={<ProfilePage />} />
 
 
       </Routes>

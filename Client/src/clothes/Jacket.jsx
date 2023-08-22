@@ -100,4 +100,4 @@ export function Jacket( props ){
     )
 }
 
-useGLTF.preload( "src/assets/models/jacket.glb" )
+useGLTF.preload( "../assets/models/jacket.glb" )

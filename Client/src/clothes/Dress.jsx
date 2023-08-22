@@ -21,4 +21,4 @@ export function Dress( props ){
     )
 }
 
-useGLTF.preload( "src/assets/models/dress.glb" )
+useGLTF.preload( "../assets/models/dress.glb" )

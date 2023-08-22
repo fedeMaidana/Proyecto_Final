@@ -50,4 +50,4 @@ export function TShirt( props ){
     )
 }
 
-useGLTF.preload( "src/assets/models/t-shirt.glb" )
+useGLTF.preload( "../assets/models/t-shirt.glb" )

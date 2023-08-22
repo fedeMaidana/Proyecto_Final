@@ -1366,4 +1366,4 @@ export function Hooded( props ){
     )
 }
 
-useGLTF.preload( "src/assets/models/hooded.glb" )
+useGLTF.preload( "../assets/models/hooded.glb" )

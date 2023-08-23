@@ -81,17 +81,17 @@ const deleteHandler = async ( req, res ) => {
 
 const updateHandler = async (req, res) => {
     const { id } = req.params;
-    const { name, email, password, userName, lastName, birthDate, profileImage, } = req.body;
+    const { name, email, password, userName, lastName, birthDate } = req.body;
+    const profileImage = req.file;
   
     try {
-      const result = await updateUser( id, name, email, password, userName, lastName, birthDate,profileImage);
+      const result = await updateUser(id, name, email, password, userName, lastName, birthDate, profileImage);
   
       res.status(200).json(result);
     } catch (error) {
       console.error('Error al intentar actualizar el usuario: ', error);
-  
       res.status(500).json({ error: 'server error' });
     }
-  }
+  };
 
 module.exports = { getUsersHandler, registerHandler, getUserIDHandler, loginHandler, deleteHandler, updateHandler }

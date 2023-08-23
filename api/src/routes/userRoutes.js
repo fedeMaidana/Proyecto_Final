@@ -14,7 +14,7 @@ userRoutes.get('/users', getUsersHandler)
 userRoutes.get('/user', authMiddleware, getUserIDHandler);
 userRoutes.post('/register',upload.single('profileImage'), registerHandler);
 userRoutes.post('/login', loginHandler);
-userRoutes.put('/updateuser/:id', updateHandler);
+userRoutes.put('/updateuser/:id', upload.single('profileImage'), updateHandler);
 
 
 

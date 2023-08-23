@@ -4,11 +4,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
 import { deleteProducts } from '../redux/actions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { FaUserCircle } from 'react-icons/fa';
 // import { Card } from '../components/Card';
 
 export const ProfilePage = () => {
-  const messageback = useSelector(state => state.message)
   const dispatch = useDispatch()
   const [user, setUser] = useState(null);
   const [inputs, setInputs] = useState({
@@ -22,7 +22,7 @@ export const ProfilePage = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeSection, setActiveSection] = useState('informacion-personal'); // Estado para la sección activa
-
+  const [profileImage, setProfileImage] = useState(null);
   const { name, email, userName, lastName, birthDate } = inputs;
 
   useEffect(() => {
@@ -36,6 +36,7 @@ export const ProfilePage = () => {
               token: `${token}`,
             },
           });
+          console.log(response);
           setUser(response?.data);
         } catch (error) {
           console.error('Error al obtener detalles del usuario:', error);
@@ -64,7 +65,7 @@ export const ProfilePage = () => {
         const response = await axios.put(`https://proyectofinal-production-4957.up.railway.app/updateuser/${user.id}`, updatedUser);
         setMessage(response.data.message);
         setInputs({ name: '', email: '', userName: '', lastName: '', birthDate: '' });
-
+        setProfileImage(null);
         setTimeout(() => {
           setMessage('');
           setLoading(false);
@@ -91,7 +92,7 @@ export const ProfilePage = () => {
         <ul className="space-y-2">
           <li className={`text-2xl font-semibold ${activeSection === 'informacion-personal' && 'text-blue-500'}`}>
             <Link to="#informacion-personal" onClick={() => setActiveSection('informacion-personal')}>
-              Información Personal / Datos de Cuenta
+              Información Personal 
             </Link>
           </li>
           <li className={`text-2xl font-semibold ${activeSection === 'productos-creados' && 'text-blue-500'}`}>
@@ -113,49 +114,55 @@ export const ProfilePage = () => {
             <FaArrowLeft className="mr-2" /> Volver a Home
           </a>
         </div>
-
         {user ? (
-          <div className="bg-gray-100 p-4 rounded mb-4" id="informacion-personal">
-            {activeSection === 'informacion-personal' && (
-              <>
-                <h3 className="text-lg font-semibold">Información Personal</h3>
-                <div className="mt-4">
-                  <p><strong>Name:</strong> {user.name}</p>
-                  <p><strong>Last Name:</strong> {user.lastName}</p>
-                  <p><strong>Birth Date:</strong> {user.birthDate}</p>
-                  <p><strong>Email:</strong> {user.email}</p>
-                  <p><strong>Username:</strong> {user.userName}</p>
-                </div>
-              </>
-            )}
-          </div>
-        ) : (
-          <p>Loading user information...</p>
-        )}
-                  {messageback && (
-            <div
-              className="
-                            text-2xl
-                            font-bold
-                            text-black-500
-                            bg-blue-500
-                            bg-opacity-75
-                            rounded-lg
-                            w-96
-                            text-center
-                            absolute
-                            bottom-0
-                            mb-8px
-                            px-6
-                            py-3
-                            transition
-                            duration-300
-                            translate-y-[-30px]
-                        "
-            >
-              {messageback}
+  <div className="bg-gray-100 p-4 rounded mb-4" id="informacion-personal">
+    {activeSection === 'informacion-personal' && (
+      <>
+        <h3 className="text-center text-3xl font-semibold mb-4">Información Personal</h3>
+        <div className="flex justify-center items-center mb-4">
+        {user.profileImage ? (
+            <img
+            src={user.profileImage} // Asegúrate de que la URL no contenga doble barra diagonal
+            alt={`${user.name} ${user.lastName}`}
+            className="w-[150px] h-[150px] rounded-full"
+          />
+          ) : (
+            <div className="w-[150px] h-[150px] flex justify-center items-center rounded-full bg-gray-300">
+              <FaUserCircle className="text-6xl text-gray-500" />
             </div>
           )}
+        </div>
+        <table className="w-full">
+          <tbody>
+            <tr className="text-3xl">
+              <td className="w-[150px]"><strong>Name:</strong></td>
+              <td>{user.name}</td>
+            </tr>
+            <tr className="text-3xl">
+              <td><strong>Last Name:</strong></td>
+              <td>{user.lastName}</td>
+            </tr>
+            <tr className="text-3xl">
+              <td><strong>Birth Date:</strong></td>
+              <td>{user.birthDate}</td>
+            </tr>
+            <tr className="text-3xl">
+              <td><strong>Email:</strong></td>
+              <td>{user.email}</td>
+            </tr>
+            <tr className="text-3xl">
+              <td><strong>Username:</strong></td>
+              <td>{user.userName}</td>
+            </tr>
+          </tbody>
+        </table>
+      </>
+    )}
+  </div>
+) : (
+  <p className="text-2xl">Loading user information...</p>
+)}
+
 
 {user && user.CreatedProducts && user.CreatedProducts.length > 0 && (
         <div className="bg-white p-4 rounded mb-4" id="productos-creados">
@@ -209,67 +216,129 @@ export const ProfilePage = () => {
               <>
                 <h3 className="text-lg font-semibold mb-4">Actualizar Información de Usuario</h3>
                 <form onSubmit={onSubmit}>
-                <div className="mb-4">
-              <label htmlFor="name" className="block text-gray-700 font-semibold text-xl mb-2">Name</label>
+                              <div className="flex items-center justify-center">
+              <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100">
+                {profileImage ? (
+                  <div>
+                    <img
+                      id="image-preview"
+                      src={URL.createObjectURL(profileImage)}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                    <label
+                      htmlFor="profileImage"
+                      className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-gray-500 absolute bottom-0 right-0 cursor-pointer"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        />
+                      </svg>
+                    </label>
+                  </div>
+                ) : (
+                  <label
+                    htmlFor="profileImage"
+                    className="flex items-center justify-center w-full h-full cursor-pointer"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6 text-gray-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                  </label>
+                )}
+              </div>
               <input
-                type="text"
-                id="name"
-                name="name"
-                value={name}
-                onChange={onChange}
-                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+                type="file"
+                id="profileImage"
+                name="profileImage"
+                accept="image/*"
+                className="hidden"
+                onChange={(event) => setProfileImage(event.target.files[0])}
               />
             </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-700 font-semibold text-xl mb-2">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={onChange}
-                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="userName" className="block text-gray-700 font-semibold text-xl mb-2">Username</label>
-              <input
-                type="text"
-                id="userName"
-                name="userName"
-                value={userName}
-                onChange={onChange}
-                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="lastName" className="block text-gray-700 font-semibold text-xl mb-2">Last Name</label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={lastName}
-                onChange={onChange}
-                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="birthDate" className="block text-gray-700 font-semibold text-xl mb-2">Birth Date</label>
-              <input
-                type="date"
-                id="birthDate"
-                name="birthDate"
-                value={birthDate}
-                onChange={onChange}
-                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600 text-xl"
-            >
-              Actualizar Usuario
-            </button>
+                  <div className="mb-4">
+                    <label htmlFor="name" className="block text-gray-700 font-semibold text-xl mb-2">Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={name}
+                      onChange={onChange}
+                      className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="email" className="block text-gray-700 font-semibold text-xl mb-2">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={email}
+                      onChange={onChange}
+                      className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="userName" className="block text-gray-700 font-semibold text-xl mb-2">Username</label>
+                    <input
+                      type="text"
+                      id="userName"
+                      name="userName"
+                      value={userName}
+                      onChange={onChange}
+                      className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="lastName" className="block text-gray-700 font-semibold text-xl mb-2">Last Name</label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      value={lastName}
+                      onChange={onChange}
+                      className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="birthDate" className="block text-gray-700 font-semibold text-xl mb-2">Birth Date</label>
+                    <input
+                      type="date"
+                      id="birthDate"
+                      name="birthDate"
+                      value={birthDate}
+                      onChange={onChange}
+                      className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600 text-xl"
+                  >
+                    Actualizar Usuario
+                  </button>
 
                 </form>
               </>

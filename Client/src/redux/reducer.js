@@ -33,7 +33,8 @@ import {
   UPDATE_CART_ID,
   BUY_CART_ID,
   CANCEL_CART_ID,
-  BUY_SUCCESS
+  BUY_SUCCESS,
+  SET_CART_DATA
 } from "./action-types";
 
 const initialState = {
@@ -121,6 +122,8 @@ const reducer = (state = initialState, { type, payload }) => {
 
     case GET_USERS:
       return { ...state, users: payload, allUsers: payload }
+
+    case SET_CART_DATA: return{...state, cartProducts: payload ,}
 
     case ADD_TO_CART:
       const newProduct = payload

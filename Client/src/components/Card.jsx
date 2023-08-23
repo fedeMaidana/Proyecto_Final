@@ -12,13 +12,13 @@ import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunction
 export const Card = ( { name, nameProduct, description, images, price, id, stock, color, size, category } ) => {
   const dispatch = useDispatch()
 
-  const [ currentIndex, setCurrentIndex ] = useState( 0 )
-  const [ cartData, setCartData ] = useState( { cartProducts: [], cartTotal: 0, cartCount: 0 } )
-  const [ currentSlide, setCurrentSlide ] = useState( 0 )
+   const [ currentIndex, setCurrentIndex ] = useState( 0 )
+  //  const [ cartData, setCartData ] = useState( { cartProducts: [], cartTotal: 0, cartCount: 0 } )
+   const [ currentSlide, setCurrentSlide ] = useState( 0 )
 
-  const cartProducts = useSelector( state => state.cartProducts )
-  const cartTotal = useSelector( state => state.cartTotal )
-  const cartCount = useSelector( state => state.cartCount )
+  // const cartProducts = useSelector( state => state.cartProducts )
+  // const cartTotal = useSelector( state => state.cartTotal )
+  // const cartCount = useSelector( state => state.cartCount )
 
   const userId = localStorage.getItem( 'userId' )
   const parsedUserId = parseInt( userId, 10 )
@@ -77,7 +77,7 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
       category: category,
       images: images[ 0 ]
     }
-
+    saveCartToLocalStorage( newProduct )
     dispatch( addToCart( newProduct ) )
 
     const cartId = localStorage.getItem( 'cartId' )
@@ -86,23 +86,23 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
     else dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) )
   }
 
-  useEffect(() => {
-    setCartData({
-      cartProducts: cartProducts,
-      cartTotal: cartTotal,
-      cartCount: cartCount
-    })
-  }, [ cartProducts, cartTotal, cartCount ])
+  //  useEffect(() => {
+  //    setCartData({
+  //      cartProducts: cartProducts,
+  //     cartTotal: cartTotal,
+  //     cartCount: cartCount
+  //    })
+  //  }, [ cartProducts, cartTotal, cartCount ])
 
-  useEffect(() => {
-    const savedCart = loadCartFromLocalStorage()
+  //  useEffect(() => {
+  //    const savedCart = loadCartFromLocalStorage()
 
-    if( savedCart ) dispatch( loadCart( savedCart ) )
-  }, [ dispatch ])
+  //    if( savedCart ) dispatch( loadCart( savedCart ) )
+  //  }, [ dispatch ])
 
-  useEffect(() => {
-    saveCartToLocalStorage( cartData )
-  }, [ cartData ])
+  //  useEffect(() => {
+  //    saveCartToLocalStorage( cartData )
+  //  }, [ cartData ])
 
   const nextSlide = () => {
     setCurrentSlide( ( currentSlide + 1 ) % images.length )
@@ -114,7 +114,8 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
 
   return(
     <>
-      <div className='relative w-[90%] h-auto bg-white rounded-[10px] overflow-hidden border'>
+      <div className='relative w-[90%] h-auto bg-white rounded-[10px] overflow-hidden border'     key={id}
+      id={id}>
         <div className="relative h-[500px]">
           <header className='absolute w-[100%] flex items-center justify-between z-20 p-5 bg-gradient-to-b from-[#b1dbff] to-transparent'>
             <div className='flex items-center gap-[10px]'>

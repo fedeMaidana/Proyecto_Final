@@ -25,6 +25,9 @@ import {
     SEARCH_PRODUCT_FAILURE,
     CLEAR_SEARCH_PRODUCTS,
     GET_USERS,
+    GET_USERS_BY_NAME,
+    BAN_USER,
+    CHANGE_ROLE,
     GET_FAVORITES,
     ADD_FAVORITE,
     DELETE_FAVORITE,
@@ -303,10 +306,42 @@ export const loadCart = (cartData) => {
 export const getUsers = () => {
     return async ( dispatch ) => {
         const response = await axios.get( '/users' )
-        const data = response.data
+        const data = response.data;
         return dispatch( { type: GET_USERS, payload: data } )
     }
 }
+
+
+export const getUsersByName = (name) => {
+  return async ( dispatch ) => {
+      const response = await axios.get( `/users?name=${name}` )
+      const data = response.data;
+      return dispatch( { type: GET_USERS_BY_NAME, payload: data } )
+  }
+}
+
+
+
+export const banUser = (id) => {
+  return async ( dispatch ) => {
+      const response = await axios.put( `/users/${id}/ban` )
+      const data = response.data;
+      console.log(data);
+      return dispatch( { type: BAN_USER, payload: data } )
+  }
+}
+
+
+export const changeRole = (id) => {
+  return async ( dispatch ) => {
+      const response = await axios.put( `/users/${id}/change-role` )
+      const data = response.data;
+      console.log(data);
+      return dispatch( { type: CHANGE_ROLE, payload: data } )
+  }
+}
+
+
 
 
 //Favorites

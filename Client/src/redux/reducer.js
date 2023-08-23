@@ -151,10 +151,10 @@ const reducer = (state = initialState, { type, payload }) => {
 
     case REMOVE_FROM_CART:
       const productIdToRemove = payload
-      const productToRemove = state.cartProducts.find( product => product.id === productIdToRemove )
+      const productToRemove = state.cartProducts.find( product => product.productId === productIdToRemove )
 
       if( productToRemove ){
-        const updatedProducts = state.cartProducts.filter( product => product.id !== productIdToRemove )
+        const updatedProducts = state.cartProducts.filter( product => product.productId !== productIdToRemove )
 
         return {
           ...state,

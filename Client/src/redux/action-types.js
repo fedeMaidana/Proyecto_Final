@@ -21,7 +21,11 @@ export const CLEAR_CART = 'CLEAR_CART';
 export const INCREMENT_PRODUCT = 'INCREMENT_PRODUCT';
 export const DECREMENT_PRODUCT = 'DECREMENT_PRODUCT';
 export const LOAD_CART = 'LOAD_CART';
-export const GET_USERS = 'GET_USERS'
+
+export const GET_USERS = 'GET_USERS'; 
+export const GET_USERS_BY_NAME = 'GET_USERS_BY_NAME';
+export const BAN_USER = 'BAN_USER';
+export const CHANGE_ROLE = 'CHANGE_ROLE';
 
 export const GET_FAVORITES = 'GET_FAVORITES';
 export const ADD_FAVORITE = 'ADD_FAVORITE';

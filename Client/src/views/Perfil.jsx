@@ -86,45 +86,107 @@ export const ProfilePage = () => {
   };
 
   return (
-    <div className="flex container mx-auto py-4">
-      <div className="w-1/4 bg-gray-200 p-4 rounded mr-4">
-        <ul className="space-y-2">
-          <li className={`text-2xl font-semibold ${activeSection === 'informacion-personal' && 'text-blue-500'}`}>
-            <Link to="#informacion-personal" onClick={() => setActiveSection('informacion-personal')}>
-              Información Personal / Datos de Cuenta
-            </Link>
-          </li>
-          <li className={`text-2xl font-semibold ${activeSection === 'productos-creados' && 'text-blue-500'}`}>
-            <Link to="#productos-creados" onClick={() => setActiveSection('productos-creados')}>
-              Productos Creados
-            </Link>
-          </li>
-          <li className={`text-2xl font-semibold ${activeSection === 'actualizar-usuario' && 'text-blue-500'}`}>
-            <Link to="#actualizar-usuario" onClick={() => setActiveSection('actualizar-usuario')}>
-              Actualizar Usuario
-            </Link>
-          </li>
-        </ul>
+    <div className="flex h-screen container mx-auto py-4">
+    <div className="w-1/4 bg-gray-200 p-10 flex flex-col justify-between rounded-[20px] shadow-xl">
+      <ul className="space-y-24">
+        <li
+          className={`text-2xl font-semibold ${
+            activeSection === 'informacion-personal' && 'text-blue-500'
+          }`}
+        >
+          <Link
+            to="#informacion-personal"
+            onClick={() => setActiveSection('informacion-personal')}
+          >
+            Información Personal / Datos de Cuenta
+          </Link>
+        </li>
+        <li
+          className={`text-2xl font-semibold ${
+            activeSection === 'productos-creados' && 'text-blue-500'
+          }`}
+        >
+          <Link
+            to="#productos-creados"
+            onClick={() => setActiveSection('productos-creados')}
+          >
+            Productos Creados
+          </Link>
+        </li>
+        <li
+          className={`text-2xl font-semibold ${
+            activeSection === 'actualizar-usuario' && 'text-blue-500'
+          }`}
+        >
+          <Link
+            to="#actualizar-usuario"
+            onClick={() => setActiveSection('actualizar-usuario')}
+          >
+            Actualizar Usuario
+          </Link>
+        </li>
+      </ul>
+    </div>
+
+    <div className="w-3/4">
+      <div className="mb-4">
+        <a
+          href="/home"
+          className="flex items-center text-blue-600 hover:underline text-2xl p-4"
+        >
+          <FaArrowLeft className="mr-2" /> Volver a Home
+        </a>
       </div>
 
-      <div className="w-3/4">
-        <div className="mb-4">
-          <a href="/home" className="flex items-center text-blue-500 hover:underline text-2xl">
-            <FaArrowLeft className="mr-2" /> Volver a Home
-          </a>
-        </div>
-
-        {user ? (
-          <div className="bg-gray-100 p-4 rounded mb-4" id="informacion-personal">
+      {user ? (
+          <div
+            className="bg-gray-100 p-7 rounded mb-4 w-auto bg-white justify-between"
+            id="informacion-personal"
+          >
             {activeSection === 'informacion-personal' && (
               <>
-                <h3 className="text-lg font-semibold">Información Personal</h3>
-                <div className="mt-4">
-                  <p><strong>Name:</strong> {user.name}</p>
-                  <p><strong>Last Name:</strong> {user.lastName}</p>
-                  <p><strong>Birth Date:</strong> {user.birthDate}</p>
-                  <p><strong>Email:</strong> {user.email}</p>
-                  <p><strong>Username:</strong> {user.userName}</p>
+                <h3 className="text-3xl font-semibold">Información Personal</h3>
+                <div className="mt-5 space-y-9">
+                  <div>
+                    <label>
+                      <strong>Name</strong>
+                    </label>
+                    <div className="w-auto bg-white p-4 flex items-center justify-between border-b rounded-[5px] shadow-xl">
+                      <p>{user.name}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <label>
+                      <strong>Last Name</strong>
+                    </label>
+                    <div className="w-auto bg-white p-4 flex items-center justify-between border-b rounded-[5px] shadow-xl">
+                      <p>{user.lastName}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <label>
+                      <strong>Birth Date</strong>
+                    </label>
+                    <div className="w-auto bg-white p-4 flex items-center justify-between border-b rounded-[5px] shadow-xl">
+                      <p>{user.birthDate}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <label>
+                      <strong>Email</strong>
+                    </label>
+                    <div className="w-auto bg-white p-4 flex items-center justify-between border-b rounded-[5px] shadow-xl">
+                      <p>{user.email}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <label>
+                      <strong>Username</strong>
+                    </label>
+                    <div className="w-auto bg-white p-4 flex items-center justify-between border-b rounded-[5px] shadow-xl">
+                      <p>{user.userName}</p>
+                    </div>
+                  </div>
                 </div>
               </>
             )}
@@ -203,74 +265,100 @@ export const ProfilePage = () => {
         </div>
       )}
 
-        {user && (
-          <div className="bg-white p-4 rounded" id="actualizar-usuario">
+{user && (
+          <div className="bg-white p-7 rounded" id="actualizar-usuario">
             {activeSection === 'actualizar-usuario' && (
               <>
-                <h3 className="text-lg font-semibold mb-4">Actualizar Información de Usuario</h3>
+                <h3 className="text-3xl font-semibold mb-10">
+                  Actualizar Información de Usuario
+                </h3>
                 <form onSubmit={onSubmit}>
-                <div className="mb-4">
-              <label htmlFor="name" className="block text-gray-700 font-semibold text-xl mb-2">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={name}
-                onChange={onChange}
-                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-700 font-semibold text-xl mb-2">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={onChange}
-                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="userName" className="block text-gray-700 font-semibold text-xl mb-2">Username</label>
-              <input
-                type="text"
-                id="userName"
-                name="userName"
-                value={userName}
-                onChange={onChange}
-                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="lastName" className="block text-gray-700 font-semibold text-xl mb-2">Last Name</label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={lastName}
-                onChange={onChange}
-                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="birthDate" className="block text-gray-700 font-semibold text-xl mb-2">Birth Date</label>
-              <input
-                type="date"
-                id="birthDate"
-                name="birthDate"
-                value={birthDate}
-                onChange={onChange}
-                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600 text-xl"
-            >
-              Actualizar Usuario
-            </button>
-
+                  <div className="mb-4">
+                    <label
+                      htmlFor="name"
+                      className="block text-lg font-semibold text-xl mb-2"
+                    >
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={name}
+                      onChange={onChange}
+                      className="w-auto bg-white p-4 flex items-center justify-between border-b rounded-[5px] shadow-xl"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      htmlFor="email"
+                      className="block text-lg font-semibold text-xl mb-2"
+                    >
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={email}
+                      onChange={onChange}
+                      className=" w-auto bg-white p-3 flex items-center justify-between border-b rounded-[5px] shadow-xl"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      htmlFor="userName"
+                      className="block text-lg font-semibold text-xl mb-2"
+                    >
+                      Username
+                    </label>
+                    <input
+                      type="text"
+                      id="userName"
+                      name="userName"
+                      value={userName}
+                      onChange={onChange}
+                      className="w-auto bg-white p-3 flex items-center justify-between border-b rounded-[5px] shadow-xl"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      htmlFor="lastName"
+                      className="block text-lg font-semibold text-xl mb-2"
+                    >
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      value={lastName}
+                      onChange={onChange}
+                      className="w-auto bg-white p-3 flex items-center justify-between border-b rounded-[5px] shadow-xl"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      htmlFor="birthDate"
+                      className="block text-lg font-semibold text-xl mb-2"
+                    >
+                      Birth Date
+                    </label>
+                    <input
+                      type="date"
+                      id="birthDate"
+                      name="birthDate"
+                      value={birthDate}
+                      onChange={onChange}
+                      className="w-auto bg-white p-3 flex items-center justify-between border-b rounded-[5px] shadow-xl"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600 text-xl shadow-xl"
+                  >
+                    Actualizar Usuario
+                  </button>
                 </form>
               </>
             )}

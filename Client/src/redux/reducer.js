@@ -30,6 +30,10 @@ import {
   GET_COMMENTS,
   UPDATE_COMMENT,
   DELETE_COMMENT,
+  UPDATE_CART_ID,
+  BUY_CART_ID,
+  CANCEL_CART_ID,
+  BUY_SUCCESS
 } from "./action-types";
 
 const initialState = {
@@ -52,6 +56,8 @@ const initialState = {
   users: [],
   allUsers: [],
   favorites: [],
+  cartId: localStorage.getItem('cartId') || null,
+  buyCart: [],
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -87,7 +93,7 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, allUsers: payload };
 
     case APPLY_SORTING:
-      return { ...state, allUsers: payload };
+      return { ...state, allUsers: payload, users: payload };
 
     case ALL_CATEGORIES:
       return { ...state, categories: payload };
@@ -218,6 +224,24 @@ const reducer = (state = initialState, { type, payload }) => {
 
     case DELETE_COMMENT:
       return { ...state, comments: state.comments.filter( comment => comment.id !== payload ) }
+
+    //cartId
+    case UPDATE_CART_ID:
+      localStorage.setItem('cartId', payload);
+      return {
+        ...state,
+        cartId: payload,
+      };
+    case BUY_CART_ID: return{
+      ...state, buyCart: payload
+    }
+
+    case CANCEL_CART_ID: return{
+      ...state, buyCart: payload
+    }
+    case BUY_SUCCESS: return{
+      ...state, buyCart: payload
+    }
 
     default:
         return { ...state }

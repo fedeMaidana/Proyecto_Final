@@ -1,37 +1,41 @@
-const { DataTypes } = require( 'sequelize' )
+const { DataTypes } = require('sequelize');
 
-module.exports = ( sequelize ) => {
-    sequelize.define( 'Shopping_cart',
-      {
-        id: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true
-        },
-        price_data: {
-          type: DataTypes.ARRAY( DataTypes.STRING ),
-          allowNull: false
-        },
-        adjustable_quantity: {
-          type: DataTypes.ARRAY( DataTypes.STRING ),
-          allowNull: false
-        },
-        quantity: {
-          type: DataTypes.ARRAY( DataTypes.STRING ),
-          allowNull: false
-        },
-    }, {
-      timestamps: false,
-      instanceMethods: {
-        checkProductStock: async function( productId, quantity ){
-          const product = await sequelize.models.Product.findByPk( productId )
-
-          if( !product ) throw new Error( 'Producto no encontrado' )
-
-          if( product.stock >= quantity ) return true
-          else return false
-        }
-      }
+module.exports = (sequelize) => {
+  sequelize.define('Shopping_cart', {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+    },
+    products: {
+      type: DataTypes.ARRAY(DataTypes.JSONB),
+      allowNull: true,
+    },
+    total: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    estado_pedido: {
+      type: DataTypes.ENUM(
+        'Solicitud',
+        'En Proceso',
+        'Pago Aprobado',
+        'En Preparación',
+        'En Tránsito',
+        'Entregado',
+        'Cancelado',
+        'Rechazado',
+        'Pendiente de Pago',
+        'En Espera de Confirmación',
+        'Retrasado',
+        'Devuelto',
+        'Problemas de Entrega',
+        'En Espera de Stock',
+        'En Espera de Personalización'
+      ),
+      allowNull: false,
     }
-  )
-}
+  }, {
+    timestamps: false,
+  });
+};

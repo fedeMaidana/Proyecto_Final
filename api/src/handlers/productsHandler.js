@@ -1,5 +1,6 @@
 const { getProducts, getProductsById, getProductsByName } = require( '../controllers/getProducts' )
 const { createProduct } = require( '../controllers/postProdcuts' )
+const removedProductControllers =require ('../controllers/RemoveProductControllers')
 
 const getProductsNameHandler = async ( req, res ) => {
     const { name } = req.query
@@ -33,7 +34,9 @@ const getProductsHandlerById = async ( req, res ) => {
 const postProductHandler = async ( req, res ) => {
     try{
         const { idUser, name, price, description, stock, category, color, size, stateShare } = req.body
+        console.log(idUser, name, price, description, stock, category, color, size, stateShare)
         const images = req.files
+
 
         const response = await createProduct( idUser, name, price, description, stock, images, category, color, size, stateShare )
 
@@ -44,4 +47,17 @@ const postProductHandler = async ( req, res ) => {
     }
 }
 
-module.exports = { getProductsHandler, getProductsHandlerById, postProductHandler, getProductsNameHandler }
+const removedProduct= async ( req, res ) => {
+    try{
+      const {id} = req.body
+      const removedProduct = await removedProductControllers( id )
+
+      res.json( removedProduct )
+    }catch( error ){
+      res.status( 500 ).json( { error: error.message } )
+    }
+
+}
+
+
+module.exports = { getProductsHandler, getProductsHandlerById, postProductHandler, getProductsNameHandler, removedProduct }

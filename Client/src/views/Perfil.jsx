@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
+// import { Card } from '../components/Card';
 
 export const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -25,7 +26,7 @@ export const ProfilePage = () => {
     if (token) {
       const fetchUserDetails = async () => {
         try {
-          const response = await axios.get('http://localhost:3001/user', {
+          const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
             headers: {
               token: `${token}`,
             },
@@ -56,7 +57,7 @@ export const ProfilePage = () => {
       setLoading(true);
 
       try {
-        const response = await axios.put(`http://localhost:3001/updateuser/${user.id}`, updatedUser);
+        const response = await axios.put(`https://proyectofinal-production-4957.up.railway.app/updateuser/${user.id}`, updatedUser);
         setMessage(response.data.message);
         setInputs({ name: '', email: '', userName: '', lastName: '', birthDate: '' });
 
@@ -138,59 +139,45 @@ export const ProfilePage = () => {
   <p className="text-2xl">Loading user information...</p>
 )}
 
-{user && (user.favoriteProducts || user.CreatedProducts) && (
-  <div className="bg-white p-4 rounded mb-4" id="productos-creados">
-    {activeSection === 'productos-creados' && (
-      <>
-        {/* Renderiza las tarjetas de productos favoritos */}
-        {user.favoriteProducts && user.favoriteProducts.length > 0 && (
-          <>
-            <h4 className="text-xl font-semibold mb-2">Tus Favoritos</h4>
-            {user.favoriteProducts.map((favorite) => (
-              <div
-                key={favorite.id}
-                className="w-[90%] h-[300px] bg-white rounded-[10px] grid grid-cols-2 grid-rows-4 p-[10px] border border-[#e7e9ec]"
-              >
-                <div className="col-span-2">
-                <img
-  src={favorite.images[0]}
-  alt={favorite.name}
-  className="w-full h-[150px] object-contain rounded-[10px]"
-/>
+        {user && user.Products && user.Products.length > 0 && (
+          <div className="bg-white p-4 rounded mb-4" id="productos-creados">
+            {activeSection === 'productos-creados' && (
+              <>
+                <h3 className="text-lg font-semibold mb-4">Productos Creados</h3>
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                  {user.Products.map((product) => (
+                    <div
+                    key={product.id}
+                    className="w-[90%] h-[300px] bg-white rounded-[10px] grid grid-cols-2 grid-rows-4 p-[10px] border border-[#e7e9ec]"
+                  >
+                    <div className="flex items-center gap-[10px] row-span-1 border-b-[1px]">
+                      <span className="w-[50px] h-[50px] rounded-full bg-[#b7bbc3]"></span>
+                      <p className="text-[2rem] font-semibold">{user.name}</p>
+                    </div>
+        
+                    <div className="flex items-center justify-between border-l-[1px] border-b-[1px] pl-[10px]">
+                      <h3 className="text-[3rem] font-bold">{product.name}</h3>
+                      <p className="text-[2rem] font-semibold">{`$${product.price}`}</p>
+                    </div>
+        
+                    <div className="flex justify-center row-span-3 border-r-[1px]">
+                      {/* Your images mapping logic here */}
+                    </div>
+        
+                    <div className="flex flex-col items-center justify-around row-span-3">
+                      <h3 className="text-[2rem] font-semibold">Sobre el producto</h3>
+                      <p className="text-[1.5rem]">{product.description}</p>
+                    </div>
+        
+                  </div>
+        
+                  ))}
                 </div>
-                <h3 className="text-[2rem] font-semibold col-span-2">{favorite.name}</h3>
-                <p className="text-[1.5rem] col-span-2">{favorite.description}</p>
-                <p className="text-[2rem] font-semibold col-span-2">{`$${favorite.price}`}</p>
-              </div>
-            ))}
-          </>
+              </>
+            )}
+          </div>
         )}
 
-        {/* Renderiza las tarjetas de productos creados */}
-        <h3 className="text-lg font-semibold mb-4">Productos Creados</h3>
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {user.CreatedProducts.map((product) => (
-            <div
-              key={product.id}
-              className="w-[90%] h-[300px] bg-white rounded-[10px] grid grid-cols-2 grid-rows-4 p-[10px] border border-[#e7e9ec]"
-            >
-              <div className="col-span-2">
-                <img
-                  src={product.images[0]} // Mostrar la primera imagen, ajusta esto según tu lógica de manejo de imágenes
-                  alt={product.name}
-                  className="w-full h-[150px] object-cover rounded-[10px]"
-                />
-              </div>
-              <h3 className="text-[2rem] font-semibold col-span-2">{product.name}</h3>
-              <p className="text-[1.5rem] col-span-2">{product.description}</p>
-              <p className="text-[2rem] font-semibold col-span-2">{`$${product.price}`}</p>
-            </div>
-          ))}
-        </div>
-      </>
-    )}
-  </div>
-)}
         {user && (
           <div className="bg-white p-4 rounded" id="actualizar-usuario">
             {activeSection === 'actualizar-usuario' && (

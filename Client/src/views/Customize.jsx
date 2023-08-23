@@ -27,7 +27,7 @@ export function Customize() {
 
             <ClothingDetails price={ price } />
 
-            <ModalCustomize price={ price } />
+            <ModalCustomize price={ price } currentModel={ model } />
         </>
     )
 }

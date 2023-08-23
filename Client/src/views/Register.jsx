@@ -81,17 +81,17 @@ export const Register = () => {
   return (
     <div className="bg-principal-black min-h-screen flex items-center justify-center">
       <div className="bg-principal-white p-8 rounded shadow-md w-[30rem] h-auto text-2xl">
-        <h1 className="text-5xl font-bold mb-8">Register in Custom Craft</h1>
+        <h1 className="text-5xl font-bold mb-8">Regístrate en Custom Craft</h1>
 
         <form onSubmit={(event) => onSubmit(event)}>
           <div className="mb-6 ">
             <label
-              className="block font-semibold text-gray-700 mb-3"
+              className="block font-semibold text-gray-700 mb-9"
               htmlFor="profileImage"
             >
-              Profile Image
+              Imagen de perfil
             </label>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mb-5">
               <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100">
                 {profileImage ? (
                   <div>
@@ -158,7 +158,7 @@ export const Register = () => {
                 className="block font-semibold text-gray-700 mb-3"
                 htmlFor="name"
               >
-                Name
+                Nombre
               </label>
 
               <input
@@ -190,7 +190,7 @@ export const Register = () => {
                 className="block font-semibold text-gray-700 mb-3"
                 htmlFor="lastName"
               >
-                Lastname
+                Apellido
               </label>
 
               <input
@@ -222,7 +222,7 @@ export const Register = () => {
                 className="block font-semibold text-gray-700 mb-3"
                 htmlFor="userName"
               >
-                Username
+                Nombre de usuario
               </label>
 
               <input
@@ -254,7 +254,7 @@ export const Register = () => {
                 className="block font-semibold text-gray-700 mb-3"
                 htmlFor="birthDate"
               >
-                Birthdate
+                Fecha de nacimiento
               </label>
 
               <input
@@ -318,7 +318,7 @@ export const Register = () => {
                 className="block font-semibold text-gray-700 mb-3"
                 htmlFor="password"
               >
-                Password
+                Contraseña
               </label>
 
               <input
@@ -352,24 +352,25 @@ export const Register = () => {
                             font-semibold
                             py-3
                             rounded
-                            hover:bg-blue-600
+                            bg-blue-600
+                            hover:bg-blue-500
                             transition-colors
                             duration-300
                             mb-5
                         "
             type="submit"
           >
-            {loading ? "Loading..." : "Register"}
+            {loading ? "Cargando..." : "Registrarse"}
           </button>
 
           <p className="mt-4 text-center">
-            Do you have an account?
+            ¿Ya tienes una cuenta?
             <br />{" "}
             <b
               className="cursor-pointer text-blue-500"
               onClick={() => navigate("/login")}
             >
-              Log in
+              Ingresar
             </b>
           </p>
         </form>

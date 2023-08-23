@@ -18,6 +18,8 @@ export function ModalCustomize( { price, currentModel } ){
     const [ isButtonsEnabled, setButtonsEnabled ] = useState( false )
     const [ allProducts, setAllProducts ] = useState( [] )
     const [ cartData, setCartData ] = useState( { cartProducts: [], cartTotal: 0, cartCount: 0 } )
+    const [showAddedMessage, setShowAddedMessage] = useState(false);
+    const [showAddedMessageGuardar, setShowAddedMessageGuardar] = useState(false);
 
     const description = useSelector( state => state.designDescription )
     const color = useSelector( state => state.clothingColor )
@@ -79,6 +81,11 @@ export function ModalCustomize( { price, currentModel } ){
         }else{
             dispatch(createOrAddToCartbackend(parsedUserId, cartId, newProduct));
         }
+
+        setShowAddedMessage(true);
+        setTimeout(() => {
+          setShowAddedMessage(false);
+        }, 3000);
     }
 
     useEffect(() => {
@@ -109,7 +116,7 @@ export function ModalCustomize( { price, currentModel } ){
         <>
             { openModal && (
                 <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
-                    <div className="w-[50%] h-[50%] bg-[#f6f6f6] p-5 rounded-[10px] flex flex-col ">
+                    <div className="w-[50%] h-[43%] bg-[#f6f6f6] p-5 rounded-[10px] flex flex-col ">
                         <button
                             className="bg-red-500 text-white px-5 py-3 rounded-full self-end"
                             onClick={ () => dispatch( setModal( false ) ) }
@@ -137,7 +144,7 @@ export function ModalCustomize( { price, currentModel } ){
                                     }
                                     onClick={ () => {
                                         if( description !== '' ){
-                                            handlerSendDesignDataBase( setButtonsEnabled, formdata ) } }
+                                            handlerSendDesignDataBase( setButtonsEnabled, setShowAddedMessageGuardar, formdata ) } }
                                         }
                                 >
                                     Guardar diseño
@@ -160,8 +167,16 @@ export function ModalCustomize( { price, currentModel } ){
                                     >
                                         <IconShare isButtonsEnabled={ isButtonsEnabled } />
                                     </button>
+
                                 </div>
                             </div>
+                            <div className={`text-[1.5rem] ${showAddedMessage ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
+                                Artículo agregado al carrito
+                            </div>
+                            <div className={`text-[1.5rem] ${showAddedMessageGuardar ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
+                                Artículo guardado
+                            </div>
+
                         </div>
                     </div>
                 </div>

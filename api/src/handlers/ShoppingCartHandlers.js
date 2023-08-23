@@ -21,6 +21,18 @@ const cartHandler = {
     }
   },
 
+
+  adminCartHandlers: async ( req, res ) => {
+    try{
+        const {   cartId, estado_pedido} = req.body
+        const cart = await cartController.adminCartControllers( {  cartId, estado_pedido})
+
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
   paySuccess: async ( req, res ) => {
     try{
         const {   cartId, userId} = req.body

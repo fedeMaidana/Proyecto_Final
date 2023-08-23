@@ -53,16 +53,22 @@ export const postProducts = ( dataProduct ) => {
     }
 }
 
-export const deleteProducts = ( payload ) => {
-    return async ( dispatch ) => {
-        try{
-            let info = await axios.delete( `/products?name=${ payload }`)
-            return dispatch( { type: DELETE_PRODUCTS, payload: info.data } )
-        } catch ( error ){
-            console.log( 'Error deleting a Product', error )
-        }
+export const deleteProducts = (productId) => {
+  return async (dispatch) => {
+    try {
+      let response = await axios.delete(`/products/${productId}`);
+      
+      if (response.data && response.data.message) {
+        dispatch({ type: DELETE_PRODUCTS, payload: response.data.message });
+      } else {
+        dispatch({ type: DELETE_PRODUCTS, payload: response.data.error });
+      }
+    } catch (error) {
+ 
+      dispatch({ type: DELETE_PRODUCTS, payload: error.response.data.error });
     }
-}
+  };
+};
 
 export const getProductDetail = ( id ) => {
     return async ( dispatch ) => {

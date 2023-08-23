@@ -58,6 +58,7 @@ const initialState = {
   favorites: [],
   cartId: localStorage.getItem('cartId') || null,
   buyCart: [],
+  message: '',
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -72,7 +73,7 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, productDetail: payload };
 
     case DELETE_PRODUCTS:
-      return { ...state };
+      return { ...state, message: payload };
 
     case SET_COLOR:
       return { ...state, clothingColor: payload };
@@ -150,10 +151,10 @@ const reducer = (state = initialState, { type, payload }) => {
 
     case REMOVE_FROM_CART:
       const productIdToRemove = payload
-      const productToRemove = state.cartProducts.find( product => product.id === productIdToRemove )
+      const productToRemove = state.cartProducts.find( product => product.productId === productIdToRemove )
 
       if( productToRemove ){
-        const updatedProducts = state.cartProducts.filter( product => product.id !== productIdToRemove )
+        const updatedProducts = state.cartProducts.filter( product => product.productId !== productIdToRemove )
 
         return {
           ...state,

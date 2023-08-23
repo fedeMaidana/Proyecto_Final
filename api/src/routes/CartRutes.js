@@ -10,6 +10,6 @@ cartRouter.post( '/create-cart', cartHandler.createCart) // Ruta POST para agreg
 cartRouter.post( '/buy-cart', cartHandler.buyToCart)
 cartRouter.post( '/cancel-cart', cartHandler.cancelToCart)
 cartRouter.post( '/buy-success', cartHandler.buySuccessCart)
-cartRouter.delete( '/:productId', cartHandler.removeFromCart ) // Ruta DELETE para eliminar un producto del carrito de compras
+cartRouter.delete( '/', cartHandler.removeFromCart ) // Ruta DELETE para eliminar un producto del carrito de compras
 
 module.exports = cartRouter

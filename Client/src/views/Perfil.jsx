@@ -25,25 +25,41 @@ export const ProfilePage = () => {
 
   const { name, email, userName, lastName, birthDate } = inputs;
 
+  const [messageVisible, setMessageVisible] = useState(false);
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      const fetchUserDetails = async () => {
-        try {
-          const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
-            headers: {
-              token: `${token}`,
-            },
-          });
-          setUser(response?.data);
-        } catch (error) {
-          console.error('Error al obtener detalles del usuario:', error);
-        }
-      };
-
-      fetchUserDetails();
+    if (messageback) {
+      showMessage();
     }
+  }, [messageback]);
+
+  const showMessage = () => {
+    setMessageVisible(true);
+
+    setTimeout(() => {
+      setMessageVisible(false);
+    }, 2000);
+  };
+
+  const fetchUserDetails = async () => {
+    const token = localStorage.getItem('token');
+  
+    if (token) {
+      try {
+        const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
+          headers: {
+            token: `${token}`,
+          },
+        });
+        setUser(response?.data);
+      } catch (error) {
+        console.error('Error al obtener detalles del usuario:', error);
+      }
+    }
+  };
+  
+  useEffect(() => {
+    fetchUserDetails();
   }, []);
 
   const navigate = useNavigate();
@@ -81,7 +97,7 @@ export const ProfilePage = () => {
 
   const deleteProduct = (productId) => {
     dispatch(deleteProducts(productId))
-    console.log(`Deleting product with ID: ${productId}`);
+    fetchUserDetails()
    
   };
 
@@ -194,7 +210,7 @@ export const ProfilePage = () => {
         ) : (
           <p>Loading user information...</p>
         )}
-                  {messageback && (
+                  {messageVisible && (
             <div
               className="
                             text-2xl

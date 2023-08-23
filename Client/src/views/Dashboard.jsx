@@ -1,7 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import HeaderDashboard from "../components/HeaderDashboard"
 import Sidebar from "../components/Sidebar.jsx"
 import { Outlet } from "react-router-dom"
+import { useSelector, useDispatch } from 'react-redux';
+
+import { getUsers } from "../redux/actions";
 
 import CardFour from '../components/CardFour.jsx';
 import CardOne from '../components/CardOne.jsx';
@@ -15,18 +18,28 @@ import ChatCard from '../components/ChatCard.jsx';
 export function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
+  const dispatch = useDispatch();
+
+  useEffect(()=> {
+      dispatch(getUsers())
+  }, [dispatch])
+
+  const users = useSelector(state => state.allUsers); 
+  // console.log(users);
+  const totalUsers = users.length;
+
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Start ===== --> */}
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        {/* <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
         {/* <!-- ===== Sidebar End ===== --> */}
 
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* <!-- ===== HeaderDashboard Start ===== --> */}
-          <HeaderDashboard sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          {/* <HeaderDashboard sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
           {/* <!-- ===== HeaderDashboard End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}
@@ -34,19 +47,21 @@ export function Dashboard() {
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
               <Outlet />
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-[1.875rem] h-[352px]">
-                <CardOne />
+                {/* <CardOne /> */}
                 <CardTwo />
                 <CardThree />
-                <CardFour />
+                <CardFour 
+                totalUsers={totalUsers} 
+                users={users} />
               </div>
-
+          
               <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-[30px] 2xl:gap-[30px]">
                 <ChartOne />
                 <ChartTwo />
-                <ChartThree />
+                {/* <ChartThree /> */}
                 <div className="col-span-12 xl:col-span-8">
                 </div>
-                <ChatCard />
+                {/* <ChatCard /> */}
               </div>
             </div>
           </main>

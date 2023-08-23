@@ -25,6 +25,9 @@ import {
     SEARCH_PRODUCT_FAILURE,
     CLEAR_SEARCH_PRODUCTS,
     GET_USERS,
+    GET_USERS_BY_NAME,
+    BAN_USER,
+    CHANGE_ROLE,
     GET_FAVORITES,
     ADD_FAVORITE,
     DELETE_FAVORITE,
@@ -35,7 +38,8 @@ import {
      UPDATE_CART_ID,
      BUY_CART_ID,
      CANCEL_CART_ID, 
-     BUY_SUCCESS
+     BUY_SUCCESS,
+     SET_CART_DATA
 
 } from "./action-types"
 
@@ -190,23 +194,27 @@ export const applySorting = (sorting) => {
       const state = getState();
       const allUsers = state.allUsers;
 
-      const updatedUsers = allUsers.map((user) => {
-        const createdProducts = user.CreatedProducts;
-        const sortedProducts = applySortingToProducts(createdProducts, sorting);
+      // Paso 1: Recopilar todos los productos en un solo arreglo
+      const allProducts = [];
+      allUsers.forEach((user) => {
+        allProducts.push(...user.CreatedProducts);
+      });
 
-        return {
-          ...user,
-          CreatedProducts: sortedProducts,
-        };
+      // Paso 2: Aplicar el ordenamiento a todos los productos juntos
+      const sortedProducts = applySortingToProducts(allProducts, sorting);
+
+      // Paso 3: Asignar los productos ordenados de nuevo a cada usuario
+      allUsers.forEach((user) => {
+        user.CreatedProducts = sortedProducts.filter(product => product.userId === user.id);
       });
 
       dispatch({
         type: APPLY_SORTING,
-        payload: updatedUsers,
+        payload: [...allUsers], // Crear un nuevo arreglo para desencadenar la actualización en Redux
         sorting: sorting,
       });
     } catch (error) {
-      console.error('Error applying sorting:', error);
+      console.error('Error aplicando el ordenamiento:', error);
     }
   };
 };
@@ -243,11 +251,31 @@ export const clearImages = () => ({
 
 /* Carrito de compras */
 
-export const addToCart = (product) => ({
+// export const addToCart = (product) => ({
   
+//     type: ADD_TO_CART,
+//     payload: product,
+//   });
+
+export const addToCart = (product) => (dispatch, getState) => {
+  // Ejecuta la acción original para agregar el producto al carrito
+  dispatch({
     type: ADD_TO_CART,
     payload: product,
   });
+
+  // Recupera los datos del carrito almacenados en el localStorage
+  const cartData = JSON.parse(localStorage.getItem('cartData'));
+
+  if (cartData) {
+    // Actualiza los datos del carrito en el estado con los datos del localStorage
+    dispatch({
+      type: SET_CART_DATA,
+      payload: cartData, // Debes definir una acción SET_CART_DATA para actualizar el estado con estos datos
+    });
+  }
+};
+
   
   export const removeFromCart = (productId) => ({
     type: REMOVE_FROM_CART,
@@ -282,10 +310,42 @@ export const loadCart = (cartData) => {
 export const getUsers = () => {
     return async ( dispatch ) => {
         const response = await axios.get( '/users' )
-        const data = response.data
+        const data = response.data;
         return dispatch( { type: GET_USERS, payload: data } )
     }
 }
+
+
+export const getUsersByName = (name) => {
+  return async ( dispatch ) => {
+      const response = await axios.get( `/users?name=${name}` )
+      const data = response.data;
+      return dispatch( { type: GET_USERS_BY_NAME, payload: data } )
+  }
+}
+
+
+
+export const banUser = (id) => {
+  return async ( dispatch ) => {
+      const response = await axios.put( `/users/${id}/ban` )
+      const data = response.data;
+      console.log(data);
+      return dispatch( { type: BAN_USER, payload: data } )
+  }
+}
+
+
+export const changeRole = (id) => {
+  return async ( dispatch ) => {
+      const response = await axios.put( `/users/${id}/change-role` )
+      const data = response.data;
+      console.log(data);
+      return dispatch( { type: CHANGE_ROLE, payload: data } )
+  }
+}
+
+
 
 
 //Favorites

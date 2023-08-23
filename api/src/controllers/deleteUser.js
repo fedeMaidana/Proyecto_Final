@@ -10,12 +10,12 @@ const deleteUser = async ( id ) => {
     if (user.estado === 0) {
         user.estado = 1;
         await user.save();
-        return { message: 'Usuario desbaneado correctamente' }
+        return { message: 'Usuario desbaneado correctamente', user }
     }
     else {
         user.estado = 0;
         await user.save();
-        return { message: 'Usuario baneado correctamente' }
+        return { message: 'Usuario baneado correctamente', user }
     }
 
 }

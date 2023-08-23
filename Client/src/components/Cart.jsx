@@ -128,7 +128,9 @@ export function Cart() {
                     </div>
 
                     <span className='w-[20px] h-[20px] rounded-full bg-[#ff0000] flex items-center justify-center pt-[1px]'>
-                      <IconDelete onClick={ () => onDeleteProduct( product.productId ) } type='button'/>
+                      <button onClick={ () => onDeleteProduct( product.productId ) }>
+                      <IconDelete />
+                        </button>
                     </span>
                   </div>
                 ))}

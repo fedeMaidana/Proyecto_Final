@@ -4,11 +4,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
 import { deleteProducts } from '../redux/actions';
-import { useDispatch } from 'react-redux';
-import { FaUserCircle } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 // import { Card } from '../components/Card';
 
 export const ProfilePage = () => {
+  const messageback = useSelector(state => state.message)
   const dispatch = useDispatch()
   const [user, setUser] = useState(null);
   const [inputs, setInputs] = useState({
@@ -36,7 +36,6 @@ export const ProfilePage = () => {
               token: `${token}`,
             },
           });
-          console.log(response);
           setUser(response?.data);
         } catch (error) {
           console.error('Error al obtener detalles del usuario:', error);
@@ -92,7 +91,7 @@ export const ProfilePage = () => {
         <ul className="space-y-2">
           <li className={`text-2xl font-semibold ${activeSection === 'informacion-personal' && 'text-blue-500'}`}>
             <Link to="#informacion-personal" onClick={() => setActiveSection('informacion-personal')}>
-              Información Personal 
+              Información Personal / Datos de Cuenta
             </Link>
           </li>
           <li className={`text-2xl font-semibold ${activeSection === 'productos-creados' && 'text-blue-500'}`}>
@@ -114,55 +113,49 @@ export const ProfilePage = () => {
             <FaArrowLeft className="mr-2" /> Volver a Home
           </a>
         </div>
+
         {user ? (
-  <div className="bg-gray-100 p-4 rounded mb-4" id="informacion-personal">
-    {activeSection === 'informacion-personal' && (
-      <>
-        <h3 className="text-center text-3xl font-semibold mb-4">Información Personal</h3>
-        <div className="flex justify-center items-center mb-4">
-        {user.profileImage ? (
-            <img
-            src={user.profileImage} // Asegúrate de que la URL no contenga doble barra diagonal
-            alt={`${user.name} ${user.lastName}`}
-            className="w-[150px] h-[150px] rounded-full"
-          />
-          ) : (
-            <div className="w-[150px] h-[150px] flex justify-center items-center rounded-full bg-gray-300">
-              <FaUserCircle className="text-6xl text-gray-500" />
+          <div className="bg-gray-100 p-4 rounded mb-4" id="informacion-personal">
+            {activeSection === 'informacion-personal' && (
+              <>
+                <h3 className="text-lg font-semibold">Información Personal</h3>
+                <div className="mt-4">
+                  <p><strong>Name:</strong> {user.name}</p>
+                  <p><strong>Last Name:</strong> {user.lastName}</p>
+                  <p><strong>Birth Date:</strong> {user.birthDate}</p>
+                  <p><strong>Email:</strong> {user.email}</p>
+                  <p><strong>Username:</strong> {user.userName}</p>
+                </div>
+              </>
+            )}
+          </div>
+        ) : (
+          <p>Loading user information...</p>
+        )}
+                  {messageback && (
+            <div
+              className="
+                            text-2xl
+                            font-bold
+                            text-black-500
+                            bg-blue-500
+                            bg-opacity-75
+                            rounded-lg
+                            w-96
+                            text-center
+                            absolute
+                            bottom-0
+                            mb-8px
+                            px-6
+                            py-3
+                            transition
+                            duration-300
+                            translate-y-[-30px]
+                        "
+            >
+              {messageback}
             </div>
           )}
-        </div>
-        <table className="w-full">
-          <tbody>
-            <tr className="text-3xl">
-              <td className="w-[150px]"><strong>Name:</strong></td>
-              <td>{user.name}</td>
-            </tr>
-            <tr className="text-3xl">
-              <td><strong>Last Name:</strong></td>
-              <td>{user.lastName}</td>
-            </tr>
-            <tr className="text-3xl">
-              <td><strong>Birth Date:</strong></td>
-              <td>{user.birthDate}</td>
-            </tr>
-            <tr className="text-3xl">
-              <td><strong>Email:</strong></td>
-              <td>{user.email}</td>
-            </tr>
-            <tr className="text-3xl">
-              <td><strong>Username:</strong></td>
-              <td>{user.userName}</td>
-            </tr>
-          </tbody>
-        </table>
-      </>
-    )}
-  </div>
-) : (
-  <p className="text-2xl">Loading user information...</p>
-)}
-
 
 {user && user.CreatedProducts && user.CreatedProducts.length > 0 && (
         <div className="bg-white p-4 rounded mb-4" id="productos-creados">
@@ -216,67 +209,67 @@ export const ProfilePage = () => {
               <>
                 <h3 className="text-lg font-semibold mb-4">Actualizar Información de Usuario</h3>
                 <form onSubmit={onSubmit}>
-                  <div className="mb-4">
-                    <label htmlFor="name" className="block text-gray-700 font-semibold text-xl mb-2">Name</label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={name}
-                      onChange={onChange}
-                      className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700 font-semibold text-xl mb-2">Email</label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={email}
-                      onChange={onChange}
-                      className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label htmlFor="userName" className="block text-gray-700 font-semibold text-xl mb-2">Username</label>
-                    <input
-                      type="text"
-                      id="userName"
-                      name="userName"
-                      value={userName}
-                      onChange={onChange}
-                      className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label htmlFor="lastName" className="block text-gray-700 font-semibold text-xl mb-2">Last Name</label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      value={lastName}
-                      onChange={onChange}
-                      className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label htmlFor="birthDate" className="block text-gray-700 font-semibold text-xl mb-2">Birth Date</label>
-                    <input
-                      type="date"
-                      id="birthDate"
-                      name="birthDate"
-                      value={birthDate}
-                      onChange={onChange}
-                      className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600 text-xl"
-                  >
-                    Actualizar Usuario
-                  </button>
+                <div className="mb-4">
+              <label htmlFor="name" className="block text-gray-700 font-semibold text-xl mb-2">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={name}
+                onChange={onChange}
+                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-gray-700 font-semibold text-xl mb-2">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={onChange}
+                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="userName" className="block text-gray-700 font-semibold text-xl mb-2">Username</label>
+              <input
+                type="text"
+                id="userName"
+                name="userName"
+                value={userName}
+                onChange={onChange}
+                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="lastName" className="block text-gray-700 font-semibold text-xl mb-2">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={lastName}
+                onChange={onChange}
+                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="birthDate" className="block text-gray-700 font-semibold text-xl mb-2">Birth Date</label>
+              <input
+                type="date"
+                id="birthDate"
+                name="birthDate"
+                value={birthDate}
+                onChange={onChange}
+                className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600 text-xl"
+            >
+              Actualizar Usuario
+            </button>
 
                 </form>
               </>

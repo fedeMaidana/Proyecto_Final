@@ -84,7 +84,7 @@ export function ModalCustomize( { price, currentModel } ){
 
         setShowAddedMessage(true);
         setTimeout(() => {
-          setShowAddedMessage(false);
+            setShowAddedMessage(false);
         }, 3000);
     }
 

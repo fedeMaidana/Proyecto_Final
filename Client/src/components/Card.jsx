@@ -8,7 +8,7 @@ import { addToCart, createOrAddToCartbackend, loadCart } from '../redux/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage'
 
-export const Card = ( { name, nameProduct, description, images, price, id, stock, color, size, category } ) => {
+export const Card = ( { name, nameProduct, description, images, price, id, stock, color, size, category, profileImage } ) => {
   const dispatch = useDispatch()
 
   const [ currentIndex, setCurrentIndex ] = useState( 0 )
@@ -117,7 +117,7 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
         <div className="relative h-[500px]">
           <header className='absolute w-[100%] flex items-center justify-between z-20 p-5'>
             <div className='flex items-center gap-[10px]'>
-              <span className="w-[40px] h-[40px] rounded-full bg-[#b7bbc3]"></span>
+              <img src={ profileImage } className="w-[40px] h-[40px] rounded-full bg-[#b7bbc3]"></img>
               <p className="text-[1.5rem] font-semibold">{ name }</p>
               <p className='text-[1.5rem] font-semibold transform translate-y-[1px]'>▸</p>
               <p className="text-[1.2rem] font-semibold transform translate-y-[1px]">{ nameProduct }</p>
@@ -164,7 +164,7 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
             <p className="text-[1.5rem]">▸</p>
             <p className='text-[1.5rem]'>{ description }</p>
           </span>
-          <AddComment userId={ userId } productId={ id } />
+          <AddComment userId={ userId } productId={ id } profileImage={ profileImage } />
         </div>
       </div>
     </>

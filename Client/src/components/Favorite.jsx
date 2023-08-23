@@ -1,67 +1,66 @@
-import { useEffect} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addFavorite, deleteFavorite, getFavorites, getUsers } from '../redux/actions';
-import { MdFavoriteBorder, MdFavorite } from 'react-icons/md';
-import { checkIsFavorite } from '../auxFunctions/isFavorite';
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addFavorite, deleteFavorite, getFavorites, getUsers } from '../redux/actions'
+import { MdFavoriteBorder, MdFavorite } from 'react-icons/md'
+import { checkIsFavorite } from '../auxFunctions/isFavorite'
 
-const FavoriteButton = ({ productId, userId }) => {
-  const favorites = useSelector(state => state.favorites);
-  const allUsers = useSelector(state => state.allUsers); //Me traigo para el counter de fav
-  const dispatch = useDispatch();
+const FavoriteButton = ( { productId, userId } ) => {
+  const dispatch = useDispatch()
+
+  const favorites = useSelector( state => state.favorites )
+  const allUsers = useSelector( state => state.allUsers )
+
   useEffect(() => {
-   const userId = localStorage.getItem('userId');
-     dispatch(getFavorites(userId));
-     
-  }, []);
-  
-  const isFavorite = checkIsFavorite(productId, favorites);
+  const userId = localStorage.getItem( 'userId' )
 
+  dispatch( getFavorites( userId ) )
+  }, [])
 
-  //contador de favoritos
-  const productFavoriteCount = allUsers.reduce((count, user) => {
-    return (
-      count +
-      user.FavoriteProducts.filter(
-        favorite => favorite.Favorite.ProductId === productId
-      ).length
-    );
-  }, 0);
+  const isFavorite = checkIsFavorite( productId, favorites )
+
+  const productFavoriteCount = allUsers.reduce(( count, user ) => {
+    return(
+      count + user.FavoriteProducts.filter( favorite => favorite.Favorite.ProductId === productId ).length
+    )
+  }, 0)
 
 
   const handleFavoriteToggle = async () => {
-    
-    if (isFavorite) {
-      const favoriteToDelete = favorites.find(favorite => favorite.Favorite.ProductId === productId);
-      console.log(favoriteToDelete)
-      if (favoriteToDelete) {
-        await dispatch(deleteFavorite(favoriteToDelete.Favorite.id));
-        dispatch(getFavorites(userId));
-        dispatch(getUsers())
+    if( isFavorite ){
+      const favoriteToDelete = favorites.find( favorite => favorite.Favorite.ProductId === productId )
+
+      if( favoriteToDelete ){
+        await dispatch( deleteFavorite( favoriteToDelete.Favorite.id ) )
+        dispatch( getFavorites( userId ) )
+        dispatch( getUsers() )
       }
-    } else {
-      await dispatch(addFavorite(userId, productId));
-      dispatch(getFavorites(userId));
-      dispatch(getUsers()) // Assuming you have a way to get the user ID, here I'm using 1 as an example.
+
+    }else{
+      await dispatch( addFavorite( userId, productId ) )
+      dispatch( getFavorites(userId ) )
+      dispatch( getUsers() )
     }
-  };
+  }
 
-  return (
-    <div>
+  return(
+    <div className='w-[50px] bg-white border flex items-center justify-center gap-[10px] py-[3px] rounded-full'>
       <button
-        onClick={handleFavoriteToggle}
-        className={`p-2 border ${
-          isFavorite ? 'bg-red-500 text-white' : 'bg-white text-gray-800'
-        } rounded-lg transition-all hover:bg-opacity-80`}
+        onClick={ handleFavoriteToggle }
+        className={ `${ isFavorite ? 'text-[#ff0000]' : 'text-gray-800' } transition-all hover:bg-opacity-80`}
       >
-        {isFavorite ? (
-          <MdFavorite className="text-xl" type="button" />
-        ) : (
-          <MdFavoriteBorder className="text-xl" type="button" />
-        )}
+        {isFavorite
+          ? (
+            <MdFavorite className="text-[2rem]" type="button" />
+          )
+          : (
+            <MdFavoriteBorder className="text-[2rem]" type="button" />
+          )
+        }
       </button>
-        <span className="ml-1">{productFavoriteCount}</span>
-    </div>
-  );
-};
 
-export default FavoriteButton;
+      <span className='text-[1.2rem] font-semibold transform translate-y-[-1px]'>{ productFavoriteCount }</span>
+    </div>
+  )
+}
+
+export default FavoriteButton

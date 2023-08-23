@@ -13,6 +13,8 @@ export const CardsContainer = () => {
   const allUsers = useSelector( state => state.allUsers )
   const allUsersHaveNoProducts = allUsers.every( user => user.CreatedProducts.length === 0 )
 
+  console.log(allUsers)
+
   return (
     <>
       {allUsers?.map( user => (
@@ -20,7 +22,7 @@ export const CardsContainer = () => {
           <Card
             key={ product.id }
             id={ product.id }
-            name={ user.name }
+            name={ user.userName }
             nameProduct={ product.name }
             description={ product.description }
             images={ product.images }

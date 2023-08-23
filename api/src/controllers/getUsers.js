@@ -6,14 +6,27 @@ const getUsers = async (name) => {
     try {
 
         const whereCondition = name ? {
-            role: 'user', 
-            name: {
-                [Op.iLike]: `%${name.toLowerCase()}%`
+            [Op.or]: [
+              {
+                role: 'user',
+                name: {
+                  [Op.iLike]: `%${name.toLowerCase()}%`
+                }
+              },
+              {
+                role: 'admin',
+                name: {
+                  [Op.iLike]: `%${name.toLowerCase()}%`
+                }
+              }
+            ]
+          } : {
+            role: {
+              [Op.or]: ['user', 'admin']
             }
-        } 
-        : { role: 'user' };
+          };
 
-
+          
         const dataBaseUsers = await User.findAll({
             where: whereCondition,
             include:

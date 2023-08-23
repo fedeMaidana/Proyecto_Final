@@ -17,8 +17,8 @@ const adminMiddleware = async (req, res, next) => {
       return res.status(401).json({ message: 'Usuario no encontrado' });
     }
 
-    if (user.role !== 'admin') {
-      return res.status(403).json({ message: 'Acceso denegado: se requieren privilegios de administrador' });
+    if (user.role !== 'rootAdmin') {
+      return res.status(403).json({ message: 'Acceso denegado: se requieren privilegios de administrador root' });
     }
 
     req.user = decodedToken;

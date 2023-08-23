@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addComment, deleteComment, updateComment } from '../redux/actions'
-import { AiOutlineComment } from 'react-icons/ai'
-import { BiCommentX, BiSend } from 'react-icons/bi'
 
-const AddComment = ( { userId, productId } ) => {
+const AddComment = ( { userId, productId, profileImage } ) => {
   const dispatch = useDispatch()
 
   const [ text, setText ] = useState( '' )
@@ -34,7 +32,7 @@ const AddComment = ( { userId, productId } ) => {
               {comments.map( comment => (
                 <li key={ comment.id }>
                   <div className='w-auto h-auto bg-[#f6f6f6] rounded-[10px] px-5 py-3 flex items-center gap-[10px]'>
-                    <span className='w-[30px] h-[30px] bg-[#9c9c9c] rounded-full'></span>
+                    <img src={ profileImage } className='w-[30px] h-[30px] bg-[#9c9c9c] rounded-full'></img>
                     <p className='text-[1.2rem]'>
                       <span className='text-[1.4rem] font-semibold'>{ allUsers.find( user => user.id === comment.userId )?.name || 'Usuario desconocido'}</span> ▸ { comment.text }
                     </p>

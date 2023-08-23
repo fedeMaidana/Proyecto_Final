@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { Card } from "./Card"
 import { getUsers } from "../redux/actions"
 
-export const CardsContainer = () => {
+export const CardsContainer = ( { currentPosts } ) => {
   const dispatch = useDispatch()
 
   useEffect( () => {
@@ -13,29 +13,30 @@ export const CardsContainer = () => {
   const allUsers = useSelector( state => state.allUsers )
   const allUsersHaveNoProducts = allUsers.every( user => user.CreatedProducts.length === 0 )
 
-  console.log(allUsers)
-
-  return (
+  return(
     <>
-      {allUsers?.map( user => (
-        user.CreatedProducts.map( product => (
-          <Card
-            key={ product.id }
-            id={ product.id }
-            name={ user.userName }
-            nameProduct={ product.name }
-            description={ product.description }
-            images={ product.images }
-            price={ product.price }
-            stock= { product.stock }
-            color= { product.color }
-            size= { product.size }
-            category= { product.category }
-          />
-        ))
-      ))}
+      {currentPosts.map(post => {
+        const user = allUsers.find( user => user.id === post.userId )
 
-      { allUsersHaveNoProducts && <div><h2>Ups! No tenemos productos con esa especificación</h2></div> }
+        return(
+          <Card
+            key={ post.id }
+            id={ post.id }
+            name={ user.userName }
+            nameProduct={ post.name }
+            description={ post.description }
+            images={ post.images }
+            price={ post.price }
+            stock={ post.stock }
+            color={ post.color }
+            size={ post.size }
+            category={ post.category }
+            profileImage={ user.profileImage }
+          />
+        )
+      })}
+
+      { allUsersHaveNoProducts && <div><h2>Aun no hay publicaciones que mostrar, se el primero en realizar una publicación</h2></div> }
     </>
   )
 }

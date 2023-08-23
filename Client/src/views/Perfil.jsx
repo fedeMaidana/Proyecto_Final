@@ -4,10 +4,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
 import { deleteProducts } from '../redux/actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // import { Card } from '../components/Card';
 
 export const ProfilePage = () => {
+  const messageback = useSelector(state => state.message)
   const dispatch = useDispatch()
   const [user, setUser] = useState(null);
   const [inputs, setInputs] = useState({
@@ -131,6 +132,30 @@ export const ProfilePage = () => {
         ) : (
           <p>Loading user information...</p>
         )}
+                  {messageback && (
+            <div
+              className="
+                            text-2xl
+                            font-bold
+                            text-black-500
+                            bg-blue-500
+                            bg-opacity-75
+                            rounded-lg
+                            w-96
+                            text-center
+                            absolute
+                            bottom-0
+                            mb-8px
+                            px-6
+                            py-3
+                            transition
+                            duration-300
+                            translate-y-[-30px]
+                        "
+            >
+              {messageback}
+            </div>
+          )}
 
 {user && user.CreatedProducts && user.CreatedProducts.length > 0 && (
         <div className="bg-white p-4 rounded mb-4" id="productos-creados">

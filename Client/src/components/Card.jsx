@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
 import FavoriteButton from './Favorite'
 import AddComment from './AddComments'
 import { IconCart, IconProfileArrow } from '../assets/icons/icons'
@@ -117,16 +116,18 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
       <div className='relative w-[90%] h-auto bg-white rounded-[10px] overflow-hidden border'     key={id}
       id={id}>
         <div className="relative h-[500px]">
-          <header className='absolute w-[100%] flex items-center justify-between z-20 p-5 bg-gradient-to-b from-[#b1dbff] to-transparent'>
+          <header className='absolute w-[100%] flex items-center justify-between z-20 p-5'>
             <div className='flex items-center gap-[10px]'>
               <span className="w-[40px] h-[40px] rounded-full bg-[#b7bbc3]"></span>
               <p className="text-[1.5rem] font-semibold">{ name }</p>
               <p className='text-[1.5rem] font-semibold transform translate-y-[1px]'>▸</p>
               <p className="text-[1.2rem] font-semibold transform translate-y-[1px]">{ nameProduct }</p>
+              <p className='text-[1.5rem] font-semibold transform translate-y-[1px]'>▸</p>
+              <p className="text-[1.2rem] font-semibold transform translate-y-[1px]">$ { price }</p>
             </div>
 
             <div className="p-2 text-black text-[1.5rem] font-semibold">
-            { currentSlide + 1 } / { images.length }
+            <span>{ currentSlide + 1 }</span> / <span className='text-[#7e7e7e]'>{ images.length }</span>
             </div>
           </header>
           <div className="w-full h-full flex transition-transform duration-300 z-10" style={ { transform: `translateX(-${ currentSlide * 100 }%)` } }>
@@ -140,7 +141,7 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
           <button className="absolute top-[50%] transform -translate-y-1/2 right-[10px]" onClick={ nextSlide }>
             <IconProfileArrow className='transform rotate-[180deg]' size={ '20' } />
           </button>
-          <footer className='absolute w-[100%] bottom-0 grid grid-cols-3 items-center justify-center z-20 p-5 bg-gradient-to-t from-[#b1dbff] to-transparent'>
+          <footer className='absolute w-[100%] bottom-0 grid grid-cols-3 items-center justify-center z-20 p-5'>
             <span className='flex gap-[10px]'>
               <FavoriteButton userId={ userId } productId={ id } />
               <button className='w-[50px] border rounded-full bg-white flex items-center justify-center' title="Agregar al carrito" onClick={ onAddProduct }><IconCart isButtonsEnabled={ true } /></button>
@@ -158,7 +159,7 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
           </footer>
         </div>
 
-        <div className='min-h-[100px] max-h-auto bg-[#b1dbff] rounded-bl-[10px] rounded-br-[10px] p-5 flex flex-col gap-[10px]'>
+        <div className='min-h-[100px] max-h-auto rounded-bl-[10px] rounded-br-[10px] p-5 flex flex-col gap-[10px]'>
           <span className='flex items-center gap-[10px]'>
             <p className="text-[1.5rem] font-semibold">{ name }</p>
             <p className="text-[1.5rem]">▸</p>

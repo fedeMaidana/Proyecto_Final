@@ -20,11 +20,6 @@ export function Nav() {
   useEffect(() => {
     const token = localStorage.getItem( 'token' )
     const googleToken = cookies.get('googleToken');
-    console.log('Google Token:', googleToken);
-
-
-    console.log('Local Token:', token);
-    console.log('Google Token inside useEffect:', googleToken);
 
     if( token ){
       const fetchUserDetails = async () => {
@@ -40,6 +35,8 @@ export function Nav() {
           localStorage.setItem( 'userId', userId )
 
           setUser( response?.data?.name )
+
+          console.log(response?.data)
 
         }catch( error ){
           console.error( 'Error al obtener detalles del usuario:', error )

@@ -17,13 +17,19 @@ export function Community () {
 
   const indexOfLastPost = currentPage * postsPerPage
   const indexOfFirstPost = indexOfLastPost - postsPerPage
-  const currentPosts = allUsers.flatMap( user => user.CreatedProducts ).slice( indexOfFirstPost, indexOfLastPost )
+
+  const postsAll = allUsers.flatMap( user => user.CreatedProducts )
+  postsAll.sort( ( a, b ) => a.id - b.id )
+
+  const currentPosts = postsAll.slice( indexOfFirstPost, indexOfLastPost )
 
   let totalPost = allUsers.reduce(( sum, user ) => {
     return sum + user.CreatedProducts.length
   }, 0)
 
   const paginate = pageNumber => setCurrentPage( pageNumber )
+
+  console.log(postsAll)
 
   useEffect(() => {
     dispatch( getUsers() )

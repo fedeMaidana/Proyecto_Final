@@ -5,6 +5,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
 import { deleteProducts } from '../redux/actions';
 import { useDispatch } from 'react-redux';
+import { FaUserCircle } from 'react-icons/fa';
 // import { Card } from '../components/Card';
 
 export const ProfilePage = () => {
@@ -117,7 +118,20 @@ export const ProfilePage = () => {
   <div className="bg-gray-100 p-4 rounded mb-4" id="informacion-personal">
     {activeSection === 'informacion-personal' && (
       <>
-         <h3 className="text-center text-3xl font-semibold mb-4">Información Personal</h3>
+        <h3 className="text-center text-3xl font-semibold mb-4">Información Personal</h3>
+        <div className="flex justify-center items-center mb-4">
+        {user.profileImage ? (
+            <img
+            src={user.profileImage} // Asegúrate de que la URL no contenga doble barra diagonal
+            alt={`${user.name} ${user.lastName}`}
+            className="w-[150px] h-[150px] rounded-full"
+          />
+          ) : (
+            <div className="w-[150px] h-[150px] flex justify-center items-center rounded-full bg-gray-300">
+              <FaUserCircle className="text-6xl text-gray-500" />
+            </div>
+          )}
+        </div>
         <table className="w-full">
           <tbody>
             <tr className="text-3xl">
@@ -148,6 +162,7 @@ export const ProfilePage = () => {
 ) : (
   <p className="text-2xl">Loading user information...</p>
 )}
+
 
 {user && user.CreatedProducts && user.CreatedProducts.length > 0 && (
         <div className="bg-white p-4 rounded mb-4" id="productos-creados">

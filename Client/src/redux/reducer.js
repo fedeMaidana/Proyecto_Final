@@ -72,7 +72,7 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, productDetail: payload };
 
     case DELETE_PRODUCTS:
-      return { ...state };
+      return { ...state, products: payload };
 
     case SET_COLOR:
       return { ...state, clothingColor: payload };

@@ -2,9 +2,13 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
+import { deleteProducts } from '../redux/actions';
+import { useDispatch } from 'react-redux';
 // import { Card } from '../components/Card';
 
 export const ProfilePage = () => {
+  const dispatch = useDispatch()
   const [user, setUser] = useState(null);
   const [inputs, setInputs] = useState({
     name: '',
@@ -74,6 +78,12 @@ export const ProfilePage = () => {
     }
   };
 
+  const deleteProduct = (productId) => {
+    dispatch(deleteProducts(productId))
+    console.log(`Deleting product with ID: ${productId}`);
+   
+  };
+
   return (
     <div className="flex container mx-auto py-4">
       <div className="w-1/4 bg-gray-200 p-4 rounded mr-4">
@@ -133,8 +143,10 @@ export const ProfilePage = () => {
                     key={product.id}
                     className="bg-white rounded p-4 border border-[#e7e9ec] flex flex-col"
                   >
-                      <div className="w-[50px] h-[50px] rounded-full "><img src={user.profileImage} alt={user.profileImage} /></div>
-                    <div className="flex items-center mb-2">
+                    <div className="flex items-center">
+                      <div className="w-[50px] h-[50px] rounded-full">
+                        <img src={user.profileImage} alt={user.profileImage} />
+                      </div>
                       <div className="ml-4">
                         <h3 className="text-xl font-semibold">{product.name}</h3>
                         <p className="text-lg font-semibold">{`$${product.price}`}</p>
@@ -151,6 +163,13 @@ export const ProfilePage = () => {
                         />
                       ))}
                     </div>
+                    <button
+                      className="mt-3 flex items-center text-red-500"
+                      onClick={() => deleteProduct(product.id)}
+                    >
+                      <FaTrash className="mr-1" />
+                      Delete
+                    </button>
                   </div>
                 ))}
               </div>

@@ -26,8 +26,8 @@ export const IconNextArrow = () => (
     </svg>
 )
 
-export const IconProfileArrow = ( { className } ) => (
-    <svg className={ className } width="10" height="10" viewBox="0 0 12 22" fill="none">
+export const IconProfileArrow = ( { className, size } ) => (
+    <svg className={ className } width={ size } height={ size } viewBox="0 0 12 22" fill="none">
         <path d="M11 21L1 11L11 1" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
     </svg>
 )
@@ -37,7 +37,7 @@ export const IconCart = ( { isButtonsEnabled } ) => (
         <g strokeWidth="0"/>
         <g strokeLinecap="round" strokeLinejoin="round"/>
         <g>
-            <path d="M21 5L19 12H7.37671M20 16H8L6 3H3M16 5.5H13.5M13.5 5.5H11M13.5 5.5V8M13.5 5.5V3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke={ isButtonsEnabled ? "#000" : "#999" } strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M21 5L19 12H7.37671M20 16H8L6 3H3M16 5.5H13.5M13.5 5.5H11M13.5 5.5V8M13.5 5.5V3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke={ isButtonsEnabled ? "#1f2937" : "#999" } strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </g>
     </svg>
 )

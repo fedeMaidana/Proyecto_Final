@@ -39,9 +39,7 @@ export function Nav() {
           setUserId( userId )
           localStorage.setItem( 'userId', userId )
 
-
           setUser( response?.data?.name )
-          
 
         }catch( error ){
           console.error( 'Error al obtener detalles del usuario:', error )
@@ -134,7 +132,7 @@ export function Nav() {
                 </div>
                 <li className="relative flex items-center gap-[10px] cursor-pointer" onClick={ handleProfileClick } >
                   <span className='select-none w-[40px] h-[40px] flex bg-[#555555] rounded-full'></span>
-                  <IconProfileArrow className={ `transform ${ModalProfile === false ? 'rotate-[270deg]' : 'rotate-90'}` } />
+                  <IconProfileArrow className={ `transform ${ModalProfile === false ? 'rotate-[270deg]' : 'rotate-90'}` } size={ '10' } />
                 </li>
               </ul>
             ):(

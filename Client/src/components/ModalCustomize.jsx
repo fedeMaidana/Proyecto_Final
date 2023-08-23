@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { NavLink } from 'react-router-dom'
 import { getProducts, getUsers, setModal, createOrAddToCartbackend } from "../redux/actions"
 import { handleDescriptionChange } from "../handlers/handlers"
 import { IconCart, IconShare } from "../assets/icons/icons"
@@ -15,11 +16,17 @@ const disabledButtonClasses = "h-[40px] w-[40px] bg-gray-300 border rounded-full
 export function ModalCustomize( { price, currentModel } ){
     const dispatch = useDispatch()
 
+    const token = localStorage.getItem( 'token' )
+
+    useEffect(() => {
+        dispatch( setModal( false ) )
+    }, [])
+
     const [ isButtonsEnabled, setButtonsEnabled ] = useState( false )
     const [ allProducts, setAllProducts ] = useState( [] )
     const [ cartData, setCartData ] = useState( { cartProducts: [], cartTotal: 0, cartCount: 0 } )
-    const [showAddedMessage, setShowAddedMessage] = useState(false);
-    const [showAddedMessageGuardar, setShowAddedMessageGuardar] = useState(false);
+    const [ showAddedMessage, setShowAddedMessage ] = useState( false )
+    const [ showAddedMessageGuardar, setShowAddedMessageGuardar ] = useState( false )
 
     const description = useSelector( state => state.designDescription )
     const color = useSelector( state => state.clothingColor )
@@ -31,37 +38,29 @@ export function ModalCustomize( { price, currentModel } ){
     const cartProducts = useSelector( state => state.cartProducts )
     const cartTotal = useSelector( state => state.cartTotal )
     const cartCount = useSelector( state => state.cartCount )
-    const allUsers = useSelector(state => state.allUsers)
+    const allUsers = useSelector( state => state.allUsers )
 
-    //accediendo al Local Storage
-    const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem( 'userId' )
 
-    const parsedUserId = parseInt(userId, 10);
-    const connectedUser = allUsers.find(user => user.id === parsedUserId);
+    const parsedUserId = parseInt( userId, 10 )
+    const connectedUser = allUsers.find( user => user.id === parsedUserId )
 
     let lastCreatedProductId
-
-    if (connectedUser && Array.isArray(connectedUser.CreatedProducts)) {
-        const createdProducts = connectedUser.CreatedProducts;
-
-        if (createdProducts.length > 0) lastCreatedProductId = createdProducts.slice(-1)[0].id;
-        else console.log("El usuario ha creado 0 productos.")
-
-    }else{
-        console.log("El usuario no tiene permiso para crear productos o no se pudo encontrar el usuario.");
-    }
-
-    console.log("ID del último producto creado:", lastCreatedProductId);
-
     let category = categoryByModel( currentModel )
-
     let formdata = handlerSaveDesign( description, capturedImages, color, size, title, price, 1, category, userId )
+
+    if( connectedUser && Array.isArray( connectedUser.CreatedProducts ) ){
+        const createdProducts = connectedUser.CreatedProducts
+
+        if( createdProducts.length > 0 ) lastCreatedProductId = createdProducts.slice( -1 )[ 0 ].id
+
+    }
 
     const onAddProduct = ( data, products ) => {
         const newProduct = {
             productId: uuidv4(),
             id: lastCreatedProductId,
-            name: data.get('name'),
+            name: data.get( 'name' ),
             price: data.get('price'),
             description: data.get('description'),
             stock: data.get('stock'),
@@ -73,19 +72,16 @@ export function ModalCustomize( { price, currentModel } ){
 
         setAllProducts( [ ...allProducts, newProduct ] )
         dispatch( addToCart( newProduct ) )
-        const cartId = localStorage.getItem('cartId')
-        console.log(cartId)
-        console.log('us',parsedUserId)
-        if(parsedUserId || cartId === null ){
-            dispatch(createOrAddToCartbackend(parsedUserId, cartId, newProduct));
-        }else{
-            dispatch(createOrAddToCartbackend(parsedUserId, cartId, newProduct));
-        }
+        const cartId = localStorage.getItem( 'cartId' )
 
-        setShowAddedMessage(true);
+        if( parsedUserId || cartId === null ) dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) )
+        else dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) )
+
+        setShowAddedMessage( true )
+
         setTimeout(() => {
-          setShowAddedMessage(false);
-        }, 3000);
+            setShowAddedMessage( false )
+        }, 3000)
     }
 
     useEffect(() => {
@@ -115,71 +111,87 @@ export function ModalCustomize( { price, currentModel } ){
     return(
         <>
             { openModal && (
-                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
-                    <div className="w-[50%] h-[43%] bg-[#f6f6f6] p-5 rounded-[10px] flex flex-col ">
-                        <button
-                            className="bg-red-500 text-white px-5 py-3 rounded-full self-end"
-                            onClick={ () => dispatch( setModal( false ) ) }
-                        >
-                            X
-                        </button>
-
-                        <div className="h-[100%] flex flex-col justify-evenly items-center">
-                            <div className="w-full">
-                                <label htmlFor='description' className="text-[1.2rem] font-semibold">Agrega una descripción</label>
-                                <textarea
-                                    id="description"
-                                    type="text"
-                                    placeholder="Descripción..."
-                                    className="w-full h-[100px] border outline-none p-5 rounded-[10px] mt-[10px] mb-4 text-[1.2rem]"
-                                    onChange={ event => handleDescriptionChange( event, dispatch ) }
-                                />
-                            </div>
-
-                            <div className="w-full flex justify-center gap-[30px]">
-                                <button
-                                    className={ description === ''
-                                        ? 'w-[140px] h-[40px] py-3 bg-gray-300 text-[#999] border font-semibold text-[1.5rem] rounded-full cursor-not-allowed'
-                                        : 'w-[140px] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full'
-                                    }
-                                    onClick={ () => {
-                                        if( description !== '' ){
-                                            handlerSendDesignDataBase( setButtonsEnabled, setShowAddedMessageGuardar, formdata ) } }
-                                        }
-                                >
-                                    Guardar diseño
-                                </button>
-
-                                <div className="flex gap-[10px]">
-                                    <button
-                                        className={ isButtonsEnabled ? enabledButtonClasses : disabledButtonClasses }
-                                        title="Agregar diseño al carrito"
-                                        disabled={ !isButtonsEnabled }
-                                        onClick={ () => onAddProduct(formdata, products) }
-                                    >
-                                        <IconCart isButtonsEnabled={ isButtonsEnabled } />
-                                    </button>
-
-                                    <button
-                                        className={ isButtonsEnabled ? enabledButtonClasses : disabledButtonClasses }
-                                        title="Compartir diseño"
-                                        disabled={ !isButtonsEnabled }
-                                    >
-                                        <IconShare isButtonsEnabled={ isButtonsEnabled } />
-                                    </button>
-
+                <>
+                    { !token
+                        ? (
+                            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
+                                <div className="w-auto h-[150px] bg-[#fffca0] p-5 border-[2px] border-[#bcb402] rounded-[10px] flex flex-col items-center justify-around">
+                                    <p className='text-[1.4rem] font-bold text-[#d8ce04]'>Para poder finalizar tu diseño primero debes tener una sesión abierta</p>
+                                    <NavLink to='../login' >
+                                        <button className='text-white font-semibold text-[1.4rem] py-2 px-4 bg-[#33a1fd] rounded-full'>Iniciar sesión</button>
+                                    </NavLink>
                                 </div>
                             </div>
-                            <div className={`text-[1.5rem] ${showAddedMessage ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
-                                Artículo agregado al carrito
-                            </div>
-                            <div className={`text-[1.5rem] ${showAddedMessageGuardar ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
-                                Artículo guardado
-                            </div>
+                        )
+                        : (
+                            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
+                                <div className="w-[50%] h-[43%] bg-[#f6f6f6] p-5 rounded-[10px] flex flex-col">
+                                    <button
+                                        className="bg-red-500 text-white px-5 py-3 rounded-full self-end"
+                                        onClick={ () => dispatch( setModal( false ) ) }
+                                    >
+                                        X
+                                    </button>
 
-                        </div>
-                    </div>
-                </div>
+                                    <div className="h-[100%] flex flex-col justify-evenly items-center">
+                                        <div className="w-full">
+                                            <label htmlFor='description' className="text-[1.2rem] font-semibold">Agrega una descripción</label>
+                                            <textarea
+                                                id="description"
+                                                type="text"
+                                                placeholder="Descripción..."
+                                                className="w-full h-[100px] border outline-none p-5 rounded-[10px] mt-[10px] mb-4 text-[1.2rem]"
+                                                onChange={ event => handleDescriptionChange( event, dispatch ) }
+                                            />
+                                        </div>
+
+                                        <div className="w-full flex justify-center gap-[30px]">
+                                            <button
+                                                className={ description === ''
+                                                    ? 'w-[140px] h-[40px] py-3 bg-gray-300 text-[#999] border font-semibold text-[1.5rem] rounded-full cursor-not-allowed'
+                                                    : 'w-[140px] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full'
+                                                }
+                                                onClick={ () => {
+                                                    if( description !== '' ){
+                                                        handlerSendDesignDataBase( setButtonsEnabled, setShowAddedMessageGuardar, formdata ) } }
+                                                    }
+                                            >
+                                                Guardar diseño
+                                            </button>
+
+                                            <div className="flex gap-[10px]">
+                                                <button
+                                                    className={ isButtonsEnabled ? enabledButtonClasses : disabledButtonClasses }
+                                                    title="Agregar diseño al carrito"
+                                                    disabled={ !isButtonsEnabled }
+                                                    onClick={ () => onAddProduct(formdata, products) }
+                                                >
+                                                    <IconCart isButtonsEnabled={ isButtonsEnabled } />
+                                                </button>
+
+                                                <button
+                                                    className={ isButtonsEnabled ? enabledButtonClasses : disabledButtonClasses }
+                                                    title="Compartir diseño"
+                                                    disabled={ !isButtonsEnabled }
+                                                >
+                                                    <IconShare isButtonsEnabled={ isButtonsEnabled } />
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                        <div className={`text-[1.5rem] ${showAddedMessage ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
+                                            Artículo agregado al carrito
+                                        </div>
+                                        <div className={`text-[1.5rem] ${showAddedMessageGuardar ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
+                                            Artículo guardado
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    }
+                </>
             )}
         </>
     )

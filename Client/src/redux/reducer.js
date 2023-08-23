@@ -23,6 +23,9 @@ import {
   SEARCH_PRODUCT_FAILURE,
   CLEAR_SEARCH_PRODUCTS,
   GET_USERS,
+  GET_USERS_BY_NAME,
+  BAN_USER,
+  CHANGE_ROLE,
   GET_FAVORITES,
   ADD_FAVORITE,
   DELETE_FAVORITE,
@@ -33,7 +36,8 @@ import {
   UPDATE_CART_ID,
   BUY_CART_ID,
   CANCEL_CART_ID,
-  BUY_SUCCESS
+  BUY_SUCCESS,
+  SET_CART_DATA
 } from "./action-types";
 
 const initialState = {
@@ -121,6 +125,46 @@ const reducer = (state = initialState, { type, payload }) => {
 
     case GET_USERS:
       return { ...state, users: payload, allUsers: payload }
+
+
+    
+    case GET_USERS_BY_NAME:
+      return { ...state, users: payload, allUsers: payload }
+    
+    
+    case BAN_USER:
+      const updatedUsers = state.users.map(user => {
+        if (user.id === payload.id) {
+          return {
+            ...user,
+          };
+        }
+        return user;
+      });
+        
+      return {
+        ...state,
+        users: updatedUsers,
+      };
+
+    
+      case CHANGE_ROLE:
+        const adminUsers = state.users.map(user => {
+          if (user.id === payload.id) {
+            return {
+              ...user,
+            };
+          }
+          return user;
+        });
+          
+        return {
+          ...state,
+          users: adminUsers,
+        };
+
+    
+    case SET_CART_DATA: return{...state, cartProducts: payload ,}
 
     case ADD_TO_CART:
       const newProduct = payload

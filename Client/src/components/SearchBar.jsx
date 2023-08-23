@@ -67,7 +67,7 @@ function SearchBar() {
                 ''
         }
       </div>
-      <div className="w-[25%] px-[5px] mr-[7px] border rounded-[7px] bg-[#f6f6f6] flex justify-between items-center">
+      <div className="w-[250px] px-[5px] mr-[7px] border rounded-[7px] bg-[#f6f6f6] flex justify-between items-center">
         <input
           className="w-[90%] p-2 bg-[#f6f6f6] text-[1.5rem] outline-none"
           placeholder="Remera"

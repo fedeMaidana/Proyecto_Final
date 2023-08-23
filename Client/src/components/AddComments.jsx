@@ -1,129 +1,108 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addComment, deleteComment, updateComment,   } from '../redux/actions';
-import { AiOutlineComment } from 'react-icons/ai';
-import { BiCommentX, BiSend } from 'react-icons/bi';
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addComment, deleteComment, updateComment } from '../redux/actions'
 
-const AddComment = ({ userId, productId }) => {
-  const [text, setText] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingComment, setEditingComment] = useState(null); // Nuevo estado
-  const [newEditText, setNewEditText] = useState(''); // Nuevo estado
-  const dispatch = useDispatch();
-  const allComments = useSelector((state) => state.comments);
-  const allUsers = useSelector((state) => state.users); //Me traigo para agregar el nombre
+const AddComment = ( { userId, productId, profileImage } ) => {
+  const dispatch = useDispatch()
 
-  const comments = allComments ? allComments.filter((comment) => comment.productId === productId) : [];
-  const parsedUserId = parseInt(userId, 10);
+  const [ text, setText ] = useState( '' )
+  const [ editingComment, setEditingComment ] = useState( null )
+  const [ newEditText, setNewEditText ] = useState( '' )
 
+  const allComments = useSelector( state => state.comments )
+  const allUsers = useSelector( state => state.users )
 
+  const comments = allComments ? allComments.filter( comment => comment.productId === productId) : []
+  const parsedUserId = parseInt( userId, 10 )
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(addComment(parsedUserId, productId, text));
-    setText('');
-  };
+  const handleSubmit = ( e ) => {
+    e.preventDefault()
+    if( text.length > 0 ){
+      dispatch( addComment( parsedUserId, productId, text ) )
+      setText( '' )
+    }
+  }
 
-  const handleDelete = (commentId) => {
-    dispatch(deleteComment(commentId));
-  };
+  const handleDelete = ( commentId ) => {
+    dispatch( deleteComment( commentId ) )
+  }
 
-  return (
-    <div>
-      <button
-        className="text-gray-500 hover:text-gray-700"
-        onClick={() => setIsModalOpen(true)}
-      >
-        <AiOutlineComment className="w-6 h-6 inline-block" />Comentar
-      </button>
+  return(
+    <>
+      <h2 className="text-lg text-center font-semibold border-t pt-[10px]">Comentarios</h2>
+            <ul className='h-auto flex flex-col gap-[10px]'>
+              {comments.map( comment => (
+                <li key={ comment.id }>
+                  <div className='w-[100%] h-auto bg-[#f6f6f6] rounded-[10px] px-5 py-3 flex items-center justify-between gap-[10px]'>
+                    <div className='flex items-center gap-[10px]'>
+                      <img src={ profileImage } className='min-w-[30px] h-[30px] bg-[#9c9c9c] rounded-full'></img>
+                      <p className='text-[1.2rem]'>
+                        <span className='text-[1.4rem] font-semibold'>{ allUsers.find( user => user.id === comment.userId )?.name || 'Usuario desconocido'}</span> ▸ { comment.text }
+                      </p>
+                    </div>
 
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg relative">
-            <button
-              className="absolute top-2 right-2 text-red-500 hover:text-red-700"
-              onClick={() => setIsModalOpen(false)}
-            >
-              <BiCommentX className="w-6 h-6" />
-            </button>
-            <h2 className="text-lg font-semibold mb-2">Comments</h2>
-            <ul>
-              {comments.map((comment) => (
-                <li key={comment.id}>
-                  <p>
-                    {/* Mostrar el nombre de usuario */}
-                     {console.log('Current UserID:', userId)} 
-                    {allUsers.find((user) => user.id === comment.userId)?.name || 'Unknown User'}: {comment.text}
-                  </p>
-                  {comment.userId === parsedUserId && (
-                    
-                    <div className="flex space-x-2">
-                    <button
-                      className="text-red-500"
-                      onClick={() => handleDelete(comment.id)}
-                    >
-                      Delete
-                    </button>
-                    <button
-                      className="text-blue-500"
-                      onClick={() => setEditingComment(comment.id)}
-                    >
-                      Edit
-                    </button>
-                  </div>
+                    {comment.userId === parsedUserId && (
+                      <div className="border-l pl-5 flex flex-col gap-[10px]">
+                        <button className="text-red-500 text-[1.2rem] font-semibold" onClick={ () => handleDelete( comment.id ) }>
+                          Eliminar
+                        </button>
+                        <button className="text-white rounded-full px-5 py-1 bg-[#33a1fd] text-[1.2rem] font-semibold" onClick={() => setEditingComment(comment.id)}>
+                          Editar
+                        </button>
+                      </div>
                   )}
-                  
+                  </div>
                 </li>
               ))}
             </ul>
-            {editingComment !== null && (
-  <div className="mb-2">
-    <input
-      type="text"
-      className="w-full p-2 border rounded-md"
-      value={newEditText}
-      onChange={(e) => setNewEditText(e.target.value)}
-    />
-    <button
-      className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-      onClick={() => {
-        dispatch(updateComment(editingComment, newEditText));
-        setEditingComment(null);
-        setNewEditText('');
-      }}
-    >
-      Save
-    </button>
-    <button
-      className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ml-2"
-      onClick={() => setEditingComment(null)}
-    >
-      Cancel
-    </button>
-  </div>
-)}
-{editingComment === null && (
-  <form onSubmit={handleSubmit}>
-    <textarea
-      className="w-full p-2 border rounded-md mb-2"
-      value={text}
-      onChange={(e) => setText(e.target.value)}
-      placeholder="Write a comment..."
-    />
-    <button
-      className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-      type="submit"
-    >
-      <BiSend className="w-6 h-6 inline-block"/>Enviar
-    </button>
-  </form>
-)}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+            { editingComment !== null && (
+              <div className="flex justify-center gap-[20px]">
+                <input
+                  type="text"
+                  className="w-[80%] p-2 border rounded-[10px] outline-none"
+                  value={ newEditText }
+                  onChange={ e => setNewEditText( e.target.value ) }
+                />
+                <button
+                  className="text-[1.2rem] font-semibold px-4 py-2 bg-green-500 text-white rounded-full"
+                  onClick={() => {
+                    dispatch( updateComment( editingComment, newEditText ) )
+                    setEditingComment( null )
+                    setNewEditText( '' )
+                  }}
+                >
+                  Guardar
+                </button>
+                <button
+                  className="text-[1.2rem] font-semibold px-4 py-2 bg-red-500 text-white rounded-full"
+                  onClick={ () => setEditingComment( null ) }
+                >
+                  Cancelar
+                </button>
+              </div>
+            )}
+            {editingComment === null && (
+              <form onSubmit={ handleSubmit } className='flex items-center justify-between gap-[10px]'>
+                <textarea
+                  className="w-[90%] h-auto text-[1.2rem] p-3 border rounded-[10px] outline-none"
+                  value={ text }
+                  onChange={ e => setText( e.target.value ) }
+                  placeholder="Comentario..."
+                />
+                <button
+                  className={ `${ text.length > 0
+                    ? 'w-auto px-[10px] border-none outline-none text-[1.5rem] text-white font-semibold py-[5px] rounded-full bg-[#33a1fd] flex items-center justify-center'
+                    : 'w-auto px-[10px] border-none outline-none text-[1.5rem] text-[#6b6b6b] font-semibold py-[5px] rounded-full bg-gray-300 flex items-center justify-center cursor-not-allowed'
+                  }`}
+                  type="submit"
+                >
+                  Publicar
+                </button>
+              </form>
+            )}
 
-export default AddComment;
+    </>
+  )
+}
+
+export default AddComment

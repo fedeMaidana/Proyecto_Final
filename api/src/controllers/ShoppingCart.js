@@ -166,21 +166,37 @@ await sendEmail(to, subject, text);
 
   
 
-  removeFromCart: async ( id ) => {
-    try{
-      const product = await Shopping_cart.findByPk( id )
-
-      if( !product ) throw new Error( 'Producto no encontrado en el carrito' )
-
-      await product.destroy()
-
-      return product
-
-    }catch( error ){
-      console.error(error)
-      throw new Error( 'Error al eliminar el producto del carrito' )
+  removeFromCart: async ( productId, cartId ) => {
+    console.log(productId)
+    try {
+      // Busca el carrito por su ID
+      const shoppingCart = await Shopping_cart.findByPk(cartId);
+      
+      if (!shoppingCart) {
+        throw new Error('Carrito no encontrado');
+      }
+  
+      // Busca la asociación entre el producto y el carrito directamente en la instancia de carrito
+      const productCartAssociation = await Product_Shopping_cart.findOne({
+        where: {
+          ProductId: productId,
+          ShoppingCartId: cartId
+        }
+      });
+  
+      if (!productCartAssociation || productCartAssociation.length === 0) {
+        throw new Error('Producto no encontrado en el carrito');
+      }
+  
+      // Si se encuentra la asociación, elimínala
+      await productCartAssociation[0].destroy();
+  
+      return { message: 'Producto eliminado correctamente del carrito' };
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error al eliminar el producto del carrito');
     }
-  }
 }
 
+}
 module.exports = cartController

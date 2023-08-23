@@ -12,9 +12,9 @@ const adminRoutes = Router()
 
 adminRoutes.get( '/users', getUsersHandler )
 
-adminRoutes.get( '/shopping-cart',adminMiddleware, cartHandler.getShoppingCart )
-adminRoutes.put( '/users/:id/change-role', changeRole)  
-adminRoutes.put( '/users/:id/ban', deleteHandler )
+adminRoutes.get( '/shopping-cart', /*adminMiddleware,*/ cartHandler.getShoppingCart )
+adminRoutes.put( '/users/:id/change-role', /*adminMiddleware,*/ changeRole)  
+adminRoutes.put( '/users/:id/ban', /*adminMiddleware,*/ deleteHandler )
 adminRoutes.post('/state-cart', cartHandler.adminCartHandlers )
 
 

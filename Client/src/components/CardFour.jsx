@@ -1,9 +1,8 @@
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 
-import { banUser } from '../redux/actions';
-import { changeRole } from '../redux/actions';
-import { getUsersByName } from '../redux/actions';
+import { banUser, changeRole, getUsers, getUsersByName } from '../redux/actions';
+
 
 const CardFour = ({ totalUsers, users }) => {
   
@@ -12,11 +11,15 @@ const CardFour = ({ totalUsers, users }) => {
   const [searchName, setSearchName] = useState('');
 
   const handleBanUser = (id) => {
-    dispatch(banUser(id)); 
+    dispatch(banUser(id)).then(() => {
+      dispatch(getUsers()); // Llama a getUsers después de ejecutar banUser
+    });
   };
 
   const handleChangeRole = (id) => {
-    dispatch(changeRole(id)); 
+    dispatch(changeRole(id)).then(() => {
+      dispatch(getUsers()); // Llama a getUsers después de ejecutar banUser
+    }); 
   };
 
   const handleSearch = () => {

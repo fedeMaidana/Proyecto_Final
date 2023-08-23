@@ -20,7 +20,7 @@ export function Nav() {
 
   useEffect(() => {
     const token = localStorage.getItem( 'token' )
-    const googleToken = cookies.get('googleToken');
+    const googleToken = cookies.get( 'googleToken' )
 
     if( token ){
       const fetchUserDetails = async () => {
@@ -56,8 +56,6 @@ export function Nav() {
           })
 
           const { name, id } = responseGoogle.data
-
-          console.log( responseGoogle.data )
 
           setUserId( id )
           localStorage.setItem( 'userId', id )
@@ -119,7 +117,6 @@ export function Nav() {
           { user !== undefined
             ?(
               <ul className='w-[110px] md:w-[150px] lg:w-[150px] flex justify-around items-center'>
-                {/* <Cart /> */}
                 <div className='cursor-pointer' onClick={ handleCartClick }>
                   <IconShoppingCart/>
 

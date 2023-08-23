@@ -2,9 +2,13 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
+import { deleteProducts } from '../redux/actions';
+import { useDispatch } from 'react-redux';
 // import { Card } from '../components/Card';
 
 export const ProfilePage = () => {
+  const dispatch = useDispatch()
   const [user, setUser] = useState(null);
   const [inputs, setInputs] = useState({
     name: '',
@@ -73,6 +77,12 @@ export const ProfilePage = () => {
         }, 1500);
       }
     }
+  };
+
+  const deleteProduct = (productId) => {
+    dispatch(deleteProducts(productId))
+    console.log(`Deleting product with ID: ${productId}`);
+   
   };
 
   return (

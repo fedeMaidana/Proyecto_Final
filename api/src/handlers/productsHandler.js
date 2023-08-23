@@ -49,7 +49,7 @@ const postProductHandler = async ( req, res ) => {
 
 const removedProduct= async ( req, res ) => {
     try{
-      const {id} = req.body
+      const {id} = req.params
       const removedProduct = await removedProductControllers( id )
 
       res.json( removedProduct )

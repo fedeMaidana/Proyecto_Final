@@ -29,11 +29,11 @@ const AddComment = ( { userId, productId } ) => {
 
   return(
     <>
-      <h2 className="text-lg text-center font-semibold border-t border-[#33a1fd] pt-[10px]">Comentarios</h2>
+      <h2 className="text-lg text-center font-semibold border-t pt-[10px]">Comentarios</h2>
             <ul>
               {comments.map( comment => (
                 <li key={ comment.id }>
-                  <div className='w-auto h-auto bg-[#81c5ff] rounded-full px-5 py-3 flex items-center gap-[10px]'>
+                  <div className='w-auto h-auto bg-[#f6f6f6] rounded-[10px] px-5 py-3 flex items-center gap-[10px]'>
                     <span className='w-[30px] h-[30px] bg-[#9c9c9c] rounded-full'></span>
                     <p className='text-[1.2rem]'>
                       <span className='text-[1.4rem] font-semibold'>{ allUsers.find( user => user.id === comment.userId )?.name || 'Usuario desconocido'}</span> ▸ { comment.text }

@@ -58,6 +58,7 @@ const initialState = {
   favorites: [],
   cartId: localStorage.getItem('cartId') || null,
   buyCart: [],
+  message: '',
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -72,7 +73,7 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, productDetail: payload };
 
     case DELETE_PRODUCTS:
-      return { ...state, products: payload };
+      return { ...state, message: payload };
 
     case SET_COLOR:
       return { ...state, clothingColor: payload };

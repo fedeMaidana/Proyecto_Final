@@ -177,6 +177,7 @@ await sendEmail(to, subject, text);
       return product
 
     }catch( error ){
+      console.error(error)
       throw new Error( 'Error al eliminar el producto del carrito' )
     }
   }

@@ -13,6 +13,7 @@ export function Nav() {
   const cookies = new Cookies()
 
   const [ user, setUser ] = useState( undefined )
+  const [ userImage, setUserImage ] = useState( undefined )
   const [ ModalProfile, setModalProfile ] = useState( false )
   const [ ModalCart, setModalCart ] = useState( false )
   const [ userId, setUserId ] = useState( null )
@@ -35,8 +36,7 @@ export function Nav() {
           localStorage.setItem( 'userId', userId )
 
           setUser( response?.data?.name )
-
-          console.log(response?.data)
+          setUserImage( response?.data?.profileImage )
 
         }catch( error ){
           console.error( 'Error al obtener detalles del usuario:', error )
@@ -128,7 +128,7 @@ export function Nav() {
                   </div>
                 </div>
                 <li className="relative flex items-center gap-[10px] cursor-pointer" onClick={ handleProfileClick } >
-                  <span className='select-none w-[40px] h-[40px] flex bg-[#555555] rounded-full'></span>
+                  <img src={ userImage } className='select-none w-[40px] h-[40px] flex bg-[#555555] rounded-full'></img>
                   <IconProfileArrow className={ `transform ${ModalProfile === false ? 'rotate-[270deg]' : 'rotate-90'}` } size={ '10' } />
                 </li>
               </ul>

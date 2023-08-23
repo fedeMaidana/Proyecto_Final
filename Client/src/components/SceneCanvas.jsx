@@ -1,10 +1,12 @@
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { OrbitControls } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
 import { Center, Environment } from "@react-three/drei"
 import { selectModel } from "../auxFunctions/selectModel"
 
 export function SceneCanvas( { position = [ 0, 0, 15 ], fov = 25, currentModel } ){
+    const dispatch = useDispatch()
+
     const clothingColor = useSelector( state => state.clothingColor )
 
     let Model = selectModel( currentModel )

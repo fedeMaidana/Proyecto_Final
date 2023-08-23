@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {applySortingToProducts} from '../auxFunctions/sortingOrder'
 import {
     GET_PRODUCTS,
     POST_PRODUCTS,
@@ -33,7 +34,11 @@ import {
     ADD_COMMENT, 
     GET_COMMENTS,
      UPDATE_COMMENT, 
-     DELETE_COMMENT
+     DELETE_COMMENT,
+     UPDATE_CART_ID,
+     BUY_CART_ID,
+     CANCEL_CART_ID, 
+     BUY_SUCCESS
 
 } from "./action-types"
 
@@ -51,16 +56,22 @@ export const postProducts = ( dataProduct ) => {
     }
 }
 
-export const deleteProducts = ( payload ) => {
-    return async ( dispatch ) => {
-        try{
-            let info = await axios.delete( `/products?name=${ payload }`)
-            return dispatch( { type: DELETE_PRODUCTS, payload: info.data } )
-        } catch ( error ){
-            console.log( 'Error deleting a Product', error )
-        }
+export const deleteProducts = (productId) => {
+  return async (dispatch) => {
+    try {
+      let response = await axios.delete(`/products/${productId}`);
+      
+      if (response.data && response.data.message) {
+        dispatch({ type: DELETE_PRODUCTS, payload: response.data.message });
+      } else {
+        dispatch({ type: DELETE_PRODUCTS, payload: response.data.error });
+      }
+    } catch (error) {
+ 
+      dispatch({ type: DELETE_PRODUCTS, payload: error.response.data.error });
     }
-}
+  };
+};
 
 export const getProductDetail = ( id ) => {
     return async ( dispatch ) => {
@@ -156,25 +167,59 @@ export const applyFilters = (filters) => {
   };
 
 
-export const applySorting = ( sorting ) => {
-    return async ( dispatch ) => {
-         try {
-             const response = await axios.get( '/filter', {
-                params: {
-                     sortOption: sorting,
-                 }
-             })
+// export const applySorting = ( sorting ) => {
+//     return async ( dispatch ) => {
+//          try {
+//              const response = await axios.get( '/filter', {
+//                 params: {
+//                      sortOption: sorting,
+//                  }
+//              })
 
-            dispatch({
-                 type: APPLY_SORTING,
-                payload: response.data,
-                sorting: sorting
-            })
-         } catch( error ) {
-            console.error( 'Error fetching sorted products:', error )
-        }
+//             dispatch({
+//                  type: APPLY_SORTING,
+//                 payload: response.data,
+//                 sorting: sorting
+//             })
+//          } catch( error ) {
+//             console.error( 'Error fetching sorted products:', error )
+//         }
+//     }
+//  }
+// En tu acción Redux
+export const applySorting = (sorting) => {
+  return (dispatch, getState) => {
+    try {
+      const state = getState();
+      const allUsers = state.allUsers;
+
+      const updatedUsers = allUsers.map((user) => {
+        const createdProducts = user.CreatedProducts;
+        const sortedProducts = applySortingToProducts(createdProducts, sorting);
+
+        return {
+          ...user,
+          CreatedProducts: sortedProducts,
+        };
+      });
+
+      dispatch({
+        type: APPLY_SORTING,
+        payload: updatedUsers,
+        sorting: sorting,
+      });
+    } catch (error) {
+      console.error('Error applying sorting:', error);
     }
- }
+  };
+};
+
+
+
+
+
+
+
 
 export const getCategories = () => {
     return async ( dispatch ) => {
@@ -202,6 +247,7 @@ export const clearImages = () => ({
 /* Carrito de compras */
 
 export const addToCart = (product) => ({
+  
     type: ADD_TO_CART,
     payload: product,
   });
@@ -370,3 +416,100 @@ export const deleteComment = (commentId) => {
 };
 
 
+//creacion carrito en el backend
+export const createOrAddToCartbackend = (parsedUserId, cartId, newProduct) => {
+  console.log(typeof cartId)
+  return async (dispatch) => {
+    try {
+      let response;
+      if (cartId === null || cartId === "null") {
+        console.log(parsedUserId)
+        // Si no hay cartId, crea un nuevo carrito y agrega el producto inicial
+        response = await axios.post('/shopping_cart/create-cart', {
+          userId: parsedUserId,
+          product: newProduct,
+        });
+      } else {
+        // Si hay un cartId, agrega el producto al carrito existente
+        response = await axios.post('/shopping_cart/add-cart', {
+          cartId: cartId,
+          product: newProduct,
+        });
+      }
+
+      const newCartId  = response.data.id;
+      console.log(response.data)
+      console.log('Nuevo cartId:', newCartId);
+      // Actualiza el cartId en el estado global usando la acción
+      localStorage.setItem('cartId', newCartId);
+      dispatch(updateCartId(newCartId));
+
+      // ... Otras acciones si es necesario
+    } catch (error) {
+      console.error('Error al agregar el producto al carrito:', error);
+    }
+  };
+};
+
+// Acción para actualizar el cartId en el estado global
+export const updateCartId = (newCartId) => {
+  return {
+    type: UPDATE_CART_ID,
+    payload: newCartId,
+  };
+};
+
+
+export const buyToCartbackend = (cartId, newProduct, cartTotal) => {
+  console.log(typeof cartId)
+  return async (dispatch) => {
+    try {
+        const response = await axios.post('/shopping_cart/buy-cart', {
+          cartId: cartId,
+          product: newProduct,
+          cartTotal: cartTotal
+        });
+
+        return dispatch( { type: BUY_CART_ID, payload: response.data } )
+
+    } catch (error) {
+      console.error('Error al agregar el producto al carrito:', error);
+    }
+  };
+};
+
+
+export const cancelToCartbackend = (cartId, newProduct, cartTotal) => {
+  console.log(typeof cartId)
+  return async (dispatch) => {
+    try {
+        const response = await axios.post('/shopping_cart/cancel-cart', {
+          cartId: cartId,
+          product: newProduct,
+          cartTotal: cartTotal
+        });
+
+        return dispatch( { type: CANCEL_CART_ID, payload: response.data } )
+
+    } catch (error) {
+      console.error('Error al agregar el producto al carrito:', error);
+    }
+  };
+};
+
+export const buySuccessCart = (cartId, userId) => {
+  console.log(typeof cartId)
+  return async (dispatch) => {
+    try {
+        const response = await axios.post('/shopping_cart/buy-success', {
+          cartId: cartId,
+          userId:userId,
+        });
+
+        return dispatch( { type: BUY_SUCCESS, payload: response.data } )
+
+    } catch (error) {
+      console.error('Error al agregar el producto al carrito:', error);
+    }
+  };
+};

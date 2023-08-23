@@ -22,13 +22,14 @@ export function Nav() {
     const googleToken = cookies.get('googleToken');
     console.log('Google Token:', googleToken);
 
-    console.log( 'Local Token:', token )
-    console.log( 'Google Token inside useEffect:', googleToken )
+
+    console.log('Local Token:', token);
+    console.log('Google Token inside useEffect:', googleToken);
 
     if( token ){
       const fetchUserDetails = async () => {
         try{
-          const response = await axios.get( 'http://localhost:3001/user', {
+          const response = await axios.get( 'https://proyectofinal-production-4957.up.railway.app/user', {
             headers: {
               token: `${ token }`
             }
@@ -38,7 +39,9 @@ export function Nav() {
           setUserId( userId )
           localStorage.setItem( 'userId', userId )
 
+
           setUser( response?.data?.name )
+          
 
         }catch( error ){
           console.error( 'Error al obtener detalles del usuario:', error )
@@ -51,7 +54,7 @@ export function Nav() {
     if( googleToken ){
       const fetchGoogleUserDetails = async () => {
         try {
-          const responseGoogle = await axios.get('http://localhost:3001/user/google', {
+          const responseGoogle = await axios.get('https://proyectofinal-production-4957.up.railway.app/user/google', {
             headers: {
               googleToken: googleToken,
             }
@@ -89,6 +92,7 @@ export function Nav() {
     setUser( undefined )
     setModalProfile( false )
   }
+
 
   return (
     <>

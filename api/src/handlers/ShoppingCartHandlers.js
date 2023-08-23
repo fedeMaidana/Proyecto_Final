@@ -10,14 +10,94 @@ const cartHandler = {
     }
   },
 
+  payCancel: async ( req, res ) => {
+    try{
+        const {   cartId, userId} = req.body
+        const cart = await cartController.addToCartControllers( {  cartId, userId})
+
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+
+  adminCartHandlers: async ( req, res ) => {
+    try{
+        const {   cartId, estado_pedido} = req.body
+        const cart = await cartController.adminCartControllers( {  cartId, estado_pedido})
+
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+  paySuccess: async ( req, res ) => {
+    try{
+        const {   cartId, userId} = req.body
+        const cart = await cartController.addToCartControllers( {   cartId, userId})
+
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+
   addToCart: async ( req, res ) => {
     try{
-        const { id } = req.user
-        const cartId = req.params.cartId
-        const { productId, quantity } = req.body
-        const addedProduct = await cartController.addToCart( id, cartId, productId, quantity )
+        const {   cartId, product} = req.body
+        const cart = await cartController.addToCartControllers( {   cartId, product})
 
-        res.status( 201 ).json( addedProduct )
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+  buyToCart: async ( req, res ) => {
+    try{
+        const {   cartId, product, cartTotal} = req.body
+        const cart = await cartController.buyToCartControllers( {   cartId, product, cartTotal})
+
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+  cancelToCart: async ( req, res ) => {
+    try{
+        const {   cartId, product, cartTotal} = req.body
+        const cart = await cartController.cancelToCartControllers( {   cartId, product, cartTotal})
+
+        res.status( 201 ).json( cart)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+  buySuccessCart: async ( req, res ) => {
+    try{
+        const {   cartId, userId} = req.body
+        const response = await cartController.buySuccessControllers( {   cartId, userId})
+
+        res.status( 201 ).json( response)
+    }catch( error ){
+      res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+    }
+  },
+
+
+
+  createCart: async ( req, res ) => {
+    try{
+        const { product, userId } = req.body
+        console.log('este es id:',userId)
+        const cart = await cartController.createCartControllers({ product, userId })
+
+        res.status( 201 ).json( cart)
     }catch( error ){
       res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
     }

@@ -52,7 +52,7 @@ const getProductsById = async ( id ) => {
         description:product.description,
         stock: product.stock,
         images: product.images,
-        price: product.price
+        price: product.price,
     }))
 
     return productFilter

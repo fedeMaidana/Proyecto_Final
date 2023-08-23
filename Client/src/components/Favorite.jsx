@@ -1,6 +1,6 @@
 import { useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addFavorite, deleteFavorite, getFavorites } from '../redux/actions';
+import { addFavorite, deleteFavorite, getFavorites, getUsers } from '../redux/actions';
 import { MdFavoriteBorder, MdFavorite } from 'react-icons/md';
 import { checkIsFavorite } from '../auxFunctions/isFavorite';
 
@@ -11,6 +11,7 @@ const FavoriteButton = ({ productId, userId }) => {
   useEffect(() => {
    const userId = localStorage.getItem('userId');
      dispatch(getFavorites(userId));
+     
   }, []);
   
   const isFavorite = checkIsFavorite(productId, favorites);
@@ -20,7 +21,7 @@ const FavoriteButton = ({ productId, userId }) => {
   const productFavoriteCount = allUsers.reduce((count, user) => {
     return (
       count +
-      user.favoriteProducts.filter(
+      user.FavoriteProducts.filter(
         favorite => favorite.Favorite.ProductId === productId
       ).length
     );
@@ -35,10 +36,12 @@ const FavoriteButton = ({ productId, userId }) => {
       if (favoriteToDelete) {
         await dispatch(deleteFavorite(favoriteToDelete.Favorite.id));
         dispatch(getFavorites(userId));
+        dispatch(getUsers())
       }
     } else {
       await dispatch(addFavorite(userId, productId));
-      dispatch(getFavorites(userId)); // Assuming you have a way to get the user ID, here I'm using 1 as an example.
+      dispatch(getFavorites(userId));
+      dispatch(getUsers()) // Assuming you have a way to get the user ID, here I'm using 1 as an example.
     }
   };
 

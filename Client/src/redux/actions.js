@@ -53,10 +53,10 @@ export const postProducts = ( dataProduct ) => {
     }
 }
 
-export const deleteProducts = ( payload ) => {
+export const deleteProducts = ( productId ) => {
     return async ( dispatch ) => {
         try{
-            let info = await axios.delete( `/products?name=${ payload }`)
+            let info = await axios.delete( `/products?name=${ productId }`)
             return dispatch( { type: DELETE_PRODUCTS, payload: info.data } )
         } catch ( error ){
             console.log( 'Error deleting a Product', error )

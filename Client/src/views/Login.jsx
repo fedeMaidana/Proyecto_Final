@@ -69,7 +69,7 @@ export const Login = () => {
       <>
         <div className="bg-principal-black min-h-screen flex items-center justify-center">
           <div className="bg-principal-white p-8 rounded shadow-md w-[30rem] h-auto text-2xl">
-            <h1 className="text-5xl font-bold mb-8">Log in</h1>
+            <h1 className="text-5xl font-bold mb-8">Iniciar sesión</h1>
 
             <form method="post" onSubmit={handleSubmit}>
               <div>
@@ -109,7 +109,7 @@ export const Login = () => {
                     className="block font-semibold text-gray-700 mb-3"
                     htmlFor="password"
                   >
-                    Password
+                    Contraseña
                   </label>
                   <input
                     className="
@@ -144,49 +144,51 @@ export const Login = () => {
                                 font-semibold
                                 py-3
                                 rounded
-                                hover:bg-blue-600
+                                bg-blue-600
+                                hover:bg-blue-500
                                 transition-colors
                                 duration-300
-                                mb-3
+                                mb-10
                             "
               >
-                {loading ? "Loading..." : "Login"}
+                {loading ? "Cargando..." : "Ingresar"}
               </button>
 
-              <p className="mt-4 text-center">
-                Don't have an account?
+              <p className="mt-4 text-center mb-10">
+                ¿No tienes una cuenta?
                 <br />{" "}
                 <b
                   className="cursor-pointer text-blue-500"
                   onClick={() => navigate("/register")}
                 >
-                  Register
+                  Registrarse
                 </b>
               </p>
             </form>
             <div>
             <button
-  onClick={handleGoogleLogin}
-  className="
-    w-full
-    bg-secondary-blue2
-    text-white
-    font-semibold
-    py-3
-    rounded
-    hover:bg-blue-600
-    transition-colors
-    duration-300
-    mb-3
-    flex
-    items-center
-    justify-center
-    mt-4 
-  "
->
-  <IconGoogle className="mr-2" />
-  <p className="text-center">Iniciar con Google</p>
-</button>
+              onClick={handleGoogleLogin}
+              className="
+                w-full
+                bg-secondary-blue2
+                text-white
+                font-semibold
+                py-3
+                rounded
+                bg-blue-600
+                hover:bg-blue-500
+                transition-colors
+                duration-300
+                mb-3
+                flex
+                items-center
+                justify-center
+                mt-4 
+              "
+              >
+              <IconGoogle className="mr-2" />
+              <p className="text-center">Iniciar con Google</p>
+            </button>
 
             </div>
           </div>

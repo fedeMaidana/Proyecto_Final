@@ -12,12 +12,13 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
   const dispatch = useDispatch()
 
   const [ currentIndex, setCurrentIndex ] = useState( 0 )
-  //  const [ cartData, setCartData ] = useState( { cartProducts: [], cartTotal: 0, cartCount: 0 } )
+  const [ cartData, setCartData ] = useState( { cartProducts: [], cartTotal: 0, cartCount: 0 } )
+  const [ allProducts, setAllProducts ] = useState( [] )
   const [ currentSlide, setCurrentSlide ] = useState( 0 )
 
-  // const cartProducts = useSelector( state => state.cartProducts )
-  // const cartTotal = useSelector( state => state.cartTotal )
-  // const cartCount = useSelector( state => state.cartCount )
+  const cartProducts = useSelector( state => state.cartProducts )
+  const cartTotal = useSelector( state => state.cartTotal )
+  const cartCount = useSelector( state => state.cartCount )
 
   const userId = localStorage.getItem( 'userId' )
   const parsedUserId = parseInt( userId, 10 )
@@ -76,32 +77,41 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
       category: category,
       images: images[ 0 ]
     }
-    saveCartToLocalStorage( newProduct )
+    setAllProducts( [ ...allProducts, newProduct ] )
+    dispatch( addToCart( newProduct ) )
+    const cartId = localStorage.getItem( 'cartId' )
+
+    if( parsedUserId || cartId === null ) dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) )
+    else dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) )
+
+/*     saveCartToLocalStorage( newProduct )
     dispatch( addToCart( newProduct ) )
 
     const cartId = localStorage.getItem( 'cartId' )
 
     if( parsedUserId || cartId === null ) dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) )
-    else dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) )
+    else dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) ) */
   }
 
-  //  useEffect(() => {
-  //    setCartData({
-  //      cartProducts: cartProducts,
-  //     cartTotal: cartTotal,
-  //     cartCount: cartCount
-  //    })
-  //  }, [ cartProducts, cartTotal, cartCount ])
+  
+  useEffect(() => {
+    setCartData({
+        cartProducts: cartProducts,
+        cartTotal: cartTotal,
+        cartCount: cartCount,
+    })
+  }, [ cartProducts, cartTotal, cartCount ])
 
-  //  useEffect(() => {
-  //    const savedCart = loadCartFromLocalStorage()
+/*   useEffect(() => {
+    const savedCart = loadCartFromLocalStorage()
 
-  //    if( savedCart ) dispatch( loadCart( savedCart ) )
-  //  }, [ dispatch ])
+    if( savedCart ) dispatch( loadCart( savedCart ) )
 
-  //  useEffect(() => {
-  //    saveCartToLocalStorage( cartData )
-  //  }, [ cartData ])
+  }, [ dispatch ]) */
+
+  useEffect(() => {
+    saveCartToLocalStorage( cartData )
+  }, [ cartData ])
 
   const nextSlide = () => {
     setCurrentSlide( ( currentSlide + 1 ) % images.length )

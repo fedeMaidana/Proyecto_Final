@@ -38,7 +38,8 @@ import {
      UPDATE_CART_ID,
      BUY_CART_ID,
      CANCEL_CART_ID, 
-     BUY_SUCCESS
+     BUY_SUCCESS,
+     SET_CART_DATA
 
 } from "./action-types"
 
@@ -246,11 +247,31 @@ export const clearImages = () => ({
 
 /* Carrito de compras */
 
-export const addToCart = (product) => ({
+// export const addToCart = (product) => ({
   
+//     type: ADD_TO_CART,
+//     payload: product,
+//   });
+
+export const addToCart = (product) => (dispatch, getState) => {
+  // Ejecuta la acción original para agregar el producto al carrito
+  dispatch({
     type: ADD_TO_CART,
     payload: product,
   });
+
+  // Recupera los datos del carrito almacenados en el localStorage
+  const cartData = JSON.parse(localStorage.getItem('cartData'));
+
+  if (cartData) {
+    // Actualiza los datos del carrito en el estado con los datos del localStorage
+    dispatch({
+      type: SET_CART_DATA,
+      payload: cartData, // Debes definir una acción SET_CART_DATA para actualizar el estado con estos datos
+    });
+  }
+};
+
   
   export const removeFromCart = (productId) => ({
     type: REMOVE_FROM_CART,

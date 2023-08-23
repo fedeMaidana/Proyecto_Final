@@ -1,12 +1,29 @@
 import { CardsContainer } from "../components/CardsContainer"
 import { Filter } from "../components/Filters"
 import SearchBar from "../components/SearchBar"
-import { useEffect } from 'react'
-import { useDispatch} from 'react-redux'
-import {  getUsers, getComments} from '../redux/actions'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch} from 'react-redux'
+import { getUsers, getComments} from '../redux/actions'
+import { Pagination } from "../components/Pagination"
 
 export function Community () {
   const dispatch = useDispatch()
+
+  const allUsers = useSelector( state => state.allUsers )
+
+  const [ currentPage, setCurrentPage ] = useState( 1 )
+
+  const postsPerPage = 10
+
+  const indexOfLastPost = currentPage * postsPerPage
+  const indexOfFirstPost = indexOfLastPost - postsPerPage
+  const currentPosts = allUsers.flatMap( user => user.CreatedProducts ).slice( indexOfFirstPost, indexOfLastPost )
+
+  let totalPost = allUsers.reduce(( sum, user ) => {
+    return sum + user.CreatedProducts.length
+  }, 0)
+
+  const paginate = pageNumber => setCurrentPage( pageNumber )
 
   useEffect(() => {
     dispatch( getUsers() )
@@ -22,9 +39,23 @@ export function Community () {
         <Filter/>
       </div>
 
+      <Pagination
+        postsPerPage={ postsPerPage }
+        totalPosts={ totalPost }
+        paginate={ paginate }
+        currentPage={ currentPage }
+      />
+
       <div className="w-full h-full flex flex-col items-center gap-[10px]">
-        <CardsContainer/>
+        <CardsContainer currentPosts={ currentPosts } />
       </div>
+
+      <Pagination
+        postsPerPage={ postsPerPage }
+        totalPosts={ totalPost }
+        paginate={ paginate }
+        currentPage={ currentPage }
+      />
     </div>
   )
 }

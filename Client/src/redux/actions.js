@@ -194,23 +194,27 @@ export const applySorting = (sorting) => {
       const state = getState();
       const allUsers = state.allUsers;
 
-      const updatedUsers = allUsers.map((user) => {
-        const createdProducts = user.CreatedProducts;
-        const sortedProducts = applySortingToProducts(createdProducts, sorting);
+      // Paso 1: Recopilar todos los productos en un solo arreglo
+      const allProducts = [];
+      allUsers.forEach((user) => {
+        allProducts.push(...user.CreatedProducts);
+      });
 
-        return {
-          ...user,
-          CreatedProducts: sortedProducts,
-        };
+      // Paso 2: Aplicar el ordenamiento a todos los productos juntos
+      const sortedProducts = applySortingToProducts(allProducts, sorting);
+
+      // Paso 3: Asignar los productos ordenados de nuevo a cada usuario
+      allUsers.forEach((user) => {
+        user.CreatedProducts = sortedProducts.filter(product => product.userId === user.id);
       });
 
       dispatch({
         type: APPLY_SORTING,
-        payload: updatedUsers,
+        payload: [...allUsers], // Crear un nuevo arreglo para desencadenar la actualización en Redux
         sorting: sorting,
       });
     } catch (error) {
-      console.error('Error applying sorting:', error);
+      console.error('Error aplicando el ordenamiento:', error);
     }
   };
 };

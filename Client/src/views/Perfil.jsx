@@ -5,6 +5,10 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
 import { deleteProducts } from '../redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaUser } from 'react-icons/fa';
+import { FaBoxOpen } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
+import { FaSignOutAlt } from 'react-icons/fa';
 // import { Card } from '../components/Card';
 
 export const ProfilePage = () => {
@@ -73,7 +77,7 @@ export const ProfilePage = () => {
     event.preventDefault();
 
     if (name !== '' && email !== '' && userName !== '' && lastName !== '' && birthDate !== '') {
-      const updatedUser = { name, email, userName, lastName, birthDate };
+      const updatedUser = { name, email, userName, lastName, birthDate, profileImage };
 
       setLoading(true);
 
@@ -101,20 +105,25 @@ export const ProfilePage = () => {
     fetchUserDetails()
 
   };
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    setUser(undefined)
+    navigate('/home');
+  }
 
   return (
-    <div className="flex h-screen container mx-auto py-4">
-      <div className="w-1/4 bg-gray-200 p-10 flex flex-col justify-between rounded-[20px] shadow-xl">
-        <ul className="space-y-24">
+    <div className="flex flex-col h-screen transform translate-y-[10vh] px-[50px]">
+      <div className="w-1/7 bg-gray-300 p-10 flex flex-col justify-start  shadow-xl fixed left-0 top-0 bottom-0">
+        <ul className=" space-y-24 ">
           <li
             className={`text-2xl font-semibold ${activeSection === 'informacion-personal' && 'text-blue-500'
               }`}
           >
             <Link
               to="#informacion-personal"
-              onClick={() => setActiveSection('informacion-personal')}
+              onClick={() => setActiveSection('informacion-personal')} className="text-5xl"
             >
-              Información Personal / Datos de Cuenta
+              <FaUser className=" text-4x1" />
             </Link>
           </li>
           <li
@@ -123,9 +132,9 @@ export const ProfilePage = () => {
           >
             <Link
               to="#productos-creados"
-              onClick={() => setActiveSection('productos-creados')}
+              onClick={() => setActiveSection('productos-creados')} className="text-5xl"
             >
-              Productos 
+              <FaBoxOpen className="text-4x1" />
             </Link>
           </li>
           <li
@@ -134,15 +143,19 @@ export const ProfilePage = () => {
           >
             <Link
               to="#actualizar-usuario"
-              onClick={() => setActiveSection('actualizar-usuario')}
+              onClick={() => setActiveSection('actualizar-usuario')} className="text-5xl"
             >
-              Actualizar Usuario
+              <FaEdit className="text-4x1" />
             </Link>
           </li>
+
+
         </ul>
+
+
       </div>
 
-      <div className="w-3/4">
+      <div className="w-6/7 ml-[7%] overflow-y-auto ">
         <div className="mb-4">
           <a
             href="/home"
@@ -233,66 +246,18 @@ export const ProfilePage = () => {
           </div>
         )}
 
-{user && user.CreatedProducts && user.CreatedProducts.length > 0 && (
-  <div className="bg-white p-8 rounded mb-4" id="productos-creados">
-    {activeSection === 'productos-creados' && (
-      <>
-        <h3 className="text-2xl font-semibold mb-4">Productos Creados</h3>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
-          {user.CreatedProducts.map((product) => (
-            <div
-              key={product.id}
-              className="bg-white rounded-lg p-6 border border-[#e7e9ec] shadow-md relative"
-            >
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100">
-                  <img
-                    src={user.profileImage}
-                    alt={user.profileImage}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <h1 className="text-[2rem] font-semibold transform translate-y-[1px]">{product.name}</h1>
-                  <h1 className="text-[2rem] font-semibold transform translate-y-[1px] top-10 right-5 absolute">${product.price}</h1>
-                </div>
-              </div>
-
-              <div className="flex overflow-x-auto space-x-2">
-                {product.images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Product Image ${index}`}
-                    className="w-100 h-100 object-cover rounded"
-                  />
-                ))}
-              </div>
-              <h1 className="text-[2rem] font-semibold transform translate-x-[10px] text-center">Description</h1>
-              <h1 className="text-[1.5rem] font-semibold transform translate-x-[10px] text-center text-[#666666]">
-                {product.description}
-              </h1>
-              <button
-                className="mt-4 flex items-center text-red-500 hover:text-red-700"
-                onClick={() => deleteProduct(product.id)}
-              >
-                <FaTrash className="mr-1" />
-                Delete
-              </button>
-            </div>
-          ))}
-        </div>
-
-        {user.FavoriteProducts && user.FavoriteProducts.length > 0 && (
-          <div className="mt-8">
-            <h3 className="text-2xl font-semibold mb-4">Favoritos</h3>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
-              {user.FavoriteProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="bg-white rounded-lg p-6 border border-[#e7e9ec] shadow-md relative"
-                >
-                   <div className="flex items-center space-x-4 mb-4">
+        {user && user.CreatedProducts && user.CreatedProducts.length > 0 && (
+          <div className="bg-white p-8 rounded mb-4" id="productos-creados">
+            {activeSection === 'productos-creados' && (
+              <>
+                <h3 className="text-2xl font-semibold mb-4">Productos Creados</h3>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
+                  {user.CreatedProducts.map((product) => (
+                    <div
+                      key={product.id}
+                      className="bg-white rounded-lg p-6 border border-[#e7e9ec] shadow-md relative"
+                    >
+                      <div className="flex items-center space-x-4 mb-4">
                         <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100">
                           <img
                             src={user.profileImage}
@@ -320,22 +285,64 @@ export const ProfilePage = () => {
                       <h1 className="text-[1.5rem] font-semibold transform translate-x-[10px] text-center text-[#666666]">
                         {product.description}
                       </h1>
-                      
+                      <button
+                        className="mt-4 flex items-center text-red-500 hover:text-red-700"
+                        onClick={() => deleteProduct(product.id)}
+                      >
+                        <FaTrash className="mr-1" />
+                        Delete
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+
+                {user.FavoriteProducts && user.FavoriteProducts.length > 0 && (
+                  <div className="mt-8">
+                    <h3 className="text-2xl font-semibold mb-4">Favoritos</h3>
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
+                      {user.FavoriteProducts.map((product) => (
+                        <div
+                          key={product.id}
+                          className="bg-white rounded-lg p-6 border border-[#e7e9ec] shadow-md relative"
+                        >
+                          <div className="flex items-center space-x-4 mb-4">
+                            <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100">
+                              <img
+                                src={user.profileImage}
+                                alt={user.profileImage}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <div className="flex flex-col">
+                              <h1 className="text-[2rem] font-semibold transform translate-y-[1px]">{product.name}</h1>
+                              <h1 className="text-[2rem] font-semibold transform translate-y-[1px] top-10 right-5 absolute">${product.price}</h1>
+                            </div>
+                          </div>
+
+                          <div className="flex overflow-x-auto space-x-2">
+                            {product.images.map((image, index) => (
+                              <img
+                                key={index}
+                                src={image}
+                                alt={`Product Image ${index}`}
+                                className="w-100 h-100 object-cover rounded"
+                              />
+                            ))}
+                          </div>
+                          <h1 className="text-[2rem] font-semibold transform translate-x-[10px] text-center">Description</h1>
+                          <h1 className="text-[1.5rem] font-semibold transform translate-x-[10px] text-center text-[#666666]">
+                            {product.description}
+                          </h1>
+
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         )}
-      </>
-    )}
-  </div>
-)}
-
-
-
-
-
-
 
         {user && (
           <div className="bg-white p-7 rounded" id="actualizar-usuario">

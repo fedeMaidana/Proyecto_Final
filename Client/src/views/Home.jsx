@@ -8,15 +8,23 @@ import tshirt from "../assets/images/tshirt.png"
 import { CardHome } from "../components/CardHome"
 import { getComments, getUsers } from '../redux/actions'
 import { useDispatch } from 'react-redux'
-import Cookies from 'universal-cookie'
+import { useLocation } from 'react-router-dom';
 
 export const Home = () => {
     const dispatch = useDispatch() 
-    const cookies = new Cookies()
+    const location = useLocation(); // Obtiene la ubicación actual (URL)
+  
     useEffect(() => {
-        const googleToken = cookies.get('googleToken');
-        localStorage.setItem('googleToken', googleToken);
-    }, []);
+      const urlParams = new URLSearchParams(location.search);
+      const googleToken = urlParams.get('googleToken'); // Obtiene el token de la URL
+  
+      if (googleToken) {
+        localStorage.setItem('googleToken', googleToken); // Guarda el token en el localStorage
+      }
+  
+      dispatch(getComments());
+      dispatch(getUsers());
+    }, [location, dispatch]);
 useEffect(() => {
     dispatch( getComments() )
     dispatch( getUsers() )

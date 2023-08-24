@@ -5,15 +5,14 @@ import axios from 'axios'
 import logo from '../assets/images/DiseñoBase_de_logoCustomCraft_black.png'
 import { Cart } from './Cart'
 import { IconProfileArrow, IconShoppingCart } from '../assets/icons/icons'
-import Cookies from 'universal-cookie'
+
 
 export function Nav() {
   const cartCount = useSelector( state => state.cartCount )
 
-  const cookies = new Cookies()
+  const googleToken = localStorage.getItem( 'googleToken')
   const token = localStorage.getItem( 'token' )
-  const googleToken = cookies.get( 'googleToken' )
-  localStorage.setItem( 'googleToken', googleToken )
+  console.log('Google Token:', googleToken)
 
   const [ user, setUser ] = useState( undefined )
   const [ userImage, setUserImage ] = useState( undefined )
@@ -52,7 +51,6 @@ export function Nav() {
 
       fetchUserDetails()
     }
-    console.log('Google Token:', googleToken)
     if( googleToken ){
       const fetchGoogleUserDetails = async () => {
         try {
@@ -66,6 +64,9 @@ export function Nav() {
 
           setUserId( id )
           localStorage.setItem( 'userId', id )
+          setUser( responseGoogle?.data?.name )
+          setUserImage( responseGoogle?.data?.profileImage )
+          setUserRol( responseGoogle?.data?.role )
 
           setUser( name )
         }catch( error ){
@@ -89,6 +90,7 @@ export function Nav() {
 
   const handleLogout = () => {
     localStorage.removeItem( 'token' )
+    localStorage.removeItem( 'role' )
     setUser( undefined )
     setModalProfile( false )
   }

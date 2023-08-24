@@ -30,17 +30,20 @@ userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { 
   setTimeout(() => {
     const googleToken = req.user.token;
     res.cookie('googleToken', googleToken, {
-      //  httpOnly: true,
-      //  secure: false, // Asegúrate de que esto esté configurado correctamente en producción
-      //  sameSite: 'lax', // Asegúrate de que esto esté configurado correctamente en producción
+        httpOnly: true,
+        secure: false, // Asegúrate de que esto esté configurado correctamente en producción
+        sameSite: 'lax', // Asegúrate de que esto esté configurado correctamente en producción
     });
   
     console.log('Google Token Set:', googleToken); // Añade esta línea para verificar en la consola del servidor
     console.log('Cookies:', req.cookies); // Añade esta línea para verificar en la consola del servidor
   
     // Redirigir al usuario a la página de inicio
-    res.redirect('https://proyecto-final-eight-beige.vercel.app/home');
-  }, 1000); // El valor de 500 es el tiempo en milisegundos (medio segundo en este caso)
+    const redirectUrl = `https://proyecto-final-eight-beige.vercel.app/home?googleToken=${googleToken}`;
+  
+    // Redirigir al usuario a la página de inicio con el token en la URL
+    res.redirect(redirectUrl);
+  }, 500); // El valor de 500 es el tiempo en milisegundos (medio segundo en este caso)
 });
 
 

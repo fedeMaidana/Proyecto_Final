@@ -1,14 +1,29 @@
-import { useSelector} from 'react-redux'
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { applySortingToUsers } from "../redux/actions";
 
-const CardThree = ({users}) => {
+const CardThree = ({ users }) => {
+  const dispatch = useDispatch();
+  const allUsers = useSelector((state) => state.allUsers);
+  const [isAlphabeticalSorting, setIsAlphabeticalSorting] = useState(false);
 
-  const totalCreatedProducts = users.reduce((total, user) => total + user.CreatedProducts.length, 0);
+  const handleAlphabeticalSorting = () => {
+    setIsAlphabeticalSorting(!isAlphabeticalSorting);
+    dispatch(applySortingToUsers(isAlphabeticalSorting));
+  };
 
-  //const usersWithCreatedProducts = users.filter((user) => user.CreatedProducts.length > 0);
+  const totalCreatedProducts = users.reduce(
+    (total, user) => total + user.CreatedProducts.length,
+    0
+  );
 
-  const allUsers = useSelector( state => state.allUsers )
-  const postsAll = allUsers.flatMap( user => user.CreatedProducts )
-  postsAll.sort( ( a, b ) => a.id - b.id )
+  const sortedUsers = [...allUsers]; 
+  if (isAlphabeticalSorting) {
+    sortedUsers.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  const postsAll = sortedUsers.flatMap((user) => user.CreatedProducts);
+
 
     return (
       <div className="rounded-sm border border-stroke bg-white py-6 px-[1.875rem] shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -46,15 +61,15 @@ const CardThree = ({users}) => {
 
           return(
             <div key={post.id} className="rounded-sm border border-stroke bg-white py-2 px-4 shadow-default dark:border-strokedark dark:bg-boxdark mt-2">
-              <p className="text-lg text-gray-600 dark:text-gray-300">
+              <p className="text-lg ">
                 {user.name} {user.lastName}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm  ">
                 Created Products:
               </p>
               <ul className="list-disc list-inside">
                 {user.CreatedProducts.map((createdProduct, index) => (
-                  <li key={index} className="text-gray-600 dark:text-gray-300">
+                  <li key={index} className="text-gray-600 dark:text-gray-700">
                     {createdProduct.name}
                   </li>
                 ))}
@@ -62,6 +77,11 @@ const CardThree = ({users}) => {
             </div>
           )
         })}
+              <div className="mt-4">
+        <button onClick={handleAlphabeticalSorting}>
+          {isAlphabeticalSorting ? "Desactivar" : "Activar"} orden alfabético
+        </button>
+      </div>
       </div>
     )
   }

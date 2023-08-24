@@ -9,6 +9,7 @@ import { Pagination } from "../components/Pagination"
 export function Community () {
   const dispatch = useDispatch()
 
+
   const allUsers = useSelector( state => state.allUsers )
   const appliedFilters = useSelector(state => state.appliedFilters)
 

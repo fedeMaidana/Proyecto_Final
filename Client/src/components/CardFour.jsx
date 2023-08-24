@@ -67,6 +67,8 @@ const CardFour = ({ totalUsers, users }) => {
             <option value="user">User</option>
           </select>
 
+
+
         </div>
       </div>
   
@@ -74,26 +76,43 @@ const CardFour = ({ totalUsers, users }) => {
         {/* ... (código SVG) */}
       </div>
   
-      <div className="mt-4 flex items-end justify-between">
-        <div>
-          <span className=" text-[22px] text-sm font-medium">Total Users: </span>
-          <h4 className="text-[22px] leading-[30px] font-bold text-black">
+      <div className="mt-4 flex justify-center">
+        <div className='mb-10 mr-[5rem]'>
+          <span className=" text-[15px] text-sm font-medium ">Total de usuarios: {totalUsers} </span>
+{/*           <h4 className="text-[20px] leading-[30px] font-bold text-black">
             {totalUsers}
-          </h4>
+          </h4> */}
+        </div>
+        <div className='mb-10'>
+          {/*  número de usuarios que tienen el rol de "admin" o "user"  */}
+          {roleFilter === 'admin' && (
+            <p className=" text-[15px] text-sm font-medium ">
+              Usuarios Admin: {users.filter(user => user.role === 'admin').length}
+            </p>
+          )}
+          {roleFilter === 'user' && (
+            <p className=" text-[15px] text-sm font-medium ">
+              Usuarios: {users.filter(user => user.role === 'user').length}
+            </p>
+          )}
         </div>
       </div>
       <br />
       <div>
-        <h4 className="text-sm font-medium text-black dark:text-white">
-          User Names:
+        <h4 className="text-sm font-medium text-black text-[15px] mb-10">
+          Nombres de usuarios:
         </h4>
         {orderBy(
           users.filter((user) => {
             if (roleFilter === 'all') return true;
             return user.role === roleFilter;
           }),
-          [sortType === 'asc' ? 'name' : 'lastName'],
-          [sortType] // 'asc' o 'desc'
+          [(user) =>
+            sortType === 'asc'
+              ? user.name.toLowerCase()
+              : user.lastName.toLowerCase()
+          ],
+          [sortType]
         ).map((user) => (
           <div
             key={user.id}

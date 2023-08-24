@@ -24,6 +24,7 @@ import {
     LOAD_CART,
     SEARCH_PRODUCT_FAILURE,
     CLEAR_SEARCH_PRODUCTS,
+    GET_CART,
     GET_USERS,
     GET_USERS_BY_NAME,
     BAN_USER,
@@ -306,6 +307,16 @@ export const loadCart = (cartData) => {
       payload: cartData,
     };
   };
+
+
+export const getCart = () => {
+  return async ( dispatch ) => {
+      const response = await axios.get( '/shopping_cart' )
+      const data = response.data;
+      return dispatch( { type: GET_CART, payload: data } )
+  }
+}
+
 
 export const getUsers = () => {
     return async ( dispatch ) => {

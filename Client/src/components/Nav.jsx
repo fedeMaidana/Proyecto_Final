@@ -11,6 +11,9 @@ export function Nav() {
   const cartCount = useSelector( state => state.cartCount )
 
   const cookies = new Cookies()
+  const token = localStorage.getItem( 'token' )
+  const googleToken = cookies.get( 'googleToken' )
+  localStorage.setItem( 'googleToken', googleToken )
 
   const [ user, setUser ] = useState( undefined )
   const [ userImage, setUserImage ] = useState( undefined )
@@ -24,8 +27,6 @@ export function Nav() {
   }, [])
 
   useEffect(() => {
-    const token = localStorage.getItem( 'token' )
-    const googleToken = cookies.get( 'googleToken' )
 
     if( token ){
       const fetchUserDetails = async () => {
@@ -53,7 +54,7 @@ export function Nav() {
 
       fetchUserDetails()
     }
-
+    console.log('Google Token:', googleToken)
     if( googleToken ){
       const fetchGoogleUserDetails = async () => {
         try {

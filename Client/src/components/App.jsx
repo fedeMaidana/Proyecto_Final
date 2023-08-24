@@ -25,7 +25,7 @@ export function App() {
       {shouldShowNavBar && <Nav />}
       <Routes>
         <Route path='/' element={<Intro />} />
-        <Route path='/home' element={<Home />} />
+        <Route path='https://proyecto-final-fedemaidana.vercel.app//home' element={<Home />} />
         <Route path='/customize/:model' element={<Customize />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />

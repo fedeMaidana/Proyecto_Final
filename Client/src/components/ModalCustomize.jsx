@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { NavLink } from 'react-router-dom'
 import { getProducts, getUsers, setModal, createOrAddToCartbackend } from "../redux/actions"
 import { handleDescriptionChange } from "../handlers/handlers"
 import { IconCart, IconShare } from "../assets/icons/icons"
@@ -9,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { addToCart, loadCart } from "../redux/actions"
 import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunctions/localStorage'
 import { categoryByModel } from "../auxFunctions/categoryByModel"
+import { ModalWarning } from "./ModalWarning"
 
 const enabledButtonClasses = "h-[40px] w-[40px] bg-white border rounded-full flex items-center justify-center cursor-pointer"
 const disabledButtonClasses = "h-[40px] w-[40px] bg-gray-300 border rounded-full flex items-center justify-center cursor-not-allowed"
@@ -114,14 +114,9 @@ export function ModalCustomize( { price, currentModel } ){
                 <>
                     { !token
                         ? (
-                            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
-                                <div className="w-auto h-[150px] bg-[#fffca0] p-5 border-[2px] border-[#bcb402] rounded-[10px] flex flex-col items-center justify-around">
-                                    <p className='text-[1.4rem] font-bold text-[#d8ce04]'>Para poder finalizar tu diseño primero debes tener una sesión abierta</p>
-                                    <NavLink to='../login' >
-                                        <button className='text-white font-semibold text-[1.4rem] py-2 px-4 bg-[#33a1fd] rounded-full'>Iniciar sesión</button>
-                                    </NavLink>
-                                </div>
-                            </div>
+                            <ModalWarning
+                                message={ 'Para poder finalizar tu diseño primero debes tener una sesión abierta' }
+                            />
                         )
                         : (
                             <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">

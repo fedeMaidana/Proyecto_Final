@@ -11,6 +11,8 @@ import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunction
 export const Card = ( { name, nameProduct, description, images, price, id, stock, color, size, category, profileImage } ) => {
   const dispatch = useDispatch()
 
+  const token = localStorage.getItem( 'token' )
+
   const [ currentIndex, setCurrentIndex ] = useState( 0 )
   const [ cartData, setCartData ] = useState( { cartProducts: [], cartTotal: 0, cartCount: 0 } )
   const [ allProducts, setAllProducts ] = useState( [] )
@@ -123,8 +125,7 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
 
   return(
     <>
-      <div className='relative w-[90%] h-auto bg-white rounded-[10px] overflow-hidden border'     key={id}
-      id={id}>
+      <div className='relative w-[90%] h-auto bg-white rounded-[10px] overflow-hidden border' key={ id } id={ id } >
         <div className="relative h-[500px]">
           <header className='absolute w-[100%] flex items-center justify-between z-20 p-5'>
             <div className='flex items-center gap-[10px]'>
@@ -156,8 +157,8 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
 
           <footer className='absolute w-[100%] bottom-0 grid grid-cols-3 items-center justify-center z-20 p-5'>
             <span className='flex gap-[10px]'>
-              <FavoriteButton userId={ userId } productId={ id } />
-              <button className='w-[50px] border rounded-full bg-white flex items-center justify-center' title="Agregar al carrito" onClick={ onAddProduct }><IconCart isButtonsEnabled={ true } /></button>
+              <FavoriteButton userId={ userId } productId={ id } token={ token } />
+              <button className='w-[50px] border rounded-full bg-white flex items-center justify-center' title="Agregar al carrito" onClick={ () => { if( token ) onAddProduct } }><IconCart isButtonsEnabled={ true } /></button>
             </span>
 
             <div className="flex items-center justify-evenly">
@@ -167,7 +168,7 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
             </div>
 
             <div className='w-full flex justify-end'>
-              <button className='w-auto px-[10px] text-[1.5rem] text-white font-semibold py-[5px] rounded-full bg-[#33a1fd] flex items-center justify-center' onClick={ handleBuyButton }>Comprar</button>
+              <button className='w-auto px-[10px] text-[1.5rem] text-white font-semibold py-[5px] rounded-full bg-[#33a1fd] flex items-center justify-center' onClick={ () => { if( token ) handleBuyButton } }>Comprar</button>
             </div>
           </footer>
         </div>
@@ -178,7 +179,7 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
             <p className="text-[1.5rem]">▸</p>
             <p className='border-l pl-5 text-[1.5rem]'>{ description }</p>
           </span>
-          <AddComment userId={ userId } productId={ id } profileImage={ profileImage } />
+          <AddComment userId={ userId } productId={ id } profileImage={ profileImage } token={ token } />
         </div>
       </div>
     </>

@@ -108,86 +108,116 @@ export function ModalCustomize( { price, currentModel } ){
         saveCartToLocalStorage( cartData )
     }, [ cartData ])
 
-    return(
-        <>
-            { openModal && (
-                <>
-                    { !token
-                        ? (
-                            <ModalWarning
-                                message={ 'Para poder finalizar tu diseño primero debes tener una sesión abierta' }
-                            />
-                        )
-                        : (
-                            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
-                                <div className="w-[50%] h-[43%] bg-[#f6f6f6] p-5 rounded-[10px] flex flex-col">
-                                    <button
-                                        className="bg-red-500 text-white px-5 py-3 rounded-full self-end"
-                                        onClick={ () => dispatch( setModal( false ) ) }
-                                    >
-                                        X
-                                    </button>
+    return (
+      <>
+        {openModal && (
+          <>
+            {!token ? (
+              <ModalWarning
+                message={
+                  'Para poder finalizar tu diseño primero debes tener una sesión abierta'
+                }
+              />
+            ) : (
+              <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
+                <div className="w-[50%] h-[43%] bg-[#f6f6f6] p-5 rounded-[10px] flex flex-col">
+                  <button
+                    className="bg-red-500 text-white px-5 py-3 rounded-full self-end"
+                    onClick={() => dispatch(setModal(false))}
+                  >
+                    X
+                  </button>
 
-                                    <div className="h-[100%] flex flex-col justify-evenly items-center">
-                                        <div className="w-full">
-                                            <label htmlFor='description' className="text-[1.2rem] font-semibold">Agrega una descripción</label>
-                                            <textarea
-                                                id="description"
-                                                type="text"
-                                                placeholder="Descripción..."
-                                                className="w-full h-[100px] border outline-none p-5 rounded-[10px] mt-[10px] mb-4 text-[1.2rem]"
-                                                onChange={ event => handleDescriptionChange( event, dispatch ) }
-                                            />
-                                        </div>
+                  <div className="h-[100%] flex flex-col justify-evenly items-center">
+                    <div className="w-full">
+                      <label
+                        htmlFor="description"
+                        className="text-[1.2rem] font-semibold"
+                      >
+                        Agrega una descripción
+                      </label>
+                      <textarea
+                        id="description"
+                        type="text"
+                        placeholder="Descripción..."
+                        className="w-full h-[100px] border outline-none p-5 rounded-[10px] mt-[10px] mb-4 text-[1.2rem]"
+                        onChange={(event) =>
+                          handleDescriptionChange(event, dispatch)
+                        }
+                      />
+                    </div>
 
-                                        <div className="w-full flex justify-center gap-[30px]">
-                                            <button
-                                                className={ description === ''
-                                                    ? 'w-[140px] h-[40px] py-3 bg-gray-300 text-[#999] border font-semibold text-[1.5rem] rounded-full cursor-not-allowed'
-                                                    : 'w-[140px] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full'
-                                                }
-                                                onClick={ () => {
-                                                    if( description !== '' ){
-                                                        handlerSendDesignDataBase( setButtonsEnabled, setShowAddedMessageGuardar, formdata ) } }
-                                                    }
-                                            >
-                                                Guardar diseño
-                                            </button>
+                    <div className="w-full flex justify-center gap-[30px]">
+                      <button
+                        className={
+                          description === ''
+                            ? 'w-[140px] h-[40px] py-3 bg-gray-300 text-[#999] border font-semibold text-[1.5rem] rounded-full cursor-not-allowed'
+                            : 'w-[140px] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full'
+                        }
+                        onClick={() => {
+                          if (description !== '') {
+                            handlerSendDesignDataBase(
+                              setButtonsEnabled,
+                              setShowAddedMessageGuardar,
+                              formdata,
+                            );
+                          }
+                        }}
+                      >
+                        Guardar diseño
+                      </button>
 
-                                            <div className="flex gap-[10px]">
-                                                <button
-                                                    className={ isButtonsEnabled ? enabledButtonClasses : disabledButtonClasses }
-                                                    title="Agregar diseño al carrito"
-                                                    disabled={ !isButtonsEnabled }
-                                                    onClick={ () => onAddProduct(formdata, products) }
-                                                >
-                                                    <IconCart isButtonsEnabled={ isButtonsEnabled } />
-                                                </button>
+                      <div className="flex gap-[10px]">
+                        <button
+                          className={
+                            isButtonsEnabled
+                              ? enabledButtonClasses
+                              : disabledButtonClasses
+                          }
+                          title="Agregar diseño al carrito"
+                          disabled={!isButtonsEnabled}
+                          onClick={() => onAddProduct(formdata, products)}
+                        >
+                          <IconCart isButtonsEnabled={isButtonsEnabled} />
+                        </button>
 
-                                                <button
-                                                    className={ isButtonsEnabled ? enabledButtonClasses : disabledButtonClasses }
-                                                    title="Compartir diseño"
-                                                    disabled={ !isButtonsEnabled }
-                                                >
-                                                    <IconShare isButtonsEnabled={ isButtonsEnabled } />
-                                                </button>
-
-                                            </div>
-                                        </div>
-                                        <div className={`text-[1.5rem] ${showAddedMessage ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
-                                            Artículo agregado al carrito
-                                        </div>
-                                        <div className={`text-[1.5rem] ${showAddedMessageGuardar ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
-                                            Artículo guardado
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    }
-                </>
+                        <button
+                          className={
+                            isButtonsEnabled
+                              ? enabledButtonClasses
+                              : disabledButtonClasses
+                          }
+                          title="Compartir diseño"
+                          disabled={!isButtonsEnabled}
+                        >
+                          <IconShare isButtonsEnabled={isButtonsEnabled} />
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      className={`text-white text-[1.5rem] ${
+                        showAddedMessage
+                          ? 'opacity-100 bg-blue-400 border-4 border-blue-400 rounded-[20px] p-4'
+                          : 'opacity-0'
+                      } transition-opacity duration-300`}
+                    >
+                      Artículo agregado al carrito
+                    </div>
+                    <div
+                      className={`text-white text-[1.5rem] ${
+                        showAddedMessageGuardar
+                          ? 'opacity-100 bg-blue-400 border-4 border-blue-400 rounded-[20px] p-4'
+                          : 'opacity-0'
+                      } transition-opacity duration-300`}
+                    >
+                      Artículo guardado
+                    </div>
+                  </div>
+                </div>
+              </div>
             )}
-        </>
-    )
+          </>
+        )}
+      </>
+    );
 }

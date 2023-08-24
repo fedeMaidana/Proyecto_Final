@@ -40,7 +40,8 @@ import {
      BUY_CART_ID,
      CANCEL_CART_ID, 
      BUY_SUCCESS,
-     SET_CART_DATA
+     SET_CART_DATA,
+     APPLY_SORTING_TO_USERS
 
 } from "./action-types"
 
@@ -334,6 +335,7 @@ export const getUsers = () => {
     return async ( dispatch ) => {
         const response = await axios.get( '/users' )
         const data = response.data;
+        console.log(response)
         return dispatch( { type: GET_USERS, payload: data } )
     }
 }
@@ -561,3 +563,12 @@ export const buySuccessCart = (cartId, userId) => {
     }
   };
 };
+
+export const applySortingToUsers = (sorting) => {
+  return {
+    type: APPLY_SORTING_TO_USERS,
+    payload: sorting,
+  };
+}
+
+

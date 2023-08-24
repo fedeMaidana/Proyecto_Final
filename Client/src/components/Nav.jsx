@@ -14,9 +14,14 @@ export function Nav() {
 
   const [ user, setUser ] = useState( undefined )
   const [ userImage, setUserImage ] = useState( undefined )
+  const [ userRol, setUserRol ] = useState( undefined )
   const [ ModalProfile, setModalProfile ] = useState( false )
   const [ ModalCart, setModalCart ] = useState( false )
   const [ userId, setUserId ] = useState( null )
+
+  useEffect(() => {
+    setModalProfile( false )
+  }, [])
 
   useEffect(() => {
     const token = localStorage.getItem( 'token' )
@@ -31,12 +36,15 @@ export function Nav() {
             }
           })
 
+          console.log(response?.data)
+
           const userId = response?.data.id;
           setUserId( userId )
           localStorage.setItem( 'userId', userId )
 
           setUser( response?.data?.name )
           setUserImage( response?.data?.profileImage )
+          setUserRol( response?.data?.role )
 
         }catch( error ){
           console.error( 'Error al obtener detalles del usuario:', error )
@@ -145,9 +153,10 @@ export function Nav() {
 
       {ModalProfile && (
         <div className="w-[200px] z-10 flex flex-col items-baseline fixed top-[68px] right-[0] bg-white/[.3] backdrop-blur-[5px] border-l-[1px] border-b-[1px] border-r-[1px] rounded-bl-[10px] rounded-br-[10px]">
-          <div className='w-full p-5 border-b-[1px]'>
+          <div className='w-full p-5 border-b-[1px] flex flex-col'>
             <p className='select-none text-[1.6rem] font-semibold'>Hola { user }</p>
-            <Link to="/my-profile" className="select-none text-[1.5rem] cursor-pointer">Ver mi Perfil</Link>
+            <Link to="/my-profile" className="select-none text-[1.5rem] cursor-pointer" onClick={ () => setModalProfile( false ) } >Ver mi Perfil</Link>
+            { userRol === 'admin' ? ( <Link to="/dashboard" className="select-none text-[1.5rem] cursor-pointer" onClick={ () => setModalProfile( false ) } >Ver perfil de admin</Link> ) : '' }
           </div>
           <button className="select-none p-5 text-[#ff0000] text-[1.5rem] font-semibold cursor-pointer" onClick={ handleLogout } >
             Cerrar sesión

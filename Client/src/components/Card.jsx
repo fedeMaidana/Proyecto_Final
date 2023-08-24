@@ -95,7 +95,6 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
     else dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) ) */
   }
 
-  
   useEffect(() => {
     setCartData({
         cartProducts: cartProducts,
@@ -158,7 +157,7 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
           <footer className='absolute w-[100%] bottom-0 grid grid-cols-3 items-center justify-center z-20 p-5'>
             <span className='flex gap-[10px]'>
               <FavoriteButton userId={ userId } productId={ id } token={ token } />
-              <button className='w-[50px] border rounded-full bg-white flex items-center justify-center' title="Agregar al carrito" onClick={ () => { if( token ) onAddProduct } }><IconCart isButtonsEnabled={ true } /></button>
+              <button className='w-[50px] border rounded-full bg-white flex items-center justify-center' title="Agregar al carrito" onClick={ () => { if( token ) onAddProduct() } }><IconCart isButtonsEnabled={ true } /></button>
             </span>
 
             <div className="flex items-center justify-evenly">
@@ -168,7 +167,7 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
             </div>
 
             <div className='w-full flex justify-end'>
-              <button className='w-auto px-[10px] text-[1.5rem] text-white font-semibold py-[5px] rounded-full bg-[#33a1fd] flex items-center justify-center' onClick={ () => { if( token ) handleBuyButton } }>Comprar</button>
+              <button className='w-auto px-[10px] text-[1.5rem] text-white font-semibold py-[5px] rounded-full bg-[#33a1fd] flex items-center justify-center' onClick={ () => { if( token ) handleBuyButton() } }>Comprar</button>
             </div>
           </footer>
         </div>

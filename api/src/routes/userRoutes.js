@@ -29,9 +29,9 @@ userRoutes.get('/login/auth/google', passport.authenticate('google', { scope: ['
 userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { failureRedirect: 'https://proyecto-final-eight-beige.vercel.app/login' }), (req, res) => {
   const googleToken = req.user.token;
   res.cookie('googleToken', googleToken, {
-    // httpOnly: true,
-    // // secure: false, // Asegúrate de que esto esté configurado correctamente en producción
-    // sameSite: 'lax', // Asegúrate de que esto esté configurado correctamente en producción
+     httpOnly: true,
+     secure: false, // Asegúrate de que esto esté configurado correctamente en producción
+     sameSite: 'lax', // Asegúrate de que esto esté configurado correctamente en producción
   });
 
   console.log('Google Token Set:', googleToken); // Añade esta línea para verificar en la consola del servidor

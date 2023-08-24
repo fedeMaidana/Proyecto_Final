@@ -14,9 +14,10 @@ export const Home = () => {
     const dispatch = useDispatch() 
     const cookies = new Cookies()
     useEffect(() => {
-      const googleToken = cookies.get( 'googleToken' )
-      localStorage.setItem( 'googleToken', googleToken )
-    }, [])
+        const googleToken = cookies.get('googleToken');
+        localStorage.setItem('googleToken', googleToken);
+        window.location.reload(); // Aquí es donde se fuerza la recarga de la página
+    }, []);
 useEffect(() => {
     dispatch( getComments() )
     dispatch( getUsers() )

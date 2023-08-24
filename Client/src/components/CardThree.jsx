@@ -47,12 +47,12 @@ const CardThree = ({ users }) => {
           </svg>
         </div>
 
-        <div className="mt-4 flex items-end justify-between">
+        <div className="mt-4 flex justify-center">
           <div>
-            <h4 className="text-[24px] leading-[30px] font-bold text-black dark:text-white">
+            <span className="text-[15px] font-medium">Total Productos: {totalCreatedProducts}</span>
+{/*             <h4 className="text-[24px] leading-[30px] font-bold text-black">
             {totalCreatedProducts}
-            </h4>
-            <span className="text-sm font-medium">Total Product</span>
+            </h4> */}
           </div>
         </div>
 

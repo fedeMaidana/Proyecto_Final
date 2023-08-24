@@ -12,6 +12,8 @@ export function Community () {
   const token = localStorage.getItem( 'token' )
 
   const allUsers = useSelector( state => state.allUsers )
+  const appliedFilters = useSelector(state => state.appliedFilters);
+
 
   const [ currentPage, setCurrentPage ] = useState( 1 )
 
@@ -21,13 +23,27 @@ export function Community () {
   const indexOfFirstPost = indexOfLastPost - postsPerPage
 
   const postsAll = allUsers.flatMap( user => user.CreatedProducts )
-  postsAll.sort( ( a, b ) => a.id - b.id )
+  
 
-  const currentPosts = postsAll.slice( indexOfFirstPost, indexOfLastPost )
+  const sortedPosts = postsAll.slice().sort((a, b) => {
+    if (appliedFilters.sorting === "priceAsc") {
+      return a.price - b.price;
+    } else if (appliedFilters.sorting === "priceDesc") {
+      return b.price - a.price;
+    } else if (appliedFilters.sorting === "nameAsc") {
+      return a.name.localeCompare(b.name);
+    } else if (appliedFilters.sorting === "nameDesc") {
+      return b.name.localeCompare(a.name);
+    }
+    return a.id - b.id;
+  });
+  
+  const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPost = sortedPosts.length;
 
-  let totalPost = allUsers.reduce(( sum, user ) => {
-    return sum + user.CreatedProducts.length
-  }, 0)
+  // let totalPost = allUsers.reduce(( sum, user ) => {
+  //   return sum + user.CreatedProducts.length
+  // }, 0)
 
   const paginate = pageNumber => setCurrentPage( pageNumber )
 

@@ -6,13 +6,13 @@ import { getUsers } from "../redux/actions"
 export const CardsContainer = ( { currentPosts } ) => {
   const dispatch = useDispatch()
 
+  console.log(currentPosts)
   useEffect( () => {
       dispatch( getUsers() )
   }, [])
 
   const allUsers = useSelector( state => state.allUsers )
   const allUsersHaveNoProducts = allUsers.every( user => user.CreatedProducts.length === 0 )
-
   return(
     <>
       {currentPosts.map(post => {

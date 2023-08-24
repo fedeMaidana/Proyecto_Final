@@ -27,13 +27,13 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const nextIndex = ( currentIndex + 1 ) % images.length
+      const nextIndex = ( currentIndex + 1 ) % images?.length
       setCurrentIndex( nextIndex )
     }, 3000)
 
     return () => clearInterval( interval )
 
-  }, [ currentIndex, images.length ])
+  }, [ currentIndex, images?.length ])
 
   const handleBuyButton = async () => {
     const newProduct = {
@@ -137,12 +137,12 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
             </div>
 
             <div className="p-2 text-black text-[1.5rem] font-semibold">
-              <span>{ currentSlide + 1 }</span> / <span className='text-[#7e7e7e]'>{ images.length }</span>
+              <span>{ currentSlide + 1 }</span> / <span className='text-[#7e7e7e]'>{ images?.length }</span>
             </div>
           </header>
 
           <div className="w-full h-full flex transition-transform duration-300 z-10" style={ { transform: `translateX(-${ currentSlide * 100 }%)` } }>
-            {images.map(( image, index ) => (
+            {images?.map(( image, index ) => (
               <img key={ index } src={ image } alt={ `Image ${ index }` } className="w-full h-full flex flex-shrink-0 object-cover" />
             ))}
           </div>
@@ -156,12 +156,12 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
 
           <footer className='absolute w-[100%] bottom-0 grid grid-cols-3 items-center justify-center z-20 p-5'>
             <span className='flex gap-[10px]'>
-              <FavoriteButton userId={ userId } productId={ id } token={ token } />
+              {/* <FavoriteButton userId={ userId } productId={ id } token={ token } /> */}
               <button className='w-[50px] border rounded-full bg-white flex items-center justify-center' title="Agregar al carrito" onClick={ () => { if( token ) onAddProduct() } }><IconCart isButtonsEnabled={ true } /></button>
             </span>
 
             <div className="flex items-center justify-evenly">
-              {images.map(( _, index ) => (
+              {images?.map(( _, index ) => (
                 <div key={ index } className={ `w-[40px] h-1 rounded-full ${ index === currentSlide ? "bg-[#33a1fd]" : "bg-gray-300" }` } ></div>
               ))}
             </div>

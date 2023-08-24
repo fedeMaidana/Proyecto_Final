@@ -153,10 +153,9 @@ export const applyFilters = (filters) => {
             category: filters.category,
             min_price: filters.minPrice,
             max_price: filters.maxPrice,
-            
-          },
-        });
-  
+          }
+        })
+
         dispatch({
           type: APPLY_FILTERS,
           payload: response.data,
@@ -168,57 +167,38 @@ export const applyFilters = (filters) => {
     };
   };
 
+export const applySorting = (sorting) => {
+  return (dispatch, getState) => {
+    try {
+      const state = getState();
+      const allUsers = state.allUsers;
 
- export const applySorting = ( sorting ) => {
-     return async ( dispatch ) => {
-          try {
-              // const response = await axios.get( '/filter', {
-              //    params: {
-              //         sortOption: sorting,
-              //    }
-              // })
+      const postsAll = allUsers?.flatMap( user => user?.CreatedProducts )
 
-             dispatch({
-                  type: APPLY_SORTING,
-                payload: sorting,
-                 sorting: sorting
-             })
-          } catch( error ) {
-            console.error( 'Error fetching sorted products:', error )
-        }
-     }
+
+      const sortedPosts = postsAll.slice().sort((a, b) => {
+      if (sorting === 'priceAsc') {
+        return a.price - b.price;
+      } else if (sorting === 'priceDesc') {
+        return b.price - a.price;
+      } else if (sorting === 'nameAsc') {
+        return a.name.localeCompare(b.name);
+      } else if (sorting === 'nameDesc') {
+        return  b.name.localeCompare(a.name);
+      }
+    })
+
+
+    dispatch({
+        type: APPLY_SORTING,
+        payload: sortedPosts, // Crear un nuevo arreglo para desencadenar la actualización en Redux
+        sorting: sorting,
+      });
+    } catch (error) {
+      console.error('Error aplicando el ordenamiento:', error);
+    }
   }
-// En tu acción Redux
-// export const applySorting = (sorting) => {
-//   return (dispatch, getState) => {
-//     try {
-//       const state = getState();
-//       const allUsers = state.allUsers;
-
-//       // Paso 1: Recopilar todos los productos en un solo arreglo
-//       const allProducts = [];
-//       allUsers.forEach((user) => {
-//         allProducts.push(...user.CreatedProducts);
-//       });
-
-//       // Paso 2: Aplicar el ordenamiento a todos los productos juntos
-//       const sortedProducts = applySortingToProducts(allProducts, sorting);
-
-//       // Paso 3: Asignar los productos ordenados de nuevo a cada usuario
-//       allUsers.forEach((user) => {
-//         user.CreatedProducts = sortedProducts.filter(product => product.userId === user.id);
-//       });
-
-//       dispatch({
-//         type: APPLY_SORTING,
-//         payload: [...allUsers], // Crear un nuevo arreglo para desencadenar la actualización en Redux
-//         sorting: sorting,
-//       });
-//     } catch (error) {
-//       console.error('Error aplicando el ordenamiento:', error);
-//     }
-//   };
-// };
+}
 
 
 

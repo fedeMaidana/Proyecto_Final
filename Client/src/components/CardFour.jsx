@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 
-import { banUser, changeRole, getUsers, getUsersByName } from '../redux/actions';
+import { banUser, changeRole, getUsers, getUsersByName,  } from '../redux/actions';
 
 
 const CardFour = ({ totalUsers, users }) => {
@@ -80,7 +80,9 @@ const CardFour = ({ totalUsers, users }) => {
             </h4>
             <span className="text-sm font-medium">Total Users</span>
           </div>
+
         </div>
+        
       <br />
         <div>
             <h4 className="text-sm font-medium text-black dark:text-white">

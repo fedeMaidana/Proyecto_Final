@@ -22,7 +22,7 @@ export const ProfilePage = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeSection, setActiveSection] = useState('informacion-personal'); // Estado para la sección activa
-
+  const [profileImage, setProfileImage] = useState(null);
   const { name, email, userName, lastName, birthDate } = inputs;
 
   const [messageVisible, setMessageVisible] = useState(false);
@@ -43,7 +43,7 @@ export const ProfilePage = () => {
 
   const fetchUserDetails = async () => {
     const token = localStorage.getItem('token');
-  
+
     if (token) {
       try {
         const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
@@ -57,7 +57,7 @@ export const ProfilePage = () => {
       }
     }
   };
-  
+
   useEffect(() => {
     fetchUserDetails();
   }, []);
@@ -98,63 +98,60 @@ export const ProfilePage = () => {
   const deleteProduct = (productId) => {
     dispatch(deleteProducts(productId))
     fetchUserDetails()
-   
+
   };
 
   return (
     <div className="flex h-screen container mx-auto py-4">
-    <div className="w-1/4 bg-gray-200 p-10 flex flex-col justify-between rounded-[20px] shadow-xl">
-      <ul className="space-y-24">
-        <li
-          className={`text-2xl font-semibold ${
-            activeSection === 'informacion-personal' && 'text-blue-500'
-          }`}
-        >
-          <Link
-            to="#informacion-personal"
-            onClick={() => setActiveSection('informacion-personal')}
+      <div className="w-1/4 bg-gray-200 p-10 flex flex-col justify-between rounded-[20px] shadow-xl">
+        <ul className="space-y-24">
+          <li
+            className={`text-2xl font-semibold ${activeSection === 'informacion-personal' && 'text-blue-500'
+              }`}
           >
-            Información Personal / Datos de Cuenta
-          </Link>
-        </li>
-        <li
-          className={`text-2xl font-semibold ${
-            activeSection === 'productos-creados' && 'text-blue-500'
-          }`}
-        >
-          <Link
-            to="#productos-creados"
-            onClick={() => setActiveSection('productos-creados')}
+            <Link
+              to="#informacion-personal"
+              onClick={() => setActiveSection('informacion-personal')}
+            >
+              Información Personal / Datos de Cuenta
+            </Link>
+          </li>
+          <li
+            className={`text-2xl font-semibold ${activeSection === 'productos-creados' && 'text-blue-500'
+              }`}
           >
-            Productos Creados
-          </Link>
-        </li>
-        <li
-          className={`text-2xl font-semibold ${
-            activeSection === 'actualizar-usuario' && 'text-blue-500'
-          }`}
-        >
-          <Link
-            to="#actualizar-usuario"
-            onClick={() => setActiveSection('actualizar-usuario')}
+            <Link
+              to="#productos-creados"
+              onClick={() => setActiveSection('productos-creados')}
+            >
+              Productos Creados
+            </Link>
+          </li>
+          <li
+            className={`text-2xl font-semibold ${activeSection === 'actualizar-usuario' && 'text-blue-500'
+              }`}
           >
-            Actualizar Usuario
-          </Link>
-        </li>
-      </ul>
-    </div>
-
-    <div className="w-3/4">
-      <div className="mb-4">
-        <a
-          href="/home"
-          className="flex items-center text-blue-600 hover:underline text-2xl p-4"
-        >
-          <FaArrowLeft className="mr-2" /> Volver a Home
-        </a>
+            <Link
+              to="#actualizar-usuario"
+              onClick={() => setActiveSection('actualizar-usuario')}
+            >
+              Actualizar Usuario
+            </Link>
+          </li>
+        </ul>
       </div>
 
-      {user ? (
+      <div className="w-3/4">
+        <div className="mb-4">
+          <a
+            href="/home"
+            className="flex items-center text-blue-600 hover:underline text-2xl p-4"
+          >
+            <FaArrowLeft className="mr-2" /> Volver a Home
+          </a>
+        </div>
+
+        {user ? (
           <div
             className="bg-gray-100 p-7 rounded mb-4 w-auto bg-white justify-between"
             id="informacion-personal"
@@ -210,9 +207,9 @@ export const ProfilePage = () => {
         ) : (
           <p>Loading user information...</p>
         )}
-                  {messageVisible && (
-            <div
-              className="
+        {messageVisible && (
+          <div
+            className="
                             text-2xl
                             font-bold
                             text-black-500
@@ -230,58 +227,65 @@ export const ProfilePage = () => {
                             duration-300
                             translate-y-[-30px]
                         "
-            >
-              {messageback}
-            </div>
-          )}
+          >
+            {messageback}
+          </div>
+        )}
 
-{user && user.CreatedProducts && user.CreatedProducts.length > 0 && (
-        <div className="bg-white p-4 rounded mb-4" id="productos-creados">
-          {activeSection === 'productos-creados' && (
-            <>
-              <h3 className="text-lg font-semibold mb-4">Productos Creados</h3>
-              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {user.CreatedProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="bg-white rounded p-4 border border-[#e7e9ec] flex flex-col"
-                  >
-                    <div className="flex items-center">
-                      <div className="w-[50px] h-[50px] rounded-full">
-                        <img src={user.profileImage} alt={user.profileImage} />
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="text-xl font-semibold">{product.name}</h3>
-                        <p className="text-lg font-semibold">{`$${product.price}`}</p>
-                      </div>
-                    </div>
-                    <p className="text-sm mb-2">{product.description}</p>
-                    <div className="flex overflow-x-auto">
-                      {product.images.map((image, index) => (
-                        <img
-                          key={index}
-                          src={image}
-                          alt={`Product Image ${index}`}
-                          className="max-w-[150px] h-auto mr-2"
-                        />
-                      ))}
-                    </div>
-                    <button
-                      className="mt-3 flex items-center text-red-500"
-                      onClick={() => deleteProduct(product.id)}
+        {user && user.CreatedProducts && user.CreatedProducts.length > 0 && (
+          <div className="bg-white p-8 rounded mb-4" id="productos-creados">
+            {activeSection === 'productos-creados' && (
+              <>
+                <h3 className="text-2xl font-semibold mb-4">Productos Creados</h3>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
+                  {user.CreatedProducts.map((product) => (
+                    <div
+                      key={product.id}
+                      className="bg-white rounded-lg p-6 border border-[#e7e9ec] shadow-md relative"
                     >
-                      <FaTrash className="mr-1" />
-                      Delete
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      )}
+                      <div className="flex items-center space-x-4 mb-4">
+                        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100">
+                          <img
+                            src={user.profileImage}
+                            alt={user.profileImage}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex flex-col">
+                          <h1 className="text-[2rem] font-semibold transform translate-y-[1px]">{product.name}</h1>
+                          <h1 className="text-[2rem] font-semibold transform translate-y-[1px] top-10 right-5 absolute">${product.price}</h1>
+                        </div>
+                      </div>
 
-{user && (
+                      <div className="flex overflow-x-auto space-x-2">
+                        {product.images.map((image, index) => (
+                          <img
+                            key={index}
+                            src={image}
+                            alt={`Product Image ${index}`}
+                            className="w-100 h-100 object-cover rounded"
+                          />
+                        ))}
+                      </div>
+                      <h1 className="text-[2rem] font-semibold transform translate-x-[10px] text-center">Description</h1>
+                      <h1 className="text-[1.5rem] font-semibold transform translate-x-[10px] text-center text-[#666666]">
+                        {product.description}
+                      </h1>            <button
+                        className="mt-4 flex items-center text-red-500 hover:text-red-700"
+                        onClick={() => deleteProduct(product.id)}
+                      >
+                        <FaTrash className="mr-1" />
+                        Delete
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {user && (
           <div className="bg-white p-7 rounded" id="actualizar-usuario">
             {activeSection === 'actualizar-usuario' && (
               <>
@@ -289,67 +293,67 @@ export const ProfilePage = () => {
                   Actualizar Información de Usuario
                 </h3>
                 <form onSubmit={onSubmit}>
-                <div className="flex items-center justify-center">
-              <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100">
-                {profileImage ? (
-                  <div>
-                    <img
-                      id="image-preview"
-                      src={URL.createObjectURL(profileImage)}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
+                  <div className="flex items-center justify-center">
+                    <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100">
+                      {profileImage ? (
+                        <div>
+                          <img
+                            id="image-preview"
+                            src={URL.createObjectURL(profileImage)}
+                            alt="Profile"
+                            className="w-full h-full object-cover"
+                          />
+                          <label
+                            htmlFor="profileImage"
+                            className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-gray-500 absolute bottom-0 right-0 cursor-pointer"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="w-4 h-4"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                              />
+                            </svg>
+                          </label>
+                        </div>
+                      ) : (
+                        <label
+                          htmlFor="profileImage"
+                          className="flex items-center justify-center w-full h-full cursor-pointer"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-6 h-6 text-gray-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                            />
+                          </svg>
+                        </label>
+                      )}
+                    </div>
+                    <input
+                      type="file"
+                      id="profileImage"
+                      name="profileImage"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(event) => setProfileImage(event.target.files[0])}
                     />
-                    <label
-                      htmlFor="profileImage"
-                      className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-gray-500 absolute bottom-0 right-0 cursor-pointer"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                        />
-                      </svg>
-                    </label>
                   </div>
-                ) : (
-                  <label
-                    htmlFor="profileImage"
-                    className="flex items-center justify-center w-full h-full cursor-pointer"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-6 h-6 text-gray-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                      />
-                    </svg>
-                  </label>
-                )}
-              </div>
-              <input
-                type="file"
-                id="profileImage"
-                name="profileImage"
-                accept="image/*"
-                className="hidden"
-                onChange={(event) => setProfileImage(event.target.files[0])}
-              />
-            </div>
 
                   <div className="mb-4">
                     <label

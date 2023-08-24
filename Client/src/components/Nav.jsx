@@ -11,6 +11,9 @@ export function Nav() {
   const cartCount = useSelector( state => state.cartCount )
 
   const cookies = new Cookies()
+  const googleToken = cookies.get( 'googleToken' )
+  localStorage.setItem( 'googleToken', googleToken )
+  const token = localStorage.getItem( 'token' )
 
   const [ user, setUser ] = useState( undefined )
   const [ userImage, setUserImage ] = useState( undefined )
@@ -24,8 +27,6 @@ export function Nav() {
   }, [])
 
   useEffect(() => {
-    const token = localStorage.getItem( 'token' )
-    const googleToken = cookies.get( 'googleToken' )
 
     if( token ){
       const fetchUserDetails = async () => {
@@ -35,8 +36,6 @@ export function Nav() {
               token: `${ token }`
             }
           })
-
-          console.log(response?.data)
 
           const userId = response?.data.id;
           setUserId( userId )
@@ -53,7 +52,7 @@ export function Nav() {
 
       fetchUserDetails()
     }
-
+    console.log('Google Token:', googleToken)
     if( googleToken ){
       const fetchGoogleUserDetails = async () => {
         try {
@@ -90,6 +89,7 @@ export function Nav() {
 
   const handleLogout = () => {
     localStorage.removeItem( 'token' )
+    localStorage.removeItem( 'role' )
     setUser( undefined )
     setModalProfile( false )
   }

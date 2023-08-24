@@ -6,7 +6,6 @@ const { getUsersHandler, deleteHandler } = require( '../handlers/usersHandler' )
 const { changeRole } = require('../handlers/adminHandlers')
 
 
-
 const adminRoutes = Router()
 
 

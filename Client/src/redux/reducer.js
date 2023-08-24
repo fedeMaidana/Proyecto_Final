@@ -103,7 +103,7 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, allUsers: payload, };
 
     case APPLY_SORTING:
-      return { ...state, appliedFilters: payload };
+      return { ...state, appliedFilters: payload, };
 
     case ALL_CATEGORIES:
       return { ...state, categories: payload };

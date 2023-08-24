@@ -31,6 +31,7 @@ export const Login = () => {
                     setMessage( '' )
                     console.log(data);
                     localStorage.setItem("token", data?.user.token)
+                    localStorage.setItem("role", data?.user.role)
                     if (data.user.token) {
                         setAccess(true)
                     }

@@ -51,6 +51,7 @@ export const ProfilePage = () => {
             token: `${token}`,
           },
         });
+        console.log(response);
         setUser(response?.data);
       } catch (error) {
         console.error('Error al obtener detalles del usuario:', error);
@@ -124,7 +125,7 @@ export const ProfilePage = () => {
               to="#productos-creados"
               onClick={() => setActiveSection('productos-creados')}
             >
-              Productos Creados
+              Productos 
             </Link>
           </li>
           <li
@@ -232,18 +233,66 @@ export const ProfilePage = () => {
           </div>
         )}
 
-        {user && user.CreatedProducts && user.CreatedProducts.length > 0 && (
-          <div className="bg-white p-8 rounded mb-4" id="productos-creados">
-            {activeSection === 'productos-creados' && (
-              <>
-                <h3 className="text-2xl font-semibold mb-4">Productos Creados</h3>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
-                  {user.CreatedProducts.map((product) => (
-                    <div
-                      key={product.id}
-                      className="bg-white rounded-lg p-6 border border-[#e7e9ec] shadow-md relative"
-                    >
-                      <div className="flex items-center space-x-4 mb-4">
+{user && user.CreatedProducts && user.CreatedProducts.length > 0 && (
+  <div className="bg-white p-8 rounded mb-4" id="productos-creados">
+    {activeSection === 'productos-creados' && (
+      <>
+        <h3 className="text-2xl font-semibold mb-4">Productos Creados</h3>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
+          {user.CreatedProducts.map((product) => (
+            <div
+              key={product.id}
+              className="bg-white rounded-lg p-6 border border-[#e7e9ec] shadow-md relative"
+            >
+              <div className="flex items-center space-x-4 mb-4">
+                <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100">
+                  <img
+                    src={user.profileImage}
+                    alt={user.profileImage}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <h1 className="text-[2rem] font-semibold transform translate-y-[1px]">{product.name}</h1>
+                  <h1 className="text-[2rem] font-semibold transform translate-y-[1px] top-10 right-5 absolute">${product.price}</h1>
+                </div>
+              </div>
+
+              <div className="flex overflow-x-auto space-x-2">
+                {product.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`Product Image ${index}`}
+                    className="w-100 h-100 object-cover rounded"
+                  />
+                ))}
+              </div>
+              <h1 className="text-[2rem] font-semibold transform translate-x-[10px] text-center">Description</h1>
+              <h1 className="text-[1.5rem] font-semibold transform translate-x-[10px] text-center text-[#666666]">
+                {product.description}
+              </h1>
+              <button
+                className="mt-4 flex items-center text-red-500 hover:text-red-700"
+                onClick={() => deleteProduct(product.id)}
+              >
+                <FaTrash className="mr-1" />
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {user.FavoriteProducts && user.FavoriteProducts.length > 0 && (
+          <div className="mt-8">
+            <h3 className="text-2xl font-semibold mb-4">Favoritos</h3>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
+              {user.FavoriteProducts.map((product) => (
+                <div
+                  key={product.id}
+                  className="bg-white rounded-lg p-6 border border-[#e7e9ec] shadow-md relative"
+                >
+                   <div className="flex items-center space-x-4 mb-4">
                         <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100">
                           <img
                             src={user.profileImage}
@@ -270,20 +319,23 @@ export const ProfilePage = () => {
                       <h1 className="text-[2rem] font-semibold transform translate-x-[10px] text-center">Description</h1>
                       <h1 className="text-[1.5rem] font-semibold transform translate-x-[10px] text-center text-[#666666]">
                         {product.description}
-                      </h1>            <button
-                        className="mt-4 flex items-center text-red-500 hover:text-red-700"
-                        onClick={() => deleteProduct(product.id)}
-                      >
-                        <FaTrash className="mr-1" />
-                        Delete
-                      </button>
-                    </div>
-                  ))}
+                      </h1>
+                      
                 </div>
-              </>
-            )}
+              ))}
+            </div>
           </div>
         )}
+      </>
+    )}
+  </div>
+)}
+
+
+
+
+
+
 
         {user && (
           <div className="bg-white p-7 rounded" id="actualizar-usuario">

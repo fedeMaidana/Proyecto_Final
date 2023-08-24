@@ -61,22 +61,24 @@ export const ProfilePage = () => {
         console.error('Error al obtener detalles del usuario:', error);
       }
     }
+    if (googleToken) {
+      try {
+        const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
+          headers: {
+            googleToken: `${googleToken}`,
+          },
+        });
+        console.log(response);
+        setUser(response?.data);
+      } catch (error) {
+        console.error('Error al obtener detalles del usuario:', error);
+      }
+    }
   };
 
-  if (googleToken) {
-    try {
-      const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
-        headers: {
-          googleToken: `${googleToken}`,
-        },
-      });
-      console.log(response);
-      setUser(response?.data);
-    } catch (error) {
-      console.error('Error al obtener detalles del usuario:', error);
-    }
-  }
-};
+
+
+
 
   useEffect(() => {
     fetchUserDetails();
@@ -206,11 +208,7 @@ export const ProfilePage = () => {
                       <p>{user.name}</p>
                     </div>
                   </div>
-                  <img
-                    src={user.profileImage}
-                    alt={user.profileImage}
-                    className="w-full h-full object-cover"
-                  />
+                  
                   <div>
                     <label>
                       <strong>Last Name</strong>
@@ -381,7 +379,7 @@ export const ProfilePage = () => {
                   Actualizar Información de Usuario
                 </h3>
                 <form onSubmit={onSubmit}>
-                  <div className="flex items-center justify-center">
+                  {/* <div className="flex items-center justify-center">
                     <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100">
                       {profileImage ? (
                         <div>
@@ -441,8 +439,8 @@ export const ProfilePage = () => {
                       className="hidden"
                       onChange={(event) => setProfileImage(event.target.files[0])}
                     />
-                    console.log(setProfileImage);
-                  </div>
+                    
+                  </div> */}
 
                   <div className="mb-4">
                     <label
@@ -538,4 +536,4 @@ export const ProfilePage = () => {
       </div>
     </div>
   );
-};
+ };

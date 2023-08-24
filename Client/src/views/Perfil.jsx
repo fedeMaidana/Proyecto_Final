@@ -77,14 +77,22 @@ export const ProfilePage = () => {
     event.preventDefault();
 
     if (name !== '' && email !== '' && userName !== '' && lastName !== '' && birthDate !== '') {
-      const updatedUser = { name, email, userName, lastName, birthDate, profileImage };
+      const updatedUser = { name, email, userName, lastName, birthDate };
+
+      const formData = new FormData();
+      formData.append('profileImage', profileImage); // Append the profileImage to FormData
+
+      for (const key in updatedUser) {
+        formData.append(key, updatedUser[key]);
+      }
 
       setLoading(true);
 
       try {
-        const response = await axios.put(`https://proyectofinal-production-4957.up.railway.app/updateuser/${user.id}`, updatedUser);
+        const response = await axios.put(`https://proyectofinal-production-4957.up.railway.app/updateuser/${user.id}`, formData);
         setMessage(response.data.message);
         setInputs({ name: '', email: '', userName: '', lastName: '', birthDate: '' });
+        setProfileImage(null); // Reset the profileImage state
 
         setTimeout(() => {
           setMessage('');
@@ -99,6 +107,7 @@ export const ProfilePage = () => {
       }
     }
   };
+
 
   const deleteProduct = (productId) => {
     dispatch(deleteProducts(productId))
@@ -182,6 +191,11 @@ export const ProfilePage = () => {
                       <p>{user.name}</p>
                     </div>
                   </div>
+                  <img
+                    src={user.profileImage}
+                    alt={user.profileImage}
+                    className="w-full h-full object-cover"
+                  />
                   <div>
                     <label>
                       <strong>Last Name</strong>
@@ -412,6 +426,7 @@ export const ProfilePage = () => {
                       className="hidden"
                       onChange={(event) => setProfileImage(event.target.files[0])}
                     />
+                    console.log(setProfileImage);
                   </div>
 
                   <div className="mb-4">

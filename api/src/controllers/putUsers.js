@@ -1,3 +1,4 @@
+const cloudinary = require('cloudinary').v2;
 const bcrypt = require('bcrypt');
 const { User } = require('../db');
 const path = require('path');
@@ -20,19 +21,27 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
+
     if (!file) {
       cb(null, true);
       return;
     }
     const allowedExtensions = ['.png', '.jpg', '.webp'];
     const fileExtension = path.extname(file.originalname).toLowerCase();
+ 
     if (allowedExtensions.includes(fileExtension)) {
       cb(null, true); // Aceptar el archivo
     } else {
       cb(new Error('Tipo de archivo no válido'));
     }
   },
-}).single('profileImage'); // Especifica el campo en el formulario que contendrá la imagen
+});// Especifica el campo en el formulario que contendrá la imagen
+
+cloudinary.config({
+  cloud_name: 'dseljeygs',
+  api_key: '389811994828251',
+  api_secret: '9bBKZMXxfPKu9JW6QyzdaI99L_A'
+});
 
 const updateUser = async (id, name, email, password, userName, lastName, birthDate, profileImage) => {
   try {
@@ -64,19 +73,20 @@ const updateUser = async (id, name, email, password, userName, lastName, birthDa
         if (name) user.name = name;
         if (lastName) user.lastName = lastName;
         if (birthDate) user.birthDate = birthDate;
-        if (profileImage) user.profileImage = profileImage;
     
-        // Actualizar la contraseña si se proporciona una nueva
-        if (password) {
-          const passwordHash = await bcrypt.hash(password, 10);
-          user.password = passwordHash;
-        }
 
+       
+        let cloudinaryUrl = null;
         if (profileImage) {
-          const baseUrl = 'https://proyectofinal-production-4957.up.railway.app/'; // Cambiar esto al hacer deploy
-          const imageUrl = `/upload/${profileImage.filename}`;
-          const fullImageUrl = baseUrl + imageUrl;
-          user.profileImage = fullImageUrl;
+          try {
+            const result = await cloudinary.uploader.upload(profileImage.path, {
+              folder: 'user-profiles', // Carpeta en Cloudinary para almacenar las imágenes de perfil
+              use_filename: true
+            });
+            cloudinaryUrl = result.secure_url;
+          } catch (error) {
+            console.error('Error uploading image to Cloudinary:', error);
+          }
         }
     
 
@@ -91,7 +101,7 @@ const updateUser = async (id, name, email, password, userName, lastName, birthDa
         userName: user.userName,
         email: user.email,
         birthDate: user.birthDate,
-        profileImage: user.profileImage,
+        profileImage: user.profileImage, // La URL de Cloudinary ya está asignada aquí
         estado: user.estado,
       },
     };
@@ -102,6 +112,6 @@ const updateUser = async (id, name, email, password, userName, lastName, birthDa
 };
 
 module.exports = {
-  updateUser,
+  updateUser,upload
   
 };

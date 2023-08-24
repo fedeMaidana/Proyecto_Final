@@ -11,13 +11,16 @@ import { loadCartFromLocalStorage, saveCartToLocalStorage } from '../auxFunction
 export const Card = ( { name, nameProduct, description, images, price, id, stock, color, size, category, profileImage } ) => {
   const dispatch = useDispatch()
 
-   const [ currentIndex, setCurrentIndex ] = useState( 0 )
-  //  const [ cartData, setCartData ] = useState( { cartProducts: [], cartTotal: 0, cartCount: 0 } )
-   const [ currentSlide, setCurrentSlide ] = useState( 0 )
+  const token = localStorage.getItem( 'token' )
 
-  // const cartProducts = useSelector( state => state.cartProducts )
-  // const cartTotal = useSelector( state => state.cartTotal )
-  // const cartCount = useSelector( state => state.cartCount )
+  const [ currentIndex, setCurrentIndex ] = useState( 0 )
+  const [ cartData, setCartData ] = useState( { cartProducts: [], cartTotal: 0, cartCount: 0 } )
+  const [ allProducts, setAllProducts ] = useState( [] )
+  const [ currentSlide, setCurrentSlide ] = useState( 0 )
+
+  const cartProducts = useSelector( state => state.cartProducts )
+  const cartTotal = useSelector( state => state.cartTotal )
+  const cartCount = useSelector( state => state.cartCount )
 
   const userId = localStorage.getItem( 'userId' )
   const parsedUserId = parseInt( userId, 10 )
@@ -76,32 +79,41 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
       category: category,
       images: images[ 0 ]
     }
-    saveCartToLocalStorage( newProduct )
+    setAllProducts( [ ...allProducts, newProduct ] )
+    dispatch( addToCart( newProduct ) )
+    const cartId = localStorage.getItem( 'cartId' )
+
+    if( parsedUserId || cartId === null ) dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) )
+    else dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) )
+
+/*     saveCartToLocalStorage( newProduct )
     dispatch( addToCart( newProduct ) )
 
     const cartId = localStorage.getItem( 'cartId' )
 
     if( parsedUserId || cartId === null ) dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) )
-    else dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) )
+    else dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) ) */
   }
 
-  //  useEffect(() => {
-  //    setCartData({
-  //      cartProducts: cartProducts,
-  //     cartTotal: cartTotal,
-  //     cartCount: cartCount
-  //    })
-  //  }, [ cartProducts, cartTotal, cartCount ])
+  
+  useEffect(() => {
+    setCartData({
+        cartProducts: cartProducts,
+        cartTotal: cartTotal,
+        cartCount: cartCount,
+    })
+  }, [ cartProducts, cartTotal, cartCount ])
 
-  //  useEffect(() => {
-  //    const savedCart = loadCartFromLocalStorage()
+/*   useEffect(() => {
+    const savedCart = loadCartFromLocalStorage()
 
-  //    if( savedCart ) dispatch( loadCart( savedCart ) )
-  //  }, [ dispatch ])
+    if( savedCart ) dispatch( loadCart( savedCart ) )
 
-  //  useEffect(() => {
-  //    saveCartToLocalStorage( cartData )
-  //  }, [ cartData ])
+  }, [ dispatch ]) */
+
+  useEffect(() => {
+    saveCartToLocalStorage( cartData )
+  }, [ cartData ])
 
   const nextSlide = () => {
     setCurrentSlide( ( currentSlide + 1 ) % images.length )
@@ -113,12 +125,11 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
 
   return(
     <>
-      <div className='relative w-[90%] h-auto bg-white rounded-[10px] overflow-hidden border'     key={id}
-      id={id}>
+      <div className='relative w-[90%] h-auto bg-white rounded-[10px] overflow-hidden border' key={ id } id={ id } >
         <div className="relative h-[500px]">
           <header className='absolute w-[100%] flex items-center justify-between z-20 p-5'>
             <div className='flex items-center gap-[10px]'>
-              <img src={ profileImage } className="w-[40px] h-[40px] rounded-full bg-[#b7bbc3]"></img>
+              <img src={ profileImage } className="min-w-[40px] h-[40px] rounded-full bg-[#b7bbc3]"></img>
               <p className="text-[1.5rem] font-semibold">{ name }</p>
               <p className='text-[1.5rem] font-semibold transform translate-y-[1px]'>▸</p>
               <p className="text-[1.2rem] font-semibold transform translate-y-[1px]">{ nameProduct }</p>
@@ -127,24 +138,27 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
             </div>
 
             <div className="p-2 text-black text-[1.5rem] font-semibold">
-            <span>{ currentSlide + 1 }</span> / <span className='text-[#7e7e7e]'>{ images.length }</span>
+              <span>{ currentSlide + 1 }</span> / <span className='text-[#7e7e7e]'>{ images.length }</span>
             </div>
           </header>
+
           <div className="w-full h-full flex transition-transform duration-300 z-10" style={ { transform: `translateX(-${ currentSlide * 100 }%)` } }>
             {images.map(( image, index ) => (
               <img key={ index } src={ image } alt={ `Image ${ index }` } className="w-full h-full flex flex-shrink-0 object-cover" />
             ))}
           </div>
+
           <button className="absolute top-[50%] transform -translate-y-1/2 left-[10px]" onClick={ prevSlide }>
             <IconProfileArrow className='' size={ '20' } />
           </button>
           <button className="absolute top-[50%] transform -translate-y-1/2 right-[10px]" onClick={ nextSlide }>
             <IconProfileArrow className='transform rotate-[180deg]' size={ '20' } />
           </button>
+
           <footer className='absolute w-[100%] bottom-0 grid grid-cols-3 items-center justify-center z-20 p-5'>
             <span className='flex gap-[10px]'>
-              <FavoriteButton userId={ userId } productId={ id } />
-              <button className='w-[50px] border rounded-full bg-white flex items-center justify-center' title="Agregar al carrito" onClick={ onAddProduct }><IconCart isButtonsEnabled={ true } /></button>
+              <FavoriteButton userId={ userId } productId={ id } token={ token } />
+              <button className='w-[50px] border rounded-full bg-white flex items-center justify-center' title="Agregar al carrito" onClick={ () => { if( token ) onAddProduct } }><IconCart isButtonsEnabled={ true } /></button>
             </span>
 
             <div className="flex items-center justify-evenly">
@@ -154,7 +168,7 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
             </div>
 
             <div className='w-full flex justify-end'>
-              <button className='w-auto px-[10px] text-[1.5rem] text-white font-semibold py-[5px] rounded-full bg-[#33a1fd] flex items-center justify-center' onClick={ handleBuyButton }>Comprar</button>
+              <button className='w-auto px-[10px] text-[1.5rem] text-white font-semibold py-[5px] rounded-full bg-[#33a1fd] flex items-center justify-center' onClick={ () => { if( token ) handleBuyButton } }>Comprar</button>
             </div>
           </footer>
         </div>
@@ -163,9 +177,9 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
           <span className='flex items-center gap-[10px]'>
             <p className="text-[1.5rem] font-semibold">{ name }</p>
             <p className="text-[1.5rem]">▸</p>
-            <p className='text-[1.5rem]'>{ description }</p>
+            <p className='border-l pl-5 text-[1.5rem]'>{ description }</p>
           </span>
-          <AddComment userId={ userId } productId={ id } profileImage={ profileImage } />
+          <AddComment userId={ userId } productId={ id } profileImage={ profileImage } token={ token } />
         </div>
       </div>
     </>

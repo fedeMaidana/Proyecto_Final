@@ -9,6 +9,8 @@ import { Pagination } from "../components/Pagination"
 export function Community () {
   const dispatch = useDispatch()
 
+  const token = localStorage.getItem( 'token' )
+
   const allUsers = useSelector( state => state.allUsers )
 
   const [ currentPage, setCurrentPage ] = useState( 1 )
@@ -17,7 +19,11 @@ export function Community () {
 
   const indexOfLastPost = currentPage * postsPerPage
   const indexOfFirstPost = indexOfLastPost - postsPerPage
-  const currentPosts = allUsers.flatMap( user => user.CreatedProducts ).slice( indexOfFirstPost, indexOfLastPost )
+
+  const postsAll = allUsers.flatMap( user => user.CreatedProducts )
+  postsAll.sort( ( a, b ) => a.id - b.id )
+
+  const currentPosts = postsAll.slice( indexOfFirstPost, indexOfLastPost )
 
   let totalPost = allUsers.reduce(( sum, user ) => {
     return sum + user.CreatedProducts.length

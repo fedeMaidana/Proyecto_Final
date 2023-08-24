@@ -17,7 +17,7 @@ const CardThree = ({ users }) => {
     0
   );
 
-  const sortedUsers = [...allUsers]; // Create a copy of users array
+  const sortedUsers = [...allUsers]; 
   if (isAlphabeticalSorting) {
     sortedUsers.sort((a, b) => a.name.localeCompare(b.name));
   }

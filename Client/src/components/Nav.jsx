@@ -5,14 +5,12 @@ import axios from 'axios'
 import logo from '../assets/images/DiseñoBase_de_logoCustomCraft_black.png'
 import { Cart } from './Cart'
 import { IconProfileArrow, IconShoppingCart } from '../assets/icons/icons'
-import Cookies from 'universal-cookie'
+
 
 export function Nav() {
   const cartCount = useSelector( state => state.cartCount )
 
-  const cookies = new Cookies()
-  const googleToken = cookies.get( 'googleToken' )
-  localStorage.setItem( 'googleToken', googleToken )
+  const googleToken = localStorage.getItem( 'googleToken')
   const token = localStorage.getItem( 'token' )
   console.log('Google Token:', googleToken)
 

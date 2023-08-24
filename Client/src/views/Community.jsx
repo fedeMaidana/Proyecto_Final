@@ -5,13 +5,10 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch} from 'react-redux'
 import { getUsers, getComments} from '../redux/actions'
 import { Pagination } from "../components/Pagination"
-import Cookies from 'universal-cookie'
 
 export function Community () {
   const dispatch = useDispatch()
-  const cookies = new Cookies()
-  const googleToken = cookies.get( 'googleToken' )
-  localStorage.setItem( 'googleToken', googleToken )
+
 
   const allUsers = useSelector( state => state.allUsers )
   const appliedFilters = useSelector(state => state.appliedFilters)

@@ -24,7 +24,7 @@ export const Home = () => {
                     <h2 className="select-none text-[1.5rem] md:text-[3rem] lg:text-[3rem] font-semibold text-[#92989f]">Empieza a diseñar tu propio estilo</h2>
                 </div>
 
-                <div className="w-full grid grid row-span-3 mb-[10px] grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-[10px] items-center">
+                <div className="w-full grid row-span-3 mb-[10px] grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-[10px] items-center">
                     <CardHome href={ '/Customize/TShirt' } image={ tshirt } name={ 'Remera' } />
 
                     <CardHome href={ '/Customize/Shirt' } image={ shirt } name={ 'Camisa' } />

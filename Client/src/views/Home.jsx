@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect,} from 'react'
 import shirt from "../assets/images/shirt.png"
 import jeans from "../assets/images/jeans.png"
 import hoodie from "../assets/images/hoodie.png"
@@ -8,15 +8,14 @@ import tshirt from "../assets/images/tshirt.png"
 import { CardHome } from "../components/CardHome"
 import { getComments, getUsers } from '../redux/actions'
 import { useDispatch } from 'react-redux'
-import axios from 'axios'
 import Cookies from 'universal-cookie'
 
 export const Home = () => {
     const dispatch = useDispatch() 
     const cookies = new Cookies()
     useEffect(() => {
-      const token = localStorage.getItem( 'token' )
       const googleToken = cookies.get( 'googleToken' )
+      localStorage.setItem( 'googleToken', googleToken )
     }, [])
 useEffect(() => {
     dispatch( getComments() )

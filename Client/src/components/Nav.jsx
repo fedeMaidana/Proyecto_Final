@@ -11,9 +11,9 @@ export function Nav() {
   const cartCount = useSelector( state => state.cartCount )
 
   const cookies = new Cookies()
-  const token = localStorage.getItem( 'token' )
   const googleToken = cookies.get( 'googleToken' )
   localStorage.setItem( 'googleToken', googleToken )
+  const token = localStorage.getItem( 'token' )
 
   const [ user, setUser ] = useState( undefined )
   const [ userImage, setUserImage ] = useState( undefined )

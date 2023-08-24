@@ -78,7 +78,7 @@ const CardFour = ({ totalUsers, users }) => {
   
       <div className="mt-4 flex justify-center">
         <div className='mb-10 mr-[5rem]'>
-          <span className=" text-[15px] text-sm font-medium ">Total de usuarios: {totalUsers} </span>
+          <span className=" text-[15px] font-medium ">Total de usuarios: {totalUsers} </span>
 {/*           <h4 className="text-[20px] leading-[30px] font-bold text-black">
             {totalUsers}
           </h4> */}
@@ -86,12 +86,12 @@ const CardFour = ({ totalUsers, users }) => {
         <div className='mb-10'>
           {/*  número de usuarios que tienen el rol de "admin" o "user"  */}
           {roleFilter === 'admin' && (
-            <p className=" text-[15px] text-sm font-medium ">
+            <p className=" text-[15px] font-medium ">
               Usuarios Admin: {users.filter(user => user.role === 'admin').length}
             </p>
           )}
           {roleFilter === 'user' && (
-            <p className=" text-[15px] text-sm font-medium ">
+            <p className=" text-[15px] font-medium ">
               Usuarios: {users.filter(user => user.role === 'user').length}
             </p>
           )}
@@ -99,7 +99,7 @@ const CardFour = ({ totalUsers, users }) => {
       </div>
       <br />
       <div>
-        <h4 className="text-sm font-medium text-black text-[15px] mb-10">
+        <h4 className="font-medium text-black text-[15px] mb-10">
           Nombres de usuarios:
         </h4>
         {orderBy(
@@ -140,4 +140,3 @@ const CardFour = ({ totalUsers, users }) => {
 };
   
   export default CardFour;
-  

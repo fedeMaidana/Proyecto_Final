@@ -19,8 +19,9 @@ const FavoriteButton = ( { productId, userId, token } ) => {
   const isFavorite = checkIsFavorite( productId, favorites )
 
   const productFavoriteCount = allUsers.reduce(( count, user ) => {
+    console.log(count)
     return(
-      count + user.FavoriteProducts.filter( favorite => favorite.Favorite.ProductId === productId ).length
+      count + user.FavoriteProducts?.filter( favorite => favorite.Favorite.ProductId === productId ).length
     )
   }, 0)
 

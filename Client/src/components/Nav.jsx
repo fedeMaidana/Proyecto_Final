@@ -64,6 +64,9 @@ export function Nav() {
 
           setUserId( id )
           localStorage.setItem( 'userId', id )
+          setUser( responseGoogle?.data?.name )
+          setUserImage( responseGoogle?.data?.profileImage )
+          setUserRol( responseGoogle?.data?.role )
 
           setUser( name )
         }catch( error ){

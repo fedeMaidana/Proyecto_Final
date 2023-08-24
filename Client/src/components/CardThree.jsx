@@ -17,7 +17,7 @@ const CardThree = ({ users }) => {
     0
   );
 
-  const sortedUsers = [...allUsers]; // Create a copy of users array
+  const sortedUsers = [...allUsers]; 
   if (isAlphabeticalSorting) {
     sortedUsers.sort((a, b) => a.name.localeCompare(b.name));
   }
@@ -61,15 +61,15 @@ const CardThree = ({ users }) => {
 
           return(
             <div key={post.id} className="rounded-sm border border-stroke bg-white py-2 px-4 shadow-default dark:border-strokedark dark:bg-boxdark mt-2">
-              <p className="text-lg text-gray-600 dark:text-gray-300">
+              <p className="text-lg ">
                 {user.name} {user.lastName}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm  ">
                 Created Products:
               </p>
               <ul className="list-disc list-inside">
                 {user.CreatedProducts.map((createdProduct, index) => (
-                  <li key={index} className="text-gray-600 dark:text-gray-300">
+                  <li key={index} className="text-gray-600 dark:text-gray-700">
                     {createdProduct.name}
                   </li>
                 ))}

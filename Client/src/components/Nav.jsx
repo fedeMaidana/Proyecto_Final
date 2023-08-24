@@ -36,8 +36,6 @@ export function Nav() {
             }
           })
 
-          console.log(response?.data)
-
           const userId = response?.data.id;
           setUserId( userId )
           localStorage.setItem( 'userId', userId )

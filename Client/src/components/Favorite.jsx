@@ -20,7 +20,7 @@ const FavoriteButton = ( { productId, userId, token } ) => {
 
   const productFavoriteCount = allUsers.reduce(( count, user ) => {
     return(
-      count + user.FavoriteProducts.filter( favorite => favorite.Favorite.ProductId === productId ).length
+      count + user?.FavoriteProducts?.filter( favorite => favorite.Favorite.ProductId === productId ).length
     )
   }, 0)
 

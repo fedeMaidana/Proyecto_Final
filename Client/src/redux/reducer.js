@@ -50,7 +50,8 @@ const initialState = {
   openModal: false,
   designTitle: "Diseño sin titulo",
   designDescription: "",
-  filters: [],
+  appliedFilters: {
+      sorting: ''}, // Sorting option (priceAsc, priceDesc, nameAsc, na
   sorting: [],
   categories: [],
   capturedImages: [],
@@ -97,10 +98,10 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, designDescription: payload };
 
     case APPLY_FILTERS:
-      return { ...state, allUsers: payload };
+      return { ...state, allUser: payload,  };
 
     case APPLY_SORTING:
-      return { ...state, allUsers: payload, users: payload };
+      return { ...state, appliedFilters: payload };
 
     case ALL_CATEGORIES:
       return { ...state, categories: payload };

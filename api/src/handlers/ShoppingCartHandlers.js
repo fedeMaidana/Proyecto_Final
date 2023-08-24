@@ -105,8 +105,9 @@ const cartHandler = {
 
   removeFromCart: async ( req, res ) => {
     try{
-      const {productId, cartId} = req.body
-      const removedProduct = await cartController.removeFromCart( productId, cartId )
+      const {cartId} = req.params
+      const {productId} = req.body
+      const removedProduct = await cartController.removeFromCart( {productId, cartId} )
 
       res.json( removedProduct )
     }catch( error ){

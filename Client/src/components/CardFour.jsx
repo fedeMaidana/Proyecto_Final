@@ -117,7 +117,7 @@ const CardFour = ({ totalUsers, users }) => {
           <div
             key={user.id}
             className="rounded-sm border border-stroke bg-white py-2 px-4 shadow-default dark:border-strokedark dark:bg-boxdark mt-2">
-            <p className="text-lg text-gray-600 dark:text-gray-300">
+            <p className="text-lg text-gray-600 ">
               {user.name} {user.lastName}
             </p>
             <button

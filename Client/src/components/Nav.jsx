@@ -20,6 +20,10 @@ export function Nav() {
   const [ userId, setUserId ] = useState( null )
 
   useEffect(() => {
+    setModalProfile( false )
+  }, [])
+
+  useEffect(() => {
     const token = localStorage.getItem( 'token' )
     const googleToken = cookies.get( 'googleToken' )
 
@@ -86,6 +90,7 @@ export function Nav() {
 
   const handleLogout = () => {
     localStorage.removeItem( 'token' )
+    localStorage.removeItem( 'role' )
     setUser( undefined )
     setModalProfile( false )
   }
@@ -151,8 +156,8 @@ export function Nav() {
         <div className="w-[200px] z-10 flex flex-col items-baseline fixed top-[68px] right-[0] bg-white/[.3] backdrop-blur-[5px] border-l-[1px] border-b-[1px] border-r-[1px] rounded-bl-[10px] rounded-br-[10px]">
           <div className='w-full p-5 border-b-[1px] flex flex-col'>
             <p className='select-none text-[1.6rem] font-semibold'>Hola { user }</p>
-            <Link to="/my-profile" className="select-none text-[1.5rem] cursor-pointer">Ver mi Perfil</Link>
-            { userRol === 'admin' ? ( <Link to="/dashboard" className="select-none text-[1.5rem] cursor-pointer">Ver perfil de admin</Link> ) : '' }
+            <Link to="/my-profile" className="select-none text-[1.5rem] cursor-pointer" onClick={ () => setModalProfile( false ) } >Ver mi Perfil</Link>
+            { userRol === 'admin' ? ( <Link to="/dashboard" className="select-none text-[1.5rem] cursor-pointer" onClick={ () => setModalProfile( false ) } >Ver perfil de admin</Link> ) : '' }
           </div>
           <button className="select-none p-5 text-[#ff0000] text-[1.5rem] font-semibold cursor-pointer" onClick={ handleLogout } >
             Cerrar sesión

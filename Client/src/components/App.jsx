@@ -19,16 +19,19 @@ axios.defaults.baseURL = 'https://proyectofinal-production-4957.up.railway.app'
 export function App() {
   const location = useLocation()
 
-  const shouldShowNavBar = ['/home', '/community'].some(path => location.pathname.startsWith(path))
+  const shouldShowNavBar = [ '/home', '/community', '/dashboard', '/my-profile' ].some( path => location.pathname.startsWith( path ) )
+
 
   const isLoggedIn = localStorage.getItem('token') !== null;
   const userRole = localStorage.getItem('role');
 
 
-  return (
+  return(
+
     <>
-      {shouldShowNavBar && <Nav />}
+      { shouldShowNavBar && <Nav /> }
       <Routes>
+
         <Route path='/' element={<Intro />} />
         <Route path='/home' element={<Home />} />
         <Route path='/customize/:model' element={<Customize />} />
@@ -46,8 +49,6 @@ export function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           
         ): null}
-
-
 
 
       </Routes>

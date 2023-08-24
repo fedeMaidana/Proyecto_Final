@@ -18,7 +18,7 @@ axios.defaults.baseURL = 'https://proyectofinal-production-4957.up.railway.app'
 export function App() {
   const location = useLocation()
 
-  const shouldShowNavBar = [ '/home', '/community', '/dashboard' ].some( path => location.pathname.startsWith( path ) )
+  const shouldShowNavBar = [ '/home', '/community', '/dashboard', '/my-profile' ].some( path => location.pathname.startsWith( path ) )
 
   return(
     <>

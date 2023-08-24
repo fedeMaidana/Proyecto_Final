@@ -30,9 +30,9 @@ userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { 
   setTimeout(() => {
     const googleToken = req.user.token;
     res.cookie('googleToken', googleToken, {
-      //  httpOnly: true,
-      //  secure: false, // Asegúrate de que esto esté configurado correctamente en producción
-      //  sameSite: 'lax', // Asegúrate de que esto esté configurado correctamente en producción
+        httpOnly: true,
+        secure: false, // Asegúrate de que esto esté configurado correctamente en producción
+        sameSite: 'lax', // Asegúrate de que esto esté configurado correctamente en producción
     });
   
     console.log('Google Token Set:', googleToken); // Añade esta línea para verificar en la consola del servidor

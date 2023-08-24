@@ -12,6 +12,7 @@ import PaymentCancel from '../views/PaymentCancel'
 import PaymentSuccess from '../views/PaymentSuccess'
 import axios from "axios"
 
+
 axios.defaults.baseURL = 'https://proyectofinal-production-4957.up.railway.app'
 //axios.defaults.baseURL = 'https://localhost:3001'
 
@@ -19,6 +20,10 @@ export function App() {
   const location = useLocation()
 
   const shouldShowNavBar = ['/home', '/community'].some(path => location.pathname.startsWith(path))
+
+  const isLoggedIn = localStorage.getItem('token') !== null;
+  const userRole = localStorage.getItem('role');
+
 
   return (
     <>
@@ -32,8 +37,19 @@ export function App() {
         <Route path="/community" element={<Community />} />
         <Route path="/cancel" element={<PaymentCancel/>} />
         <Route path="/success" element={<PaymentSuccess/>} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/my-profile" element={<ProfilePage />} />
+
+
+        {
+        isLoggedIn && userRole === 'admin' ? (
+
+          <Route path="/dashboard" element={<Dashboard />} />
+          
+        ): null}
+
+
+
+
       </Routes>
     </>
   )

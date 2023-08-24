@@ -173,7 +173,7 @@ export const applySorting = (sorting) => {
       const state = getState();
       const allUsers = state.allUsers;
 
-      const postsAll = allUsers.flatMap( user => user.CreatedProducts )
+      const postsAll = allUsers?.flatMap( user => user?.CreatedProducts )
 
 
       const sortedPosts = postsAll.slice().sort((a, b) => {

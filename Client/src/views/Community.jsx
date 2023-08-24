@@ -19,7 +19,7 @@ export function Community () {
   const indexOfLastPost = currentPage * postsPerPage
   const indexOfFirstPost = indexOfLastPost - postsPerPage
 
-  const postsAll = allUsers.flatMap( user => user.CreatedProducts )
+  const postsAll = allUsers?.flatMap( user => user?.CreatedProducts )
 
   const sortedPosts = postsAll.slice().sort(( a, b ) => {
     if( appliedFilters === 'priceAsc' ) {

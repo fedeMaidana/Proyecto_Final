@@ -27,8 +27,6 @@ function SearchBar() {
     if( inputValue === '' ) dispatch( clearSearch() )
   }
 
-  console.log(searchResults)
-
   return(
     <>
       <div className="flex h-[100%] w-[75%] justify-between gap-[10px] overflow-x-auto whitespace-nowrap p-2 border-r-[1px]">

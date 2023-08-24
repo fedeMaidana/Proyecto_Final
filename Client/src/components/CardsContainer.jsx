@@ -6,32 +6,31 @@ import { getUsers } from "../redux/actions"
 export const CardsContainer = ( { currentPosts } ) => {
   const dispatch = useDispatch()
 
-  console.log(currentPosts)
   useEffect( () => {
       dispatch( getUsers() )
   }, [])
 
   const allUsers = useSelector( state => state.allUsers )
-  const allUsersHaveNoProducts = allUsers.every( user => user.CreatedProducts.length === 0 )
+  const allUsersHaveNoProducts = allUsers.every( user => user?.CreatedProducts?.length === 0 )
   return(
     <>
       {currentPosts.map(post => {
-        const user = allUsers.find( user => user.id === post.userId )
+        const user = allUsers.find( user => user?.id === post?.userId )
 
         return(
           <Card
-            key={ post.id }
-            id={ post.id }
-            name={ user.userName }
-            nameProduct={ post.name }
-            description={ post.description }
-            images={ post.images }
-            price={ post.price }
-            stock={ post.stock }
-            color={ post.color }
-            size={ post.size }
-            category={ post.category }
-            profileImage={ user.profileImage }
+            key={ post?.id }
+            id={ post?.id }
+            name={ user?.userName }
+            nameProduct={ post?.name }
+            description={ post?.description }
+            images={ post?.images }
+            price={ post?.price }
+            stock={ post?.stock }
+            color={ post?.color }
+            size={ post?.size }
+            category={ post?.category }
+            profileImage={ user?.profileImage }
           />
         )
       })}

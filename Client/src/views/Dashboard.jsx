@@ -14,11 +14,11 @@ export function Dashboard() {
       dispatch(getCart())
   }, [dispatch])
 
-  const shoppingCart = useSelector(state => state.allCartProducts)
-  const users = useSelector(state => state.allUsers)
-  const totalUsers = users.length;
+  const shoppingCart = useSelector( state => state.allCartProducts )
+  const users = useSelector( state => state.allUsers )
+  const totalUsers = users.length
 
-  const approvedPayments = shoppingCart.filter(cart => cart.estado_pedido === 'Pago Aprobado')
+  const approvedPayments = shoppingCart.filter( cart => cart.estado_pedido === 'Pago Aprobado' )
   const approvedPaymentsLength = approvedPayments.length
 
   console.log(approvedPayments)
@@ -26,7 +26,7 @@ export function Dashboard() {
   return (
     <div className="p-5 bg-[#f6f5f7]">
       <div className="mt-[10vh] flex flex-col gap-5">
-        <CardTwo />
+        <CardTwo approvedPayments={ approvedPayments } approvedPaymentsLength={ approvedPaymentsLength } />
         <CardThree users={ users } />
         <CardFour totalUsers={ totalUsers } users={ users } />
       </div>

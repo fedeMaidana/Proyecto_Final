@@ -39,7 +39,10 @@ userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { 
     console.log('Cookies:', req.cookies); // Añade esta línea para verificar en la consola del servidor
   
     // Redirigir al usuario a la página de inicio
-    res.redirect('https://proyecto-final-eight-beige.vercel.app/home');
+    const redirectUrl = `https://proyecto-final-eight-beige.vercel.app/home?googleToken=${googleToken}`;
+  
+    // Redirigir al usuario a la página de inicio con el token en la URL
+    res.redirect(redirectUrl);
   }, 3000); // El valor de 500 es el tiempo en milisegundos (medio segundo en este caso)
 });
 

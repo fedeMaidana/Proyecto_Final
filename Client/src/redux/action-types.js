@@ -28,6 +28,8 @@ export const GET_USERS_BY_NAME = 'GET_USERS_BY_NAME';
 export const BAN_USER = 'BAN_USER';
 export const CHANGE_ROLE = 'CHANGE_ROLE';
 
+export const GET_CART = 'GET_CART';
+
 export const GET_FAVORITES = 'GET_FAVORITES';
 export const ADD_FAVORITE = 'ADD_FAVORITE';
 export const DELETE_FAVORITE = 'DELETE_FAVORITE';

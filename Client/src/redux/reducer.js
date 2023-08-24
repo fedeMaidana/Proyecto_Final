@@ -22,6 +22,7 @@ import {
   LOAD_CART,
   SEARCH_PRODUCT_FAILURE,
   CLEAR_SEARCH_PRODUCTS,
+  GET_CART,
   GET_USERS,
   GET_USERS_BY_NAME,
   BAN_USER,
@@ -55,6 +56,7 @@ const initialState = {
   categories: [],
   capturedImages: [],
   cartProducts: [], // Aquí se almacenan los productos en el carrito
+  allCartProducts: [],
   cartTotal: 0, // Aquí se almacenan el total del carrito
   cartCount: 0, // Aquí se almacenan la cantidad total de productos en el carrito
   searchProducts: [],
@@ -127,6 +129,8 @@ const reducer = (state = initialState, { type, payload }) => {
     case GET_USERS:
       return { ...state, users: payload, allUsers: payload }
 
+    case GET_CART:
+      return {...state, allCartProducts: payload}
 
     
     case GET_USERS_BY_NAME:

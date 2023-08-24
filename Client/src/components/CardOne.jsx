@@ -1,4 +1,4 @@
-const CardOne = () => {
+// const CardOne = () => {
     // return (
     //   <div className="rounded-sm border border-stroke bg-white py-6 px-[1.875rem] shadow-default dark:border-strokedark dark:bg-boxdark">
     //     <div className="flex h-[2.875rem] w-[2.875rem] items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
@@ -48,7 +48,7 @@ const CardOne = () => {
     //     </div>
     //   </div>
     // );
-  };
+  // };
   
-  export default CardOne;
+  // export default CardOne;
   

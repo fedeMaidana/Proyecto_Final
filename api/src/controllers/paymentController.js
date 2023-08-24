@@ -43,8 +43,8 @@ const createSession = async (req, res) => {
         const session = await stripe.checkout.sessions.create({
             line_items: lineItems,
             mode: 'payment',
-            success_url: 'http://localhost:5173/success',
-            cancel_url: 'http://localhost:5173/cancel',
+            success_url: 'https://proyectofinal-production-4957.up.railway.app/success',
+            cancel_url: 'https://proyectofinal-production-4957.up.railway.app/cancel',
         });
 
         //Para guardar la compra

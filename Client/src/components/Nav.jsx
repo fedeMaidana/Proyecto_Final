@@ -14,6 +14,7 @@ export function Nav() {
   const googleToken = cookies.get( 'googleToken' )
   localStorage.setItem( 'googleToken', googleToken )
   const token = localStorage.getItem( 'token' )
+  console.log('Google Token:', googleToken)
 
   const [ user, setUser ] = useState( undefined )
   const [ userImage, setUserImage ] = useState( undefined )
@@ -52,7 +53,6 @@ export function Nav() {
 
       fetchUserDetails()
     }
-    console.log('Google Token:', googleToken)
     if( googleToken ){
       const fetchGoogleUserDetails = async () => {
         try {

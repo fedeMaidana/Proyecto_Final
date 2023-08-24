@@ -9,6 +9,8 @@ import { Pagination } from "../components/Pagination"
 export function Community () {
   const dispatch = useDispatch()
 
+  const token = localStorage.getItem( 'token' )
+
   const allUsers = useSelector( state => state.allUsers )
 
   const [ currentPage, setCurrentPage ] = useState( 1 )
@@ -28,8 +30,6 @@ export function Community () {
   }, 0)
 
   const paginate = pageNumber => setCurrentPage( pageNumber )
-
-  console.log(postsAll)
 
   useEffect(() => {
     dispatch( getUsers() )

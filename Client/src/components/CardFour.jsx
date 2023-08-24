@@ -93,8 +93,6 @@ const CardFour = ({ totalUsers, users }) => {
                 
                 <p className="text-lg text-gray-600 dark:text-gray-300">
                   {user.name} {user.lastName}
-                  <br />
-                  {/* {user.birthDate} */}
                 </p>
               <button
                 onClick={() => handleBanUser(user.id)}

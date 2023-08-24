@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addComment, deleteComment, updateComment } from '../redux/actions'
 
-const AddComment = ( { userId, productId, profileImage } ) => {
+const AddComment = ( { userId, productId, profileImage, token } ) => {
   const dispatch = useDispatch()
 
   const [ text, setText ] = useState( '' )
@@ -17,7 +17,8 @@ const AddComment = ( { userId, productId, profileImage } ) => {
 
   const handleSubmit = ( e ) => {
     e.preventDefault()
-    if( text.length > 0 ){
+
+    if( text.length > 0 && token ){
       dispatch( addComment( parsedUserId, productId, text ) )
       setText( '' )
     }

@@ -4,7 +4,7 @@ import { addFavorite, deleteFavorite, getFavorites, getUsers } from '../redux/ac
 import { MdFavoriteBorder, MdFavorite } from 'react-icons/md'
 import { checkIsFavorite } from '../auxFunctions/isFavorite'
 
-const FavoriteButton = ( { productId, userId } ) => {
+const FavoriteButton = ( { productId, userId, token } ) => {
   const dispatch = useDispatch()
 
   const favorites = useSelector( state => state.favorites )
@@ -26,6 +26,8 @@ const FavoriteButton = ( { productId, userId } ) => {
 
 
   const handleFavoriteToggle = async () => {
+    if( !token ) return
+
     if( isFavorite ){
       const favoriteToDelete = favorites.find( favorite => favorite.Favorite.ProductId === productId )
 
@@ -43,23 +45,25 @@ const FavoriteButton = ( { productId, userId } ) => {
   }
 
   return(
-    <div className='w-[50px] bg-white border flex items-center justify-center gap-[10px] py-[3px] rounded-full'>
-      <button
-        onClick={ handleFavoriteToggle }
-        className={ `${ isFavorite ? 'text-[#ff0000]' : 'text-gray-800' } transition-all hover:bg-opacity-80`}
-      >
-        {isFavorite
-          ? (
-            <MdFavorite className="text-[2rem]" type="button" />
-          )
-          : (
-            <MdFavoriteBorder className="text-[2rem]" type="button" />
-          )
-        }
-      </button>
+    <>
+      <div className='w-[50px] bg-white border flex items-center justify-center gap-[10px] py-[3px] rounded-full'>
+        <button
+          onClick={ handleFavoriteToggle }
+          className={ `${ isFavorite ? 'text-[#ff0000]' : 'text-gray-800' } transition-all hover:bg-opacity-80`}
+        >
+          {isFavorite
+            ? (
+              <MdFavorite className="text-[2rem]" type="button" />
+            )
+            : (
+              <MdFavoriteBorder className="text-[2rem]" type="button" />
+            )
+          }
+        </button>
 
-      <span className='text-[1.2rem] font-semibold transform translate-y-[-1px]'>{ productFavoriteCount }</span>
-    </div>
+        <span className='text-[1.2rem] font-semibold transform translate-y-[-1px]'>{ productFavoriteCount }</span>
+      </div>
+    </>
   )
 }
 

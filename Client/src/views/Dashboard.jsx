@@ -18,15 +18,21 @@ export function Dashboard() {
   const users = useSelector( state => state.allUsers )
   const totalUsers = users.length
 
+  const cancelPayments = shoppingCart.filter( cart => cart.estado_pedido === 'Cancelado' )
+  const cancelPaymentLength = cancelPayments.length
+
+  const pendingPayments = shoppingCart.filter( cart => cart.estado_pedido === 'En Proceso' )
+  const pendingPaymentLength = pendingPayments.length
+
   const approvedPayments = shoppingCart.filter( cart => cart.estado_pedido === 'Pago Aprobado' )
   const approvedPaymentsLength = approvedPayments.length
 
-  console.log(approvedPayments)
+  console.log(shoppingCart)
 
   return (
     <div className="p-5 bg-[#f6f5f7]">
       <div className="mt-[10vh] flex flex-col gap-5">
-        <CardTwo approvedPayments={ approvedPayments } approvedPaymentsLength={ approvedPaymentsLength } />
+        <CardTwo approvedPayments={ approvedPayments } pendingPayments={ pendingPayments } cancelPayments={ cancelPayments } />
         <CardThree users={ users } />
         <CardFour totalUsers={ totalUsers } users={ users } />
       </div>

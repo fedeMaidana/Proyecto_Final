@@ -98,7 +98,7 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, designDescription: payload };
 
     case APPLY_FILTERS:
-      return { ...state, allUser: payload,  };
+      return { ...state, allUsers: payload,  };
 
     case APPLY_SORTING:
       return { ...state, appliedFilters: payload };

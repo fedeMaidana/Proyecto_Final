@@ -352,7 +352,7 @@ export const ProfilePage = () => {
                   Actualizar Información de Usuario
                 </h3>
                 <form onSubmit={onSubmit}>
-                  <div className="flex items-center justify-center">
+                  {/* <div className="flex items-center justify-center">
                     <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100">
                       {profileImage ? (
                         <div>
@@ -412,7 +412,7 @@ export const ProfilePage = () => {
                       className="hidden"
                       onChange={(event) => setProfileImage(event.target.files[0])}
                     />
-                  </div>
+                  </div> */}
 
                   <div className="mb-4">
                     <label

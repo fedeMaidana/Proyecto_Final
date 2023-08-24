@@ -2,28 +2,16 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { applySortingToUsers } from "../redux/actions";
 
-const CardThree = ({ users }) => {
-  const dispatch = useDispatch();
-  const allUsers = useSelector((state) => state.allUsers);
-  const [isAlphabeticalSorting, setIsAlphabeticalSorting] = useState(false);
+const CardThree = ({users}) => {
 
-  const handleAlphabeticalSorting = () => {
-    setIsAlphabeticalSorting(!isAlphabeticalSorting);
-    dispatch(applySortingToUsers(isAlphabeticalSorting));
-  };
+  const totalCreatedProducts = users.reduce((total, user) => total + user.CreatedProducts.length, 0);
 
-  const totalCreatedProducts = users.reduce(
-    (total, user) => total + user.CreatedProducts.length,
-    0
-  );
 
-  const sortedUsers = [...allUsers]; 
-  if (isAlphabeticalSorting) {
-    sortedUsers.sort((a, b) => a.name.localeCompare(b.name));
-  }
+  const usersWithCreatedProducts = users.filter((user) => user.CreatedProducts.length > 0);
 
-  const postsAll = sortedUsers.flatMap((user) => user.CreatedProducts);
-
+  // const allUsers = useSelector( state => state.allUsers )
+  // const postsAll = allUsers.flatMap( user => user.CreatedProducts )
+  // postsAll.sort( ( a, b ) => a.id - b.id )
 
     return (
       <div className="rounded-sm border border-stroke bg-white py-6 px-[1.875rem] shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -56,33 +44,29 @@ const CardThree = ({ users }) => {
           </div>
         </div>
 
-        { postsAll.map(post => {
-          const user = allUsers.find( user => user.id === post.userId )
 
-          return(
-            <div key={post.id} className="rounded-sm border border-stroke bg-white py-2 px-4 shadow-default dark:border-strokedark dark:bg-boxdark mt-2">
-              <p className="text-lg ">
-                {user.name} {user.lastName}
-              </p>
-              <p className="text-sm  ">
-                Created Products:
-              </p>
-              <ul className="list-disc list-inside">
-                {user.CreatedProducts.map((createdProduct, index) => (
-                  <li key={index} className="text-gray-600 dark:text-gray-700">
-                    {createdProduct.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        })}
-              <div className="mt-4">
-        <button onClick={handleAlphabeticalSorting}>
-          {isAlphabeticalSorting ? "Desactivar" : "Activar"} orden alfabético
-        </button>
-      </div>
-      </div>
+        {usersWithCreatedProducts.map((user) => (
+        <div
+          key={user.id}
+          className="rounded-sm border border-stroke bg-white py-2 px-4 shadow-default dark:border-strokedark dark:bg-boxdark mt-2"
+        >
+          <p className="text-lg text-black-600 dark:text-black-300">
+            {user.name} {user.lastName}
+          </p>
+          <p className="text-sm text-black-500 dark:text-black-400">
+            Created Products:
+          </p>
+          <ul className="list-disc list-inside">
+            {user.CreatedProducts.map((createdProduct, index) => (
+              <li key={index} className="text-black-600 dark:text-black-300">
+                {createdProduct.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
     )
   }
 

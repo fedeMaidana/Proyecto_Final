@@ -40,7 +40,7 @@ userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { 
   
     // Redirigir al usuario a la página de inicio
     res.redirect('https://proyecto-final-eight-beige.vercel.app/home');
-  }, 1000); // El valor de 500 es el tiempo en milisegundos (medio segundo en este caso)
+  }, 3000); // El valor de 500 es el tiempo en milisegundos (medio segundo en este caso)
 });
 
 

@@ -153,9 +153,10 @@ export const applyFilters = (filters) => {
             category: filters.category,
             min_price: filters.minPrice,
             max_price: filters.maxPrice,
-          }
-        })
-
+            
+          },
+        });
+  
         dispatch({
           type: APPLY_FILTERS,
           payload: response.data,

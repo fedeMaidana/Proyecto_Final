@@ -31,6 +31,7 @@ export const Intro = () => {
                                 border-2
                                 border-[#33a1fd]
                                 hover:border-transparent
+                                hover:text-white
                             "
                         >
                             Explorar Ahora

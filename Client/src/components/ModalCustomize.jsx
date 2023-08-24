@@ -151,8 +151,8 @@ export function ModalCustomize( { price, currentModel } ){
                       <button
                         className={
                           description === ''
-                            ? 'w-[140px] h-[40px] py-3 bg-gray-300 text-[#999] border font-semibold text-[1.5rem] rounded-full cursor-not-allowed'
-                            : 'w-[140px] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full'
+                            ? 'w-[160px] h-[40px] py-3 bg-gray-300 text-[#999] border font-semibold text-[1.5rem] rounded-full cursor-not-allowed'
+                            : 'w-[160px] h-[40px] py-3 bg-white border font-semibold text-[1.5rem] rounded-full'
                         }
                         onClick={() => {
                           if (description !== '') {
@@ -160,11 +160,11 @@ export function ModalCustomize( { price, currentModel } ){
                               setButtonsEnabled,
                               setShowAddedMessageGuardar,
                               formdata,
-                            );
+                            )
                           }
                         }}
                       >
-                        Guardar diseño
+                        Guardar y compartir
                       </button>
 
                       <div className="flex gap-[10px]">
@@ -181,7 +181,7 @@ export function ModalCustomize( { price, currentModel } ){
                           <IconCart isButtonsEnabled={isButtonsEnabled} />
                         </button>
 
-                        <button
+                        {/* <button
                           className={
                             isButtonsEnabled
                               ? enabledButtonClasses
@@ -191,7 +191,7 @@ export function ModalCustomize( { price, currentModel } ){
                           disabled={!isButtonsEnabled}
                         >
                           <IconShare isButtonsEnabled={isButtonsEnabled} />
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                     <div

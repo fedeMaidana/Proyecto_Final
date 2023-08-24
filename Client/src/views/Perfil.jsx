@@ -30,7 +30,7 @@ export const ProfilePage = () => {
   const { name, email, userName, lastName, birthDate } = inputs;
 
   const [messageVisible, setMessageVisible] = useState(false);
-
+  const googleToken = localStorage.getItem( 'googleToken')
   useEffect(() => {
     if (messageback) {
       showMessage();
@@ -62,6 +62,21 @@ export const ProfilePage = () => {
       }
     }
   };
+
+  if (googleToken) {
+    try {
+      const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
+        headers: {
+          googleToken: `${googleToken}`,
+        },
+      });
+      console.log(response);
+      setUser(response?.data);
+    } catch (error) {
+      console.error('Error al obtener detalles del usuario:', error);
+    }
+  }
+};
 
   useEffect(() => {
     fetchUserDetails();

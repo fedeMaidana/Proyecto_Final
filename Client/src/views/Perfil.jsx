@@ -112,7 +112,7 @@ export const ProfilePage = () => {
   }
 
   return (
-    <div className="flex h-screen ">
+    <div className="flex flex-col h-screen transform translate-y-[10vh] px-[50px]">
       <div className="w-1/7 bg-gray-300 p-10 flex flex-col justify-start  shadow-xl fixed left-0 top-0 bottom-0">
         <ul className=" space-y-24 ">
           <li
@@ -155,7 +155,7 @@ export const ProfilePage = () => {
 
       </div>
 
-      <div className="w-6/7 ml-[7%] overflow-y-auto">
+      <div className="w-6/7 ml-[7%] overflow-y-auto ">
         <div className="mb-4">
           <a
             href="/home"

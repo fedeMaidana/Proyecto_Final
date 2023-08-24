@@ -1,4 +1,4 @@
-const CardTwo = () => {
+const CardTwo = ( { approvedPayments, approvedPaymentsLength } ) => {
     return (
       <div className="border bg-white p-5">
         <span>

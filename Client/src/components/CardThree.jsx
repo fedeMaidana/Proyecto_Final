@@ -1,11 +1,14 @@
-
+import { useSelector} from 'react-redux'
 
 const CardThree = ({users}) => {
 
   const totalCreatedProducts = users.reduce((total, user) => total + user.CreatedProducts.length, 0);
 
-  const usersWithCreatedProducts = users.filter((user) => user.CreatedProducts.length > 0);
+  //const usersWithCreatedProducts = users.filter((user) => user.CreatedProducts.length > 0);
 
+  const allUsers = useSelector( state => state.allUsers )
+  const postsAll = allUsers.flatMap( user => user.CreatedProducts )
+  postsAll.sort( ( a, b ) => a.id - b.id )
 
     return (
       <div className="rounded-sm border border-stroke bg-white py-6 px-[1.875rem] shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -28,7 +31,7 @@ const CardThree = ({users}) => {
             />
           </svg>
         </div>
-  
+
         <div className="mt-4 flex items-end justify-between">
           <div>
             <h4 className="text-[24px] leading-[30px] font-bold text-black dark:text-white">
@@ -38,33 +41,29 @@ const CardThree = ({users}) => {
           </div>
         </div>
 
+        { postsAll.map(post => {
+          const user = allUsers.find( user => user.id === post.userId )
 
-      
-
-        {usersWithCreatedProducts.map((user) => (
-          <div key={user.id} className="rounded-sm border border-stroke bg-white py-2 px-4 shadow-default dark:border-strokedark dark:bg-boxdark mt-2">
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            {user.name} {user.lastName}
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Created Products:
-          </p>
-          <ul className="list-disc list-inside">
-            
-           {user.CreatedProducts.map((createdProduct, index) => (
-          <li key={index} className="text-gray-600 dark:text-gray-300">
-            {createdProduct.name}
-          </li>
-      ))}
-    </ul>
-   
-  </div>
-))}
-
-
+          return(
+            <div key={post.id} className="rounded-sm border border-stroke bg-white py-2 px-4 shadow-default dark:border-strokedark dark:bg-boxdark mt-2">
+              <p className="text-lg text-gray-600 dark:text-gray-300">
+                {user.name} {user.lastName}
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Created Products:
+              </p>
+              <ul className="list-disc list-inside">
+                {user.CreatedProducts.map((createdProduct, index) => (
+                  <li key={index} className="text-gray-600 dark:text-gray-300">
+                    {createdProduct.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        })}
       </div>
-    );
-  };
-  
-  export default CardThree;
-  
+    )
+  }
+
+export default CardThree

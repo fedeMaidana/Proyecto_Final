@@ -95,7 +95,6 @@ export const Card = ( { name, nameProduct, description, images, price, id, stock
     else dispatch( createOrAddToCartbackend( parsedUserId, cartId, newProduct ) ) */
   }
 
-  
   useEffect(() => {
     setCartData({
         cartProducts: cartProducts,

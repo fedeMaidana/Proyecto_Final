@@ -293,7 +293,7 @@ export const addToCart = (product) => (dispatch, getState) => {
       payload: {product},
     };
   };
-  
+
   export const decrementProduct = (product) => {
     return {
       type: DECREMENT_PRODUCT,

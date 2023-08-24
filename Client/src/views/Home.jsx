@@ -8,6 +8,8 @@ import tshirt from "../assets/images/tshirt.png"
 import { CardHome } from "../components/CardHome"
 import { getComments, getUsers } from '../redux/actions'
 import { useDispatch } from 'react-redux'
+import axios from 'axios'
+import Cookies from 'universal-cookie'
 
 export const Home = () => {
     const dispatch = useDispatch()
@@ -16,6 +18,33 @@ export const Home = () => {
         dispatch( getComments() )
         dispatch( getUsers() )
     }, [ dispatch ])
+
+    const cookies = new Cookies()
+  
+    useEffect(() => {
+      const googleToken = cookies.get( 'googleToken' )
+  
+      if( googleToken ){
+        const fetchGoogleUserDetails = async () => {
+          try {
+            const responseGoogle = await axios.get('https://proyectofinal-production-4957.up.railway.app/user/google', {
+              headers: {
+                googleToken: googleToken,
+              }
+            })
+  
+            const {  id } = responseGoogle.data
+  
+            localStorage.setItem( 'userId', id )
+  
+          }catch( error ){
+            console.error('Error al obtener detalles del usuario de Google:', error);
+          }
+        }
+  
+        fetchGoogleUserDetails()
+      }
+    }, [])
 
     return(
             <div className="w-[100%] lg:h-[90%] grid grid-rows-4 bg-[#f6f5f7] transform translate-y-[10vh] px-[50px]">

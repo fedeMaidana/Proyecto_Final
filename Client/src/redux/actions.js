@@ -167,38 +167,69 @@ export const applyFilters = (filters) => {
     };
   };
 
-export const applySorting = (sorting) => {
-  return (dispatch, getState) => {
-    try {
-      const state = getState();
-      const allUsers = state.allUsers;
 
-      const postsAll = allUsers?.flatMap( user => user?.CreatedProducts )
+//  export const applySorting = ( sorting ) => {
+//      return async ( dispatch ) => {
+//           try {
+//                const response = await axios.get( '/filter', {
+//                   params: {
+//                        sortOption: sorting,
+//                   }
+//                })
 
+//              dispatch({
+//                   type: APPLY_SORTING,
+//                 payload: response.data,
+//                  sorting: sorting
+//              })
+//           } catch( error ) {
+//             console.error( 'Error fetching sorted products:', error )
+//         }
+//      }
+//   }
+// En tu acción Redux
+ export const applySorting = (sorting) => {
+   return (dispatch, ) => {
+     try {
+      //  const state = getState();
+      //  const allUsers = state.allUsers;
 
-      const sortedPosts = postsAll.slice().sort((a, b) => {
-      if (sorting === 'priceAsc') {
-        return a.price - b.price;
-      } else if (sorting === 'priceDesc') {
-        return b.price - a.price;
-      } else if (sorting === 'nameAsc') {
-        return a.name.localeCompare(b.name);
-      } else if (sorting === 'nameDesc') {
-        return  b.name.localeCompare(a.name);
-      }
-    })
+      //  const postsAll = allUsers.flatMap( user => user.CreatedProducts )
+  
 
+      //  const sortedPosts = postsAll.slice().sort((a, b) => {
+      //   if (sorting === 'priceAsc') {
+      //     return a.price - b.price;
+      //   } else if (sorting === 'priceDesc') {
+      //     return b.price - a.price;
+      //   } else if (sorting === 'nameAsc') {
+      //     return a.name.localeCompare(b.name);
+      //   } else if (sorting === 'nameDesc') {
+      //    return  b.name.localeCompare(a.name);
+      //   }
+      
+        
+      // });
+      
+       
+       
+      
+       
+     
+        //  let totalPost = allUsers.reduce(( sum, user ) => {
+        //    return sum + user.CreatedProducts.length
+        //  }, 0)
 
-    dispatch({
-        type: APPLY_SORTING,
-        payload: sortedPosts, // Crear un nuevo arreglo para desencadenar la actualización en Redux
-        sorting: sorting,
-      });
-    } catch (error) {
-      console.error('Error aplicando el ordenamiento:', error);
-    }
-  }
-}
+     dispatch({
+         type: APPLY_SORTING,
+         payload: sorting, // Crear un nuevo arreglo para desencadenar la actualización en Redux
+         sorting: sorting,
+       });
+     } catch (error) {
+       console.error('Error aplicando el ordenamiento:', error);
+     }
+   };
+ };
 
 
 

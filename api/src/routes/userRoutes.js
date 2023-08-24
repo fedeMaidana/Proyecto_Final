@@ -43,7 +43,7 @@ userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { 
   
     // Redirigir al usuario a la página de inicio con el token en la URL
     res.redirect(redirectUrl);
-  }, 3000); // El valor de 500 es el tiempo en milisegundos (medio segundo en este caso)
+  }, 500); // El valor de 500 es el tiempo en milisegundos (medio segundo en este caso)
 });
 
 

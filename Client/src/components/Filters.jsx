@@ -54,7 +54,7 @@ export function Filter() {
                         >
                             <option value="all">Todo</option>
                             { categories?.map( category => (
-                                <option value={ category.name } key={ category.id } >
+                                <option value={ category.id } key={ category.id } >
                                     { category.name }
                                 </option>
                             ))}

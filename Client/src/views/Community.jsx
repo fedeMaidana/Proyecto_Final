@@ -1,40 +1,51 @@
-import { CardsContainer } from "../components/CardsContainer"
-import { Filter } from "../components/Filters"
-import SearchBar from "../components/SearchBar"
-import { useState, useEffect } from 'react'
-import { useSelector, useDispatch} from 'react-redux'
-import { getUsers, getComments} from '../redux/actions'
-import { Pagination } from "../components/Pagination"
+import { CardsContainer } from "../components/CardsContainer";
+import { Filter } from "../components/Filters";
+import SearchBar from "../components/SearchBar";
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUsers, getComments } from '../redux/actions';
+import { Pagination } from "../components/Pagination";
 
-export function Community () {
-  const dispatch = useDispatch()
+export function Community() {
+  const dispatch = useDispatch();
 
-  const allUsers = useSelector( state => state.allUsers )
+  const allUsers = useSelector(state => state.allUsers);
+  const appliedFilters = useSelector(state => state.appliedFilters);
 
-  const [ currentPage, setCurrentPage ] = useState( 1 )
+  console.log('filros y ordenamientos', appliedFilters)
 
-  const postsPerPage = 10
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const indexOfLastPost = currentPage * postsPerPage
-  const indexOfFirstPost = indexOfLastPost - postsPerPage
+  const postsPerPage = 10;
 
-  const postsAll = allUsers.flatMap( user => user.CreatedProducts )
-  postsAll.sort( ( a, b ) => a.id - b.id )
+  const indexOfLastPost = currentPage * postsPerPage;
+const indexOfFirstPost = indexOfLastPost - postsPerPage;
 
-  const currentPosts = postsAll.slice( indexOfFirstPost, indexOfLastPost )
+const postsAll = allUsers.flatMap(user => user.CreatedProducts);
 
-  let totalPost = allUsers.reduce(( sum, user ) => {
-    return sum + user.CreatedProducts.length
-  }, 0)
+const sortedPosts = postsAll.slice().sort((a, b) => {
+  if (appliedFilters.sorting === "priceAsc") {
+    return a.price - b.price;
+  } else if (appliedFilters.sorting === "priceDesc") {
+    return b.price - a.price;
+  } else if (appliedFilters.sorting === "nameAsc") {
+    return a.name.localeCompare(b.name);
+  } else if (appliedFilters.sorting === "nameDesc") {
+    return b.name.localeCompare(a.name);
+  }
+  return a.id - b.id;
+});
 
-  const paginate = pageNumber => setCurrentPage( pageNumber )
+const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
+const totalPost = sortedPosts.length;
 
-  console.log(postsAll)
+const paginate = pageNumber => setCurrentPage(pageNumber);
+
 
   useEffect(() => {
-    dispatch( getUsers() )
-  dispatch( getComments() )
-  }, [ dispatch ])
+    dispatch(getUsers());
+    dispatch(getComments());
+  }, [dispatch]);
 
   return (
     <div className="w-full h-[auto] transform translate-y-[10vh] p-[10px] flex flex-col gap-[10px] bg-[#f6f6f6]">
@@ -46,22 +57,22 @@ export function Community () {
       </div>
 
       <Pagination
-        postsPerPage={ postsPerPage }
-        totalPosts={ totalPost }
-        paginate={ paginate }
-        currentPage={ currentPage }
+        postsPerPage={postsPerPage}
+        totalPosts={totalPost}
+        paginate={paginate}
+        currentPage={currentPage}
       />
 
       <div className="w-full h-full flex flex-col items-center gap-[10px]">
-        <CardsContainer currentPosts={ currentPosts } />
+        <CardsContainer currentPosts={currentPosts} />
       </div>
 
       <Pagination
-        postsPerPage={ postsPerPage }
-        totalPosts={ totalPost }
-        paginate={ paginate }
-        currentPage={ currentPage }
+        postsPerPage={postsPerPage}
+        totalPosts={totalPost}
+        paginate={paginate}
+        currentPage={currentPage}
       />
     </div>
-  )
+  );
 }

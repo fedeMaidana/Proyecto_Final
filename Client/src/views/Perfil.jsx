@@ -30,7 +30,7 @@ export const ProfilePage = () => {
   const { name, email, userName, lastName, birthDate } = inputs;
 
   const [messageVisible, setMessageVisible] = useState(false);
-  const googleToken = localStorage.getItem( 'googleToken')
+  const googleToken = localStorage.getItem('googleToken')
   useEffect(() => {
     if (messageback) {
       showMessage();
@@ -61,6 +61,8 @@ export const ProfilePage = () => {
         console.error('Error al obtener detalles del usuario:', error);
       }
     }
+
+
     if (googleToken) {
       try {
         const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
@@ -76,10 +78,6 @@ export const ProfilePage = () => {
     }
   };
 
-
-
-
-
   useEffect(() => {
     fetchUserDetails();
   }, []);
@@ -91,6 +89,7 @@ export const ProfilePage = () => {
   };
 
   const onSubmit = async (event) => {
+    alert(profileImage)
     event.preventDefault();
 
     if (name !== '' && email !== '' && userName !== '' && lastName !== '' && birthDate !== '') {
@@ -102,7 +101,6 @@ export const ProfilePage = () => {
       for (const key in updatedUser) {
         formData.append(key, updatedUser[key]);
       }
-
       setLoading(true);
 
       try {
@@ -125,17 +123,12 @@ export const ProfilePage = () => {
     }
   };
 
-
   const deleteProduct = (productId) => {
     dispatch(deleteProducts(productId))
     fetchUserDetails()
 
   };
-  const handleLogout = () => {
-    localStorage.removeItem('token')
-    setUser(undefined)
-    navigate('/home');
-  }
+
 
   return (
     <div className="flex flex-col h-screen transform translate-y-[10vh] px-[50px]">
@@ -379,7 +372,7 @@ export const ProfilePage = () => {
                   Actualizar Información de Usuario
                 </h3>
                 <form onSubmit={onSubmit}>
-                  {/* <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-center">
                     <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100">
                       {profileImage ? (
                         <div>
@@ -439,8 +432,7 @@ export const ProfilePage = () => {
                       className="hidden"
                       onChange={(event) => setProfileImage(event.target.files[0])}
                     />
-                    
-                  </div> */}
+                  </div>
 
                   <div className="mb-4">
                     <label
@@ -536,4 +528,4 @@ export const ProfilePage = () => {
       </div>
     </div>
   );
- };
+};

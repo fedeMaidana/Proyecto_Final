@@ -28,7 +28,7 @@ const upload = multer({
     }
     const allowedExtensions = ['.png', '.jpg', '.webp'];
     const fileExtension = path.extname(file.originalname).toLowerCase();
- 
+
     if (allowedExtensions.includes(fileExtension)) {
       cb(null, true); // Aceptar el archivo
     } else {
@@ -51,44 +51,44 @@ const updateUser = async (id, name, email, password, userName, lastName, birthDa
       return { message: 'Usuario no encontrado' };
     }
 
-        // Verificar si se está intentando cambiar el correo electrónico
-        if (email && email !== user.email) {
-          const existingUser = await User.findOne({ where: { email } });
-          if (existingUser && existingUser.id !== user.id) {
-            return { message: 'Ya hay un usuario con este Email' };
-          }
-          user.email = email;
-        }
-    
-        // Verificar si se está intentando cambiar el nombre de usuario
-        if (userName && userName !== user.userName) {
-          const existingUserName = await User.findOne({ where: { userName } });
-          if (existingUserName && existingUserName.id !== user.id) {
-            return { message: 'Ya hay un usuario con este Username' };
-          }
-          user.userName = userName;
-        }
-    
-        // Actualizar otros campos si se proporcionan
-        if (name) user.name = name;
-        if (lastName) user.lastName = lastName;
-        if (birthDate) user.birthDate = birthDate;
-    
 
-       
-        let cloudinaryUrl = null;
-        if (profileImage) {
-          try {
-            const result = await cloudinary.uploader.upload(profileImage.path, {
-              folder: 'user-profiles', // Carpeta en Cloudinary para almacenar las imágenes de perfil
-              use_filename: true
-            });
-            cloudinaryUrl = result.secure_url;
-          } catch (error) {
-            console.error('Error uploading image to Cloudinary:', error);
-          }
-        }
-    
+    if (email && email !== user.email) {
+      const existingUser = await User.findOne({ where: { email } });
+      if (existingUser && existingUser.id !== user.id) {
+        return { message: 'Ya hay un usuario con este Email' };
+      }
+      user.email = email;
+    }
+
+
+    if (userName && userName !== user.userName) {
+      const existingUserName = await User.findOne({ where: { userName } });
+      if (existingUserName && existingUserName.id !== user.id) {
+        return { message: 'Ya hay un usuario con este Username' };
+      }
+      user.userName = userName;
+    }
+
+
+    if (name) user.name = name;
+    if (lastName) user.lastName = lastName;
+    if (birthDate) user.birthDate = birthDate;
+
+
+
+    let cloudinaryUrl = user.profileImage;
+    if (profileImage) {
+      try {
+        const result = await cloudinary.uploader.upload(profileImage.path, {
+          // public_id: `user-profiles/${user.profileImage.public_id}`,
+          overwrite: true
+        });
+        cloudinaryUrl = result;
+      } catch (error) {
+        console.error('Error uploading image to Cloudinary:', error);
+      }
+    }
+
 
     await user.save();
 
@@ -101,7 +101,7 @@ const updateUser = async (id, name, email, password, userName, lastName, birthDa
         userName: user.userName,
         email: user.email,
         birthDate: user.birthDate,
-        profileImage: user.profileImage, // La URL de Cloudinary ya está asignada aquí
+        profileImage: cloudinaryUrl, // La URL de Cloudinary ya está asignada aquí
         estado: user.estado,
       },
     };
@@ -112,6 +112,6 @@ const updateUser = async (id, name, email, password, userName, lastName, birthDa
 };
 
 module.exports = {
-  updateUser,upload
-  
+  updateUser, upload
+
 };

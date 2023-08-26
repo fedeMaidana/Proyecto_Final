@@ -28,7 +28,7 @@ export const ProfilePage = () => {
   const [activeSection, setActiveSection] = useState('informacion-personal'); // Estado para la sección activa
   const [profileImage, setProfileImage] = useState(null);
   const { name, email, userName, lastName, birthDate } = inputs;
-
+  console.log(profileImage);
   const [messageVisible, setMessageVisible] = useState(false);
   const googleToken = localStorage.getItem('googleToken')
   useEffect(() => {
@@ -70,7 +70,7 @@ export const ProfilePage = () => {
             googleToken: `${googleToken}`,
           },
         });
-        console.log(response);
+       
         setUser(response?.data);
       } catch (error) {
         console.error('Error al obtener detalles del usuario:', error);
@@ -89,8 +89,8 @@ export const ProfilePage = () => {
   };
 
   const onSubmit = async (event) => {
-    alert(profileImage)
     event.preventDefault();
+    console.log("Before submission:", profileImage);
 
     if (name !== '' && email !== '' && userName !== '' && lastName !== '' && birthDate !== '') {
       const updatedUser = { name, email, userName, lastName, birthDate };
@@ -98,21 +98,22 @@ export const ProfilePage = () => {
       const formData = new FormData();
       formData.append('profileImage', profileImage); // Append the profileImage to FormData
 
-      for (const key in updatedUser) {
-        formData.append(key, updatedUser[key]);
-      }
+
       setLoading(true);
 
       try {
+        console.log("Before axios call:", profileImage);
         const response = await axios.put(`https://proyectofinal-production-4957.up.railway.app/updateuser/${user.id}`, formData);
+        console.log("After axios call:", profileImage)
+        console.log(response);
         setMessage(response.data.message);
         setInputs({ name: '', email: '', userName: '', lastName: '', birthDate: '' });
         setProfileImage(null); // Reset the profileImage state
 
         setTimeout(() => {
-          setMessage('');
+          setMessage('usuario actulizado');
           setLoading(false);
-        }, 1500);
+        }, 2500);
       } catch (error) {
         console.error(error);
         setMessage('Hubo un error al actualizar el usuario');

@@ -147,7 +147,7 @@ const register = async (name, email, password, userName, lastName, birthDate, pr
         folder: 'user-profiles', // Carpeta en Cloudinary para almacenar las imágenes de perfil
         use_filename: true
       });
-      cloudinaryUrl = result.secure_url;
+      cloudinaryUrl = result;
     } catch (error) {
       console.error('Error uploading image to Cloudinary:', error);
     }

@@ -25,14 +25,12 @@ export const Login = () => {
 
             await axios.post( 'https://proyectofinal-production-4957.up.railway.app/login', User ).then( ( { data } ) => {
                 setMessage( data.message )
-                // setInputs( { email: '', password: '' } )
 
                 setTimeout(() => {
                     setMessage( '' )
-                    console.log(data);
-                    localStorage.setItem("token", data?.user.token)
-                    localStorage.setItem("role", data?.user.role)
-                    if (data.user.token) {
+                    localStorage.setItem("token", data?.user?.token)
+                    localStorage.setItem("role", data?.user?.role)
+                    if (data?.user?.token) {
                         setAccess(true)
                     }
                     setLoading( false )

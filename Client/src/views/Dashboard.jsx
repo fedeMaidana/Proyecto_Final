@@ -27,8 +27,6 @@ export function Dashboard() {
   const approvedPayments = shoppingCart.filter( cart => cart.estado_pedido === 'Pago Aprobado' )
   const approvedPaymentsLength = approvedPayments.length
 
-  console.log(shoppingCart)
-
   return (
     <div className="p-5 bg-[#f6f5f7]">
       <div className="mt-[10vh] flex flex-col gap-5">

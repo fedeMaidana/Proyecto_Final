@@ -1,3 +1,4 @@
+const cloudinary = require('cloudinary').v2;
 const bcrypt = require('bcrypt');
 const { User } = require('../db');
 const path = require('path');
@@ -20,19 +21,27 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
+
     if (!file) {
       cb(null, true);
       return;
     }
     const allowedExtensions = ['.png', '.jpg', '.webp'];
     const fileExtension = path.extname(file.originalname).toLowerCase();
+
     if (allowedExtensions.includes(fileExtension)) {
       cb(null, true); // Aceptar el archivo
     } else {
       cb(new Error('Tipo de archivo no válido'));
     }
   },
-}).single('profileImage'); // Especifica el campo en el formulario que contendrá la imagen
+});// Especifica el campo en el formulario que contendrá la imagen
+
+cloudinary.config({
+  cloud_name: 'dseljeygs',
+  api_key: '389811994828251',
+  api_secret: '9bBKZMXxfPKu9JW6QyzdaI99L_A'
+});
 
 const updateUser = async (id, name, email, password, userName, lastName, birthDate, profileImage) => {
   try {
@@ -42,43 +51,44 @@ const updateUser = async (id, name, email, password, userName, lastName, birthDa
       return { message: 'Usuario no encontrado' };
     }
 
-        // Verificar si se está intentando cambiar el correo electrónico
-        if (email && email !== user.email) {
-          const existingUser = await User.findOne({ where: { email } });
-          if (existingUser && existingUser.id !== user.id) {
-            return { message: 'Ya hay un usuario con este Email' };
-          }
-          user.email = email;
-        }
-    
-        // Verificar si se está intentando cambiar el nombre de usuario
-        if (userName && userName !== user.userName) {
-          const existingUserName = await User.findOne({ where: { userName } });
-          if (existingUserName && existingUserName.id !== user.id) {
-            return { message: 'Ya hay un usuario con este Username' };
-          }
-          user.userName = userName;
-        }
-    
-        // Actualizar otros campos si se proporcionan
-        if (name) user.name = name;
-        if (lastName) user.lastName = lastName;
-        if (birthDate) user.birthDate = birthDate;
-        if (profileImage) user.profileImage = profileImage;
-    
-        // Actualizar la contraseña si se proporciona una nueva
-        if (password) {
-          const passwordHash = await bcrypt.hash(password, 10);
-          user.password = passwordHash;
-        }
 
-        if (profileImage) {
-          const baseUrl = 'https://proyectofinal-production-4957.up.railway.app/'; // Cambiar esto al hacer deploy
-          const imageUrl = `/upload/${profileImage.filename}`;
-          const fullImageUrl = baseUrl + imageUrl;
-          user.profileImage = fullImageUrl;
-        }
-    
+    if (email && email !== user.email) {
+      const existingUser = await User.findOne({ where: { email } });
+      if (existingUser && existingUser.id !== user.id) {
+        return { message: 'Ya hay un usuario con este Email' };
+      }
+      user.email = email;
+    }
+
+
+    if (userName && userName !== user.userName) {
+      const existingUserName = await User.findOne({ where: { userName } });
+      if (existingUserName && existingUserName.id !== user.id) {
+        return { message: 'Ya hay un usuario con este Username' };
+      }
+      user.userName = userName;
+    }
+
+
+    if (name) user.name = name;
+    if (lastName) user.lastName = lastName;
+    if (birthDate) user.birthDate = birthDate;
+
+
+
+    let cloudinaryUrl = user.profileImage;
+    if (profileImage) {
+      try {
+        const result = await cloudinary.uploader.upload(profileImage.path, {
+          // public_id: `user-profiles/${user.profileImage.public_id}`,
+          overwrite: true
+        });
+        cloudinaryUrl = result;
+      } catch (error) {
+        console.error('Error uploading image to Cloudinary:', error);
+      }
+    }
+
 
     await user.save();
 
@@ -91,7 +101,7 @@ const updateUser = async (id, name, email, password, userName, lastName, birthDa
         userName: user.userName,
         email: user.email,
         birthDate: user.birthDate,
-        profileImage: user.profileImage,
+        profileImage: cloudinaryUrl, // La URL de Cloudinary ya está asignada aquí
         estado: user.estado,
       },
     };
@@ -102,6 +112,6 @@ const updateUser = async (id, name, email, password, userName, lastName, birthDa
 };
 
 module.exports = {
-  updateUser,
-  
+  updateUser, upload
+
 };

@@ -26,7 +26,8 @@ const FavoriteButton = ( { productId, userId, token, googleToken } ) => {
 
 
   const handleFavoriteToggle = async () => {
-    if( !token || !googleToken ) return
+    if( !token) return
+    if( !googleToken ) return
 
     if( isFavorite ){
       const favoriteToDelete = favorites.find( favorite => favorite.Favorite.ProductId === productId )

@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom';
-
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { buyCancel } from '../redux/actions';
 const PaymentCancel = () => {
+
+  const dispatch =useDispatch()
+  const cartId = localStorage.getItem('cartId');
+
+  useEffect(() => {
+    dispatch(buyCancel(cartId))
+}, []);
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <h1 className="text-3xl font-semibold mb-4">Pago Cancelado</h1>

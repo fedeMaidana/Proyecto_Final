@@ -44,7 +44,8 @@ import {
      APPLY_SORTING_TO_USERS,
      FETCH_GOOGLE_USER_DETAILS_REQUEST,
      FETCH_GOOGLE_USER_DETAILS_SUCCESS,
-     FETCH_GOOGLE_USER_DETAILS_FAILURE
+     FETCH_GOOGLE_USER_DETAILS_FAILURE,
+     BUY_CANCEL
 
 } from "./action-types"
 
@@ -573,6 +574,23 @@ export const applySortingToUsers = (sorting) => {
     payload: sorting,
   };
 }
+
+export const buyCancel= (cartId) => {
+  console.log(typeof cartId)
+  return async (dispatch) => {
+    try {
+        const response = await axios.post('/shopping_cart/buy-cancel', {
+          cartId: cartId,
+        });
+
+        return dispatch( { type: BUY_CANCEL, payload: response.data } )
+
+    } catch (error) {
+      console.error('Error al agregar el producto al carrito:', error);
+    }
+  };
+};
+
 
 
 export const fetchGoogleUserDetails = (googleToken) => {

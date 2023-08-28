@@ -30,7 +30,7 @@ export const CardsContainer = ( { currentPosts } ) => {
             color={ post?.color }
             size={ post?.size }
             category={ post?.category }
-            profileImage={ user?.profileImage?.secure_url }
+            profileImage={ user?.profileImage?.urlImage }
           />
         )
       })}

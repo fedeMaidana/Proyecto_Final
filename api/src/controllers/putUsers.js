@@ -76,14 +76,18 @@ const updateUser = async (id, name, email, password, userName, lastName, birthDa
 
 
 
-    let cloudinaryUrl = user.profileImage;
+    let cloudinaryUrl = null;
     if (profileImage) {
       try {
         const result = await cloudinary.uploader.upload(profileImage.path, {
-          // public_id: `user-profiles/${user.profileImage.public_id}`,
+  
           overwrite: true
         });
-        cloudinaryUrl = result;
+        cloudinaryUrl = {
+          urlImage: result.url,
+          imageId: result.public_id
+       };
+       user.profileImage=cloudinaryUrl
       } catch (error) {
         console.error('Error uploading image to Cloudinary:', error);
       }
@@ -101,7 +105,7 @@ const updateUser = async (id, name, email, password, userName, lastName, birthDa
         userName: user.userName,
         email: user.email,
         birthDate: user.birthDate,
-        profileImage: cloudinaryUrl, // La URL de Cloudinary ya está asignada aquí
+        profileImage: user.profileImage, // La URL de Cloudinary ya está asignada aquí
         estado: user.estado,
       },
     };

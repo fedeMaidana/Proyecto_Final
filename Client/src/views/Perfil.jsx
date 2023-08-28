@@ -90,21 +90,26 @@ export const ProfilePage = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    console.log("Before submission:", profileImage);
+    
 
     if (name !== '' && email !== '' && userName !== '' && lastName !== '' && birthDate !== '') {
       const updatedUser = { name, email, userName, lastName, birthDate };
 
       const formData = new FormData();
-      formData.append('profileImage', profileImage); // Append the profileImage to FormData
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('userName', userName);
+      formData.append('lastName', lastName);
+      formData.append('profileImage', profileImage);
+      formData.append('birthDate', birthDate);// Append the profileImage to FormData
 
 
       setLoading(true);
 
       try {
-        console.log("Before axios call:", profileImage);
+        
         const response = await axios.put(`https://proyectofinal-production-4957.up.railway.app/updateuser/${user.id}`, formData);
-        console.log("After axios call:", profileImage)
+        
         console.log(response);
         setMessage(response.data.message);
         setInputs({ name: '', email: '', userName: '', lastName: '', birthDate: '' });

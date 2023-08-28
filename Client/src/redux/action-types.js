@@ -42,6 +42,7 @@ export const UPDATE_CART_ID = 'UPDATE_CART_ID';
 export const BUY_CART_ID = 'BUY_CART_ID';
 export const CANCEL_CART_ID = 'CANCEL_CART_ID';
 export const BUY_SUCCESS = 'BUY_SUCCESS';
+export const BUY_CANCEL = 'BUY_CANCEL';
 
 export const APPLY_SORTING_TO_USERS = 'APPLY_SORTING_TO_USERS'
 

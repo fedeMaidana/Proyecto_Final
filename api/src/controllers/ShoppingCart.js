@@ -196,7 +196,29 @@ await sendEmail(to, subject, text);
       console.error(error);
       throw new Error('Error al eliminar el producto del carrito');
     }
-}
+},
+
+  cancelbuyControllers: async ( { cartId}) => {
+  try {
+    const cart = await Shopping_cart.findByPk(cartId);
+    if (!cart) {
+      return res.status(404).json({ error: 'Carrito no encontrado.' });
+    }
+
+  cart.estado_pedido = 'Cancelado'
+
+  await cart.save();
+
+
+
+
+    return cart;
+  } catch (error) {
+    console.error(error)
+    throw new Error('Error al agregar el producto al carrito');
+  }
+},
+
 
 }
 module.exports = cartController

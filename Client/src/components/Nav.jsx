@@ -12,7 +12,6 @@ export function Nav() {
 
   const googleToken = localStorage.getItem( 'googleToken')
   const token = localStorage.getItem( 'token' )
-  console.log('Google Token:', googleToken)
 
   const [ user, setUser ] = useState( undefined )
   const [ userImage, setUserImage ] = useState( undefined )

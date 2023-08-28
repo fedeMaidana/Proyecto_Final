@@ -4,33 +4,30 @@ import { Link } from 'react-router-dom';
 import { buySuccessCart } from '../redux/actions';
 
 const PaymentSuccess = () => {
- const dispatch =useDispatch()
-const userId = localStorage.getItem('userId'); // Obtener userId de localStorage
-const parsedUserId = parseInt(userId, 10); 
-const cartId = localStorage.getItem('cartId');
+    const dispatch =useDispatch()
+    const userId = localStorage.getItem('userId'); // Obtener userId de localStorage
+    const parsedUserId = parseInt(userId, 10); 
+    const cartId = localStorage.getItem('cartId');
+    const cartData = JSON.parse(localStorage.getItem('cart'));
+    const cartTotal = cartData.cartTotal; // Acceder al valor de cartTotal
 
-const cartData = JSON.parse(localStorage.getItem('cart'));
-    // Acceder al valor de cartTotal
-const cartTotal = cartData.cartTotal;
+    let cartProductsArray = [];
+    const localStorageData = localStorage.getItem('cart');
+    // Paso 2: Acceder a la propiedad cartProducts
+    if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData); // Parsea el objeto JSON
+        cartProductsArray = parsedData.cartProducts;
 
-let cartProductsArray = [];
-const localStorageData = localStorage.getItem('cart');
-// Paso 2: Acceder a la propiedad cartProducts
-if (localStorageData) {
-  const parsedData = JSON.parse(localStorageData); // Parsea el objeto JSON
-  cartProductsArray = parsedData.cartProducts;
+        // Ahora tienes acceso al array cartProducts
+        console.log(cartProductsArray);
+    } else {
+        console.log('No se encontraron datos en el Local Storage');
+    }
 
-  // Ahora tienes acceso al array cartProducts
-  console.log(cartProductsArray);
-} else {
-  console.log('No se encontraron datos en el Local Storage');
-}
+    useEffect(() => {
+        dispatch(buySuccessCart(cartId, parsedUserId))
+    }, []);
 
-useEffect(() => {
-    dispatch(buySuccessCart(cartId, parsedUserId))
-}, []);
-
-    
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-green-100">
             <h1 className="text-3xl font-semibold mb-4">Pago Exitoso</h1>

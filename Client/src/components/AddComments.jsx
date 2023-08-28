@@ -28,6 +28,8 @@ const AddComment = ( { userId, productId, profileImage, token } ) => {
     dispatch( deleteComment( commentId ) )
   }
 
+  console.log(comments)
+
   return(
     <>
       <h2 className="text-lg text-center font-semibold border-t pt-[10px]">Comentarios</h2>

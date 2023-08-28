@@ -40,7 +40,7 @@ module.exports = ( sequilize ) => {
           allowNull: false, 
       },
       profileImage: {
-          type: DataTypes.STRING, 
+          type: DataTypes.JSON, 
           allowNull: true, 
       },
       role: {

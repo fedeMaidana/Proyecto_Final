@@ -6,7 +6,7 @@ import dress from "../assets/images/dress.png"
 import jacket from "../assets/images/jacket.png"
 import tshirt from "../assets/images/tshirt.png"
 import { CardHome } from "../components/CardHome"
-import { getComments, getUsers } from '../redux/actions'
+import { getComments, getUsers, fetchGoogleUserDetails } from '../redux/actions'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom';
 
@@ -21,14 +21,10 @@ export const Home = () => {
       if (googleToken) {
         localStorage.setItem('googleToken', googleToken); // Guarda el token en el localStorage
       }
-  
+      dispatch(fetchGoogleUserDetails(googleToken));
       dispatch(getComments());
       dispatch(getUsers());
     }, [location, dispatch]);
-useEffect(() => {
-    dispatch( getComments() )
-    dispatch( getUsers() )
-}, [ dispatch ])
     return(
             <div className="w-[100%] lg:h-[90%] grid grid-rows-4 bg-[#f6f5f7] transform translate-y-[10vh] px-[50px]">
                 <div className="row-span-1 grid">

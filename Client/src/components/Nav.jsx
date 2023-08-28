@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import logo from '../assets/images/DiseñoBase_de_logoCustomCraft_black.png'
 import { Cart } from './Cart'
 import { IconProfileArrow, IconShoppingCart } from '../assets/icons/icons'
+import { fetchGoogleUserDetails } from '../redux/actions'
 
 
 export function Nav() {
   const cartCount = useSelector( state => state.cartCount )
-
+  const usersGoogle = useSelector(state => state.user)
+  const dispatch = useDispatch()
   const googleToken = localStorage.getItem( 'googleToken')
   const token = localStorage.getItem( 'token' )
   console.log('Google Token:', googleToken)
@@ -20,6 +22,13 @@ export function Nav() {
   const [ ModalProfile, setModalProfile ] = useState( false )
   const [ ModalCart, setModalCart ] = useState( false )
   const [ userId, setUserId ] = useState( null )
+  
+
+  setUserId( usersGoogle.id )
+  localStorage.setItem( 'userId', usersGoogle.id )
+  setUser( usersGoogle.name )
+  setUserImage( usersGoogle.profileImage.urlImage )
+  setUserRol( usersGoogle.data?.role )
 
   useEffect(() => {
     setModalProfile( false )
@@ -53,29 +62,30 @@ export function Nav() {
       fetchUserDetails()
     }
     if( googleToken ){
-      const fetchGoogleUserDetails = async () => {
-        try {
-          const responseGoogle = await axios.get('https://proyectofinal-production-4957.up.railway.app/user/google', {
-            headers: {
-              googleToken: googleToken,
-            }
-          })
+      dispatch(fetchGoogleUserDetails(googleToken));
+      // const fetchGoogleUserDetails = async () => {
+      //   try {
+      //     const responseGoogle = await axios.get('https://proyectofinal-production-4957.up.railway.app/user/google', {
+      //       headers: {
+      //         googleToken: googleToken,
+      //       }
+      //     })
 
-          const { name, id } = responseGoogle.data
+      //     const { name, id } = responseGoogle.data
 
-          setUserId( id )
-          localStorage.setItem( 'userId', id )
-          setUser( responseGoogle?.data?.name )
-          setUserImage( responseGoogle?.data?.profileImage.urlImage )
-          setUserRol( responseGoogle?.data?.role )
+      //     setUserId( id )
+      //     localStorage.setItem( 'userId', id )
+      //     setUser( responseGoogle?.data?.name )
+      //     setUserImage( responseGoogle?.data?.profileImage.urlImage )
+      //     setUserRol( responseGoogle?.data?.role )
 
-          setUser( name )
-        }catch( error ){
-          console.error('Error al obtener detalles del usuario de Google:', error);
-        }
-      }
+      //     setUser( name )
+      //   }catch( error ){
+      //     console.error('Error al obtener detalles del usuario de Google:', error);
+      //   }
+      // }
 
-      fetchGoogleUserDetails()
+      // fetchGoogleUserDetails()
     }
   }, [])
 

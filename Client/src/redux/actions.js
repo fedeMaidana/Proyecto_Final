@@ -41,7 +41,10 @@ import {
      CANCEL_CART_ID, 
      BUY_SUCCESS,
      SET_CART_DATA,
-     APPLY_SORTING_TO_USERS
+     APPLY_SORTING_TO_USERS,
+     FETCH_GOOGLE_USER_DETAILS_REQUEST,
+     FETCH_GOOGLE_USER_DETAILS_SUCCESS,
+     FETCH_GOOGLE_USER_DETAILS_FAILURE
 
 } from "./action-types"
 
@@ -571,4 +574,24 @@ export const applySortingToUsers = (sorting) => {
   };
 }
 
+
+export const fetchGoogleUserDetails = (googleToken) => {
+  return async (dispatch) => {
+    dispatch({ type: FETCH_GOOGLE_USER_DETAILS_REQUEST });
+
+    try {
+      const responseGoogle = await axios.get('https://proyectofinal-production-4957.up.railway.app/user/google', {
+        headers: {
+          googleToken: googleToken,
+        },
+      });
+
+      const { data } = responseGoogle;
+      dispatch({ type: FETCH_GOOGLE_USER_DETAILS_SUCCESS, payload: data });
+    } catch (error) {
+      console.error('Error al obtener detalles del usuario de Google:', error);
+      dispatch({ type: FETCH_GOOGLE_USER_DETAILS_FAILURE, error: error.message });
+    }
+  };
+};
 

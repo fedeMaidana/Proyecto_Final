@@ -4,7 +4,7 @@ const { User } = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const URL = 'https://proyectofinal-production-4957.up.railway.app'
-
+const { sendEmail } = require('../Nodemailer/OrderBuy');
 
 // Serialización del usuario en la sesión
 passport.serializeUser((user, done) => {
@@ -94,6 +94,8 @@ passport.use(
           }
         });
 
+        await sendWelcomeEmail(email);
+
         const userResponse = {
           id: user[0].id,
           name: user[0].name,
@@ -102,10 +104,23 @@ passport.use(
           email: user[0].email,
           birthDate: user[0].birthDate,
           profileImage: user[0].profileImage,
-          token: user[0].token
+          token: user[0].token, 
+          role: user[0].role, 
         };
         
+        const to = userResponse.email; // Utiliza la dirección de correo electrónico del usuario
+        const subject = '¡Bienvenido a Custom Craft!';
+        const text = `¡Hola ${userResponse.name}!
 
+        Te damos la bienvenida a Custom Craft, tu plataforma creativa para llevar tus ideas al siguiente nivel. Estamos emocionados de tenerte como parte de nuestra comunidad.
+        
+        Aquí encontrarás herramientas excepcionales para dar vida a tus diseños y crear productos únicos. Siempre estamos aquí para ayudarte y responder a cualquier pregunta que puedas tener.
+        
+        ¡Disfruta explorando y creando en Custom Craft!
+        
+        Saludos,
+        El equipo de Custom Craft`
+        await sendEmail(to, subject, text);
 
         
         const token = jwt.sign({ userId: userResponse.id }, process.env.SECRET_KEY, {

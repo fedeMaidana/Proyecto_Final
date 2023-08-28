@@ -135,7 +135,7 @@ const text = `
   ¡Esperamos que disfrutes de tus productos!
 
   ¡Saludos,
-  El equipo de [Nombre de tu empresa]
+  El equipo de Custom Craft
 `;
 await sendEmail(to, subject, text);
 

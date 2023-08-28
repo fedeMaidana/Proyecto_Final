@@ -62,7 +62,6 @@ export const ProfilePage = () => {
       }
     }
 
-
     if (googleToken) {
       try {
         const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
@@ -77,6 +76,7 @@ export const ProfilePage = () => {
       }
     }
   };
+
 
   useEffect(() => {
     fetchUserDetails();

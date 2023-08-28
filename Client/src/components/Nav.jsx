@@ -24,11 +24,7 @@ export function Nav() {
   const [ userId, setUserId ] = useState( null )
   
 
-  setUserId( usersGoogle.id )
-  localStorage.setItem( 'userId', usersGoogle.id )
-  setUser( usersGoogle.name )
-  setUserImage( usersGoogle.profileImage.urlImage )
-  setUserRol( usersGoogle.data?.role )
+
 
   useEffect(() => {
     setModalProfile( false )
@@ -63,6 +59,11 @@ export function Nav() {
     }
     if( googleToken ){
       dispatch(fetchGoogleUserDetails(googleToken));
+      setUserId( usersGoogle.id )
+      localStorage.setItem( 'userId', usersGoogle.id )
+      setUser( usersGoogle.name )
+      setUserImage( usersGoogle.profileImage.urlImage )
+      setUserRol( usersGoogle.data?.role )
       // const fetchGoogleUserDetails = async () => {
       //   try {
       //     const responseGoogle = await axios.get('https://proyectofinal-production-4957.up.railway.app/user/google', {

@@ -92,9 +92,7 @@ export const ProfilePage = () => {
     event.preventDefault();
     
 
-    if (true) {
-      
-
+    if (true) {  
       const formData = new FormData();
       if (!name) {
         formData.append('name', user.name);

@@ -34,7 +34,7 @@ export const Register = () => {
       setLoading( true )
 
       try{
-        const response = await axios.post( "https://proyectofinal-production-4957.up.railway.app/register", formData )
+        const response = await axios.post("https://proyectofinal-production-4957.up.railway.app/register", formData )
 
         setMessage( response.data.message )
         setInputs( { email: "", name: "", password: "", userName: "", lastName: "", birthDate: "" } )

@@ -42,7 +42,7 @@ export function Nav() {
           console.log('responseeee',response);
 
           setUser( response?.data?.name )
-          setUserImage( response?.data?.profileImage )
+          setUserImage( response?.data?.profileImage.urlImage )
           setUserRol( response?.data?.role )
 
         }catch( error ){
@@ -66,7 +66,7 @@ export function Nav() {
           setUserId( id )
           localStorage.setItem( 'userId', id )
           setUser( responseGoogle?.data?.name )
-          setUserImage( responseGoogle?.data?.profileImage )
+          setUserImage( responseGoogle?.data?.profileImage.urlImage )
           setUserRol( responseGoogle?.data?.role )
 
           setUser( name )

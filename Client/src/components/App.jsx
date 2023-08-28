@@ -21,8 +21,7 @@ export function App() {
 
   const shouldShowNavBar = [ '/home', '/community', '/dashboard', '/my-profile' ].some( path => location.pathname.startsWith( path ) )
 
-
-  const isLoggedIn = localStorage.getItem('token') !== null;
+  const isLoggedIn = localStorage.getItem('token') !== null || localStorage.getItem('googleToken') !== null;
   const userRole = localStorage.getItem('role');
 
 

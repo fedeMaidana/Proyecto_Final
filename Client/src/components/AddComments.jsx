@@ -38,7 +38,7 @@ const AddComment = ( { userId, productId, profileImage, token } ) => {
                 <li key={ comment.id }>
                   <div className='w-[100%] h-auto bg-[#f6f6f6] rounded-[10px] px-5 py-3 flex items-center justify-between gap-[10px]'>
                     <div className='flex items-center gap-[10px]'>
-                      <img src={ allUsers.find( user => user.id === comment.userId )?.profileImage.urlImage } className='min-w-[30px] h-[30px] bg-[#9c9c9c] rounded-full'></img>
+                      <img src={ allUsers.find( user => user.id === comment.userId )?.profileImage?.urlImage } className='min-w-[30px] h-[30px] bg-[#9c9c9c] rounded-full'></img>
                       <p className='text-[1.2rem]'>
                         <span className='text-[1.4rem] font-semibold'>{ allUsers.find( user => user.id === comment.userId )?.name || 'Usuario desconocido'}</span> ▸ { comment.text }
                       </p>

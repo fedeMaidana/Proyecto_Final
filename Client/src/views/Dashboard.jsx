@@ -18,11 +18,11 @@ export function Dashboard() {
   const users = useSelector( state => state.allUsers )
   const totalUsers = users.length
 
+  console.log(shoppingCart)
+
   const cancelPayments = shoppingCart.filter( cart => cart.estado_pedido === 'Cancelado' )
-  const cancelPaymentLength = cancelPayments.length
 
   const approvedPayments = shoppingCart.filter( cart => cart.estado_pedido === 'Pago Aprobado' )
-  const approvedPaymentsLength = approvedPayments.length
 
   return (
     <div className="p-5 bg-[#f6f5f7]">

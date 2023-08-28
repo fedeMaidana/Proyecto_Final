@@ -1,88 +1,75 @@
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useDispatch } from 'react-redux'
+import { useState } from 'react'
 
-import { banUser, changeRole, getUsers, getUsersByName } from '../redux/actions';
-import { sort } from 'lodash';
-import orderBy from 'lodash/orderBy';
+import { banUser, changeRole, getUsers, getUsersByName } from '../redux/actions'
+import orderBy from 'lodash/orderBy'
 
 const CardFour = ({ totalUsers, users }) => {
-  
   const dispatch = useDispatch();
 
-  const [searchName, setSearchName] = useState('');
-  const [sortType, setSortType] = useState('asc'); 
-  const [roleFilter, setRoleFilter] = useState('all'); 
+  const [searchName, setSearchName] = useState('')
+  const [sortType, setSortType] = useState('asc')
+  const [roleFilter, setRoleFilter] = useState('all')
 
   const handleBanUser = (id) => {
     dispatch(banUser(id)).then(() => {
       dispatch(getUsers()); // Llama a getUsers después de ejecutar banUser
-    });
-  };
+    })
+  }
 
   const handleChangeRole = (id) => {
     dispatch(changeRole(id)).then(() => {
       dispatch(getUsers()); // Llama a getUsers después de ejecutar banUser
-    }); 
-  };
+    })
+  }
 
   const handleSearch = () => {
-    dispatch(getUsersByName(searchName));
-  };
+    dispatch(getUsersByName(searchName))
+  }
 
 
   return (
     <div className="rounded-sm border border-stroke bg-white py-6 px-[1.875rem] shadow-default dark:border-strokedark dark:bg-boxdark">
-  
-      <div className="mt-4 flex items-end justify-between">
-        <div>
+
+      <div className="flex justify-center">
+        <div className='flex gap-[10px]'>
           <input
             type="text"
             placeholder="Search by name"
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
-            className="border border-gray-300 p-2 rounded"
+            className="border border-gray-300 p-2 rounded outline-none rounded-[10px]"
           />
           <button
             onClick={handleSearch}
-            className="bg-blue-500 text-white px-4 py-2 rounded ml-2">
+            className="bg-[#33a1fd] text-[1.2rem] font-semibold text-white px-4 py-2 rounded-[10px]"
+          >
             Search
           </button>
           {/* Filtro de A-Z */}
           <select
             value={sortType}
             onChange={(e) => setSortType(e.target.value)}
-            className="border border-gray-300 p-2 rounded ml-2"
+            className="border border-gray-300 p-2 rounded-[10px] outline-none"
           >
-            <option value="asc">A to Z</option>
-            <option value="desc">Z to A</option>
+            <option value="asc">A a la Z</option>
+            <option value="desc">Z a la A</option>
           </select>
           {/* Filtro de rol */}
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="border border-gray-300 p-2 rounded ml-2"
+            className="border border-gray-300 p-2 rounded-[10px] outline-none"
           >
             <option value="all">All</option>
             <option value="admin">Admin</option>
             <option value="user">User</option>
           </select>
-
-
-
         </div>
       </div>
-  
-      <div className="flex h-[2.875rem] w-[2.875rem] items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
-        {/* ... (código SVG) */}
-      </div>
-  
-      <div className="mt-4 flex justify-center">
-        <div className='mb-10 mr-[5rem]'>
-          <span className=" text-[15px] font-medium ">Total de usuarios: {totalUsers} </span>
-{/*           <h4 className="text-[20px] leading-[30px] font-bold text-black">
-            {totalUsers}
-          </h4> */}
-        </div>
+
+      <div className="mt-4 flex">
+        <span className=" text-[1.5rem] font-medium ">Total de usuarios: {totalUsers} </span>
         <div className='mb-10'>
           {/*  número de usuarios que tienen el rol de "admin" o "user"  */}
           {roleFilter === 'admin' && (
@@ -98,10 +85,7 @@ const CardFour = ({ totalUsers, users }) => {
         </div>
       </div>
       <br />
-      <div>
-        <h4 className="font-medium text-black text-[15px] mb-10">
-          Nombres de usuarios:
-        </h4>
+      <div className='w-full flex flex-wrap gap-[10px] justify-center'>
         {orderBy(
           users.filter((user) => {
             if (roleFilter === 'all') return true;
@@ -116,27 +100,29 @@ const CardFour = ({ totalUsers, users }) => {
         ).map((user) => (
           <div
             key={user.id}
-            className="rounded-sm border border-stroke bg-white py-2 px-4 shadow-default dark:border-strokedark dark:bg-boxdark mt-2">
+            className="w-[45%] border p-5 flex items-center justify-between gap-[10px]"
+          >
             <p className="text-lg text-gray-600 ">
               {user.name} {user.lastName}
             </p>
-            <button
-              onClick={() => handleBanUser(user.id)}
-              className="mt-2 bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition duration-300 ease-in-out">
-              {user.estado === 1 ? 'Ban' : 'Unban'}
-            </button>
-            <br />
-            <button
-              onClick={() => handleChangeRole(user.id)}
-              className="mt-2 bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition duration-300 ease-in-out">
-              {user.role === 'user' ? 'admin' : 'user'}
-            </button>
+            <span>
+              <button
+                onClick={() => handleBanUser(user.id)}
+                className="mt-2 bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition duration-300 ease-in-out">
+                {user.estado === 1 ? 'Bloquear usuario' : 'Desbloquear usuario'}
+              </button>
+              <br />
+              <button
+                onClick={() => handleChangeRole(user.id)}
+                className="mt-2 bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition duration-300 ease-in-out">
+                {user.role === 'user' ? 'Convertir en admin' : 'Convertir en usuario'}
+              </button>
+            </span>
           </div>
         ))}
       </div>
     </div>
-  );
-  
-};
-  
-  export default CardFour;
+  )
+}
+
+  export default CardFour

@@ -28,9 +28,9 @@ export const ProfilePage = () => {
   const [activeSection, setActiveSection] = useState('informacion-personal'); // Estado para la sección activa
   const [profileImage, setProfileImage] = useState(null);
   const { name, email, userName, lastName, birthDate } = inputs;
-
+  console.log(profileImage);
   const [messageVisible, setMessageVisible] = useState(false);
-
+  const googleToken = localStorage.getItem('googleToken')
   useEffect(() => {
     if (messageback) {
       showMessage();
@@ -61,7 +61,22 @@ export const ProfilePage = () => {
         console.error('Error al obtener detalles del usuario:', error);
       }
     }
+
+    if (googleToken) {
+      try {
+        const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
+          headers: {
+            googleToken: `${googleToken}`,
+          },
+        });
+       
+        setUser(response?.data);
+      } catch (error) {
+        console.error('Error al obtener detalles del usuario:', error);
+      }
+    }
   };
+
 
   useEffect(() => {
     fetchUserDetails();
@@ -75,21 +90,30 @@ export const ProfilePage = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    console.log("Before submission:", profileImage);
 
     if (name !== '' && email !== '' && userName !== '' && lastName !== '' && birthDate !== '') {
-      const updatedUser = { name, email, userName, lastName, birthDate, profileImage };
+      const updatedUser = { name, email, userName, lastName, birthDate };
+
+      const formData = new FormData();
+      formData.append('profileImage', profileImage); // Append the profileImage to FormData
+
 
       setLoading(true);
 
       try {
-        const response = await axios.put(`https://proyectofinal-production-4957.up.railway.app/updateuser/${user.id}`, updatedUser);
+        console.log("Before axios call:", profileImage);
+        const response = await axios.put(`https://proyectofinal-production-4957.up.railway.app/updateuser/${user.id}`, formData);
+        console.log("After axios call:", profileImage)
+        console.log(response);
         setMessage(response.data.message);
         setInputs({ name: '', email: '', userName: '', lastName: '', birthDate: '' });
+        setProfileImage(null); // Reset the profileImage state
 
         setTimeout(() => {
-          setMessage('');
+          setMessage('usuario actulizado');
           setLoading(false);
-        }, 1500);
+        }, 2500);
       } catch (error) {
         console.error(error);
         setMessage('Hubo un error al actualizar el usuario');
@@ -105,11 +129,7 @@ export const ProfilePage = () => {
     fetchUserDetails()
 
   };
-  const handleLogout = () => {
-    localStorage.removeItem('token')
-    setUser(undefined)
-    navigate('/home');
-  }
+
 
   return (
     <div className="flex flex-col h-screen transform translate-y-[10vh] px-[50px]">
@@ -182,6 +202,7 @@ export const ProfilePage = () => {
                       <p>{user.name}</p>
                     </div>
                   </div>
+                  
                   <div>
                     <label>
                       <strong>Last Name</strong>
@@ -352,7 +373,7 @@ export const ProfilePage = () => {
                   Actualizar Información de Usuario
                 </h3>
                 <form onSubmit={onSubmit}>
-                  {/* <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-center">
                     <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100">
                       {profileImage ? (
                         <div>
@@ -412,7 +433,7 @@ export const ProfilePage = () => {
                       className="hidden"
                       onChange={(event) => setProfileImage(event.target.files[0])}
                     />
-                  </div> */}
+                  </div>
 
                   <div className="mb-4">
                     <label

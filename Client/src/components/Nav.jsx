@@ -38,6 +38,7 @@ export function Nav() {
           const userId = response?.data.id;
           setUserId( userId )
           localStorage.setItem( 'userId', userId )
+          console.log('responseeee',response);
 
           setUser( response?.data?.name )
           setUserImage( response?.data?.profileImage )

@@ -17,6 +17,13 @@ const getUserDetails = async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
+      lastName: user.lastName,
+      userName: user.userName,
+      birthDate: user.birthDate,
+      profileImage:user.profileImage,
+      token:user.token,
+      estado: user.estado,
+      role: user.role
       
     });
   } catch (error) {

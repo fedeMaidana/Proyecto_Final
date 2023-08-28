@@ -4,7 +4,7 @@ import { addFavorite, deleteFavorite, getFavorites, getUsers } from '../redux/ac
 import { MdFavoriteBorder, MdFavorite } from 'react-icons/md'
 import { checkIsFavorite } from '../auxFunctions/isFavorite'
 
-const FavoriteButton = ( { productId, userId, token } ) => {
+const FavoriteButton = ( { productId, userId, token, googleToken } ) => {
   const dispatch = useDispatch()
 
   const favorites = useSelector( state => state.favorites )
@@ -26,7 +26,7 @@ const FavoriteButton = ( { productId, userId, token } ) => {
 
 
   const handleFavoriteToggle = async () => {
-    if( !token ) return
+    if( !token || !googleToken ) return
 
     if( isFavorite ){
       const favoriteToDelete = favorites.find( favorite => favorite.Favorite.ProductId === productId )

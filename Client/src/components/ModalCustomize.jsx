@@ -17,6 +17,7 @@ export function ModalCustomize( { price, currentModel } ){
     const dispatch = useDispatch()
 
     const token = localStorage.getItem( 'token' )
+    const googleToken= localStorage.getItem( 'googleToken' )
 
     useEffect(() => {
         dispatch( setModal( false ) )
@@ -112,7 +113,7 @@ export function ModalCustomize( { price, currentModel } ){
       <>
         {openModal && (
           <>
-            {!token ? (
+            {(!token || !googleToken) ? (
               <ModalWarning
                 message={
                   'Para poder finalizar tu diseño primero debes tener una sesión abierta'

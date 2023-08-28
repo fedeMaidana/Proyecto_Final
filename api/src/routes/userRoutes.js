@@ -31,7 +31,7 @@ userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { 
     const googleToken = req.user.token;
     res.cookie('googleToken', googleToken, {
         httpOnly: true,
-        secure: false, // Asegúrate de que esto esté configurado correctamente en producción
+        secure: true, // Asegúrate de que esto esté configurado correctamente en producción
         sameSite: 'lax', // Asegúrate de que esto esté configurado correctamente en producción
     });
   

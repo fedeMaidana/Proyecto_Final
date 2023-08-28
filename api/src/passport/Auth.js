@@ -90,7 +90,7 @@ passport.use(
             email: profile.emails[0].value,
             password: hashedPassword,
             birthDate: birthDate,
-            profileImage: profile.photos[0].value,
+            profileImage:{urlImage: profile.photos[0].value,} 
           }
         });
 

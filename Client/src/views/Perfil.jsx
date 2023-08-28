@@ -206,14 +206,7 @@ export const ProfilePage = () => {
       </div>
 
       <div className="w-6/7 ml-[7%] overflow-y-auto ">
-        <div className="mb-4">
-          <a
-            href="/home"
-            className="flex items-center text-blue-600 hover:underline text-2xl p-4"
-          >
-            <FaArrowLeft className="mr-2" /> Volver a Home
-          </a>
-        </div>
+
 
         {user ? (
           <div

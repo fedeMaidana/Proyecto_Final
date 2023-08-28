@@ -119,7 +119,7 @@ export function Nav() {
                 to="/community"
                 className="text-principal-black text-[1.5rem] transition duration-300 ease-in-out hover:bg-blue-600 hover:text-gray-300 rounded"
               >
-                <p className='select-none font-semibold'>Comunidad</p>
+                <p className='select-none font-semibold'>Marketplace</p>
               </Link>
             </li>
           </ul>

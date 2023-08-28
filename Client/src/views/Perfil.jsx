@@ -92,16 +92,41 @@ export const ProfilePage = () => {
     event.preventDefault();
     
 
-    if (name !== '' && email !== '' && userName !== '' && lastName !== '' && birthDate !== '') {
-      const updatedUser = { name, email, userName, lastName, birthDate };
-
+    if (true) {  
       const formData = new FormData();
-      formData.append('name', name);
-      formData.append('email', email);
-      formData.append('userName', userName);
-      formData.append('lastName', lastName);
-      formData.append('profileImage', profileImage);
-      formData.append('birthDate', birthDate);// Append the profileImage to FormData
+      if (!name) {
+        formData.append('name', user.name);
+      } else {
+        formData.append('name', name);
+      }
+      
+      if (!email) {
+        formData.append('email', user.email);
+      } else {
+        formData.append('email', email);
+      }
+      
+      if (!userName) {
+        formData.append('userName', user.userName);
+      } else {
+        formData.append('userName', userName);
+      }
+      
+      if (!lastName) {
+        formData.append('lastName', user.lastName);
+      } else {
+        formData.append('lastName', lastName);
+      }
+      
+      if (!birthDate) {
+        formData.append('birthDate', user.birthDate);
+      } else {
+        formData.append('birthDate', birthDate);
+      }
+
+      if (profileImage) { 
+        formData.append('profileImage', profileImage);
+      }
 
 
       setLoading(true);

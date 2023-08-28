@@ -61,22 +61,22 @@ export const ProfilePage = () => {
         console.error('Error al obtener detalles del usuario:', error);
       }
     }
-  };
-
-  if (googleToken) {
-    try {
-      const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
-        headers: {
-          googleToken: `${googleToken}`,
-        },
-      });
-      console.log(response);
-      setUser(response?.data);
-    } catch (error) {
-      console.error('Error al obtener detalles del usuario:', error);
+    if (googleToken) {
+      try {
+        const response = await axios.get('https://proyectofinal-production-4957.up.railway.app/user', {
+          headers: {
+            googleToken: `${googleToken}`,
+          },
+        });
+        console.log(response);
+        setUser(response?.data);
+      } catch (error) {
+        console.error('Error al obtener detalles del usuario:', error);
+      }
     }
-  }
-};
+  };
+  
+
 
   useEffect(() => {
     fetchUserDetails();

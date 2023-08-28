@@ -58,7 +58,8 @@ export const Login = () => {
     const handleGoogleLogin = () => {
       try {
         // Redirige al usuario a la URL de inicio de sesión de Google
-        window.location.href = 'https://proyectofinal-production-4957.up.railway.app/login/auth/google';
+        // window.location.href = 'https://proyectofinal-production-4957.up.railway.app/login/auth/google';
+         window.location.href = 'http://localhost:3001/login/auth/google';
       } catch (error) {
         console.error('Error during Google login:', error);
       }

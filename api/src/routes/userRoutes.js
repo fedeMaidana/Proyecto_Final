@@ -40,6 +40,7 @@ userRoutes.get('/login/auth/google/callback', passport.authenticate('google', { 
   
     // Redirigir al usuario a la página de inicio
     const redirectUrl = `https://proyecto-final-eight-beige.vercel.app/home?googleToken=${googleToken}`;
+    
   
     // Redirigir al usuario a la página de inicio con el token en la URL
     res.redirect(redirectUrl);

@@ -39,7 +39,11 @@ import {
   CANCEL_CART_ID,
   BUY_SUCCESS,
   SET_CART_DATA,
-  APPLY_SORTING_TO_USERS
+  APPLY_SORTING_TO_USERS,
+  FETCH_GOOGLE_USER_DETAILS_REQUEST,
+  FETCH_GOOGLE_USER_DETAILS_SUCCESS,
+  FETCH_GOOGLE_USER_DETAILS_FAILURE,
+  BUY_CANCEL,
 } from "./action-types";
 
 const initialState = {
@@ -68,6 +72,9 @@ const initialState = {
   cartId: localStorage.getItem('cartId') || null,
   buyCart: [],
   message: '',
+  user: null,
+  loading: false,
+  error: null,
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -308,8 +315,17 @@ const reducer = (state = initialState, { type, payload }) => {
         return 0;
       });
 
-      return { ...state, allUsers: sortedUsers };
+      
 
+      return { ...state, allUsers: sortedUsers };
+      case FETCH_GOOGLE_USER_DETAILS_REQUEST:
+        return { ...state, loading: true, error: null };
+      case FETCH_GOOGLE_USER_DETAILS_SUCCESS:
+        return { ...state, loading: false, user: action.payload, error: null };
+      case FETCH_GOOGLE_USER_DETAILS_FAILURE:
+        return { ...state, loading: false, error: action.error };
+        case BUY_CANCEL: return{
+          ...state, buyCart: payload}
 
     default:
       return { ...state }

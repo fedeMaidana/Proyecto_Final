@@ -8,9 +8,10 @@ import tshirt from "../assets/images/tshirt.png"
 import { CardHome } from "../components/CardHome"
 import { getComments, getUsers } from '../redux/actions'
 import { useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const Home = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch() 
     const location = useLocation(); // Obtiene la ubicación actual (URL)
   
@@ -19,16 +20,13 @@ export const Home = () => {
       const googleToken = urlParams.get('googleToken'); // Obtiene el token de la URL
   
       if (googleToken) {
-        localStorage.setItem('googleToken', googleToken); // Guarda el token en el localStorage
+        localStorage.setItem('googleToken', googleToken);
+        navigate('/home'); // Guarda el token en el localStorage
       }
   
       dispatch(getComments());
       dispatch(getUsers());
-    }, [location, dispatch]);
-useEffect(() => {
-    dispatch( getComments() )
-    dispatch( getUsers() )
-}, [ dispatch ])
+    }, [location, dispatch, navigate]);
     return(
             <div className="w-[100%] lg:h-[90%] grid grid-rows-4 bg-[#f6f5f7] transform translate-y-[10vh] px-[50px]">
                 <div className="row-span-1 grid">

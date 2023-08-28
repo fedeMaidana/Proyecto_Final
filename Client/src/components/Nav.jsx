@@ -90,6 +90,7 @@ export function Nav() {
 
   const handleLogout = () => {
     localStorage.removeItem( 'token' )
+    localStorage.removeItem( 'tokenGoogle' )
     localStorage.removeItem( 'role' )
     setUser( undefined )
     setModalProfile( false )

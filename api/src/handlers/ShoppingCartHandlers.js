@@ -12,14 +12,25 @@ const cartHandler = {
 
   payCancel: async ( req, res ) => {
     try{
-        const {   cartId, userId} = req.body
-        const cart = await cartController.addToCartControllers( {  cartId, userId})
+        const {   cartId} = req.body
+        const cart = await cartController.cancelbuyControllers( {  cartId})
 
         res.status( 201 ).json( cart)
     }catch( error ){
       res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
     }
   },
+
+  // payCancelCart: async ( req, res ) => {
+  //   try{
+  //       const {   cartId} = req.body
+  //       const cart = await cartController.addToCartControllers( {  cartId, userId})
+
+  //       res.status( 201 ).json( cart)
+  //   }catch( error ){
+  //     res.status( 500 ).json( { error: 'Error al agregar el producto al carrito' } )
+  //   }
+  // },
 
 
   adminCartHandlers: async ( req, res ) => {
